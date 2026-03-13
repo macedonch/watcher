@@ -113,13 +113,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 .topbar{
   position:fixed;top:0;left:0;right:0;z-index:1000;
-  height:52px;padding:0 20px;
+  height:58px;padding:0 20px;
   display:flex;align-items:center;gap:10px;
   background:rgba(10,10,10,0.55);
   backdrop-filter:blur(40px) saturate(180%) brightness(1.1);
   -webkit-backdrop-filter:blur(40px) saturate(180%) brightness(1.1);
   border-bottom:1px solid rgba(255,255,255,0.08);
   animation:barDown .7s var(--smooth) both;
+}
+.topbar-search{
+  flex:1;display:flex;gap:7px;
+  max-width:500px;
 }
 .topbar::after{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
@@ -187,7 +191,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .page.active{display:block;animation:pageIn .6s var(--smooth) both}
 @keyframes pageIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
-main{padding-top:52px;min-height:100vh}
+main{padding-top:58px;min-height:100vh}
 .content{max-width:1380px;margin:0 auto;padding:36px 28px 80px}
 
 .section-label{
@@ -196,32 +200,31 @@ main{padding-top:52px;min-height:100vh}
   margin-bottom:18px;padding-left:2px;
 }
 
-.search-row{display:flex;gap:8px;margin-bottom:36px}
 .search-in{
-  flex:1;padding:13px 20px;
-  border-radius:var(--r-sm);
+  flex:1;padding:8px 16px;
+  border-radius:20px;
   border:1px solid rgba(255,255,255,0.1);
-  background:rgba(255,255,255,0.045);
+  background:rgba(255,255,255,0.055);
   backdrop-filter:blur(20px);
-  color:var(--text);font-family:var(--font);font-size:.88rem;font-weight:400;
+  color:var(--text);font-family:var(--font);font-size:.84rem;font-weight:400;
   outline:none;transition:all .3s;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,0.07),0 2px 8px rgba(0,0,0,0.2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.07);
 }
 .search-in:focus{
   border-color:rgba(255,255,255,0.22);
-  background:rgba(255,255,255,0.075);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,0.1),0 0 0 3px rgba(255,255,255,0.05),0 4px 20px rgba(0,0,0,0.3);
+  background:rgba(255,255,255,0.09);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.1),0 0 0 3px rgba(255,255,255,0.05);
 }
 .search-in::placeholder{color:var(--text4)}
 .search-btn{
-  padding:13px 24px;border-radius:var(--r-sm);
+  padding:8px 18px;border-radius:20px;
   background:rgba(255,255,255,0.9);color:#111;
-  font-family:var(--font);font-size:.83rem;font-weight:700;
+  font-family:var(--font);font-size:.8rem;font-weight:700;
   border:none;cursor:pointer;white-space:nowrap;
   transition:all .25s;
-  box-shadow:0 2px 12px rgba(255,255,255,0.1),inset 0 1px 0 rgba(255,255,255,0.5);
+  box-shadow:0 2px 10px rgba(255,255,255,0.08),inset 0 1px 0 rgba(255,255,255,0.5);
 }
-.search-btn:hover{background:#fff;transform:scale(1.03);box-shadow:0 4px 20px rgba(255,255,255,0.18)}
+.search-btn:hover{background:#fff;transform:scale(1.03);box-shadow:0 4px 16px rgba(255,255,255,0.16)}
 .search-btn:active{transform:scale(.97)}
 
 .vgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:40px}
@@ -565,8 +568,6 @@ main{padding-top:52px;min-height:100vh}
   .modal-side{width:100%}
   .topbar{padding:0 14px;gap:8px}
   .content{padding:22px 14px 64px}
-  .search-row{flex-direction:column}
-  .search-btn{width:100%}
   .orb1,.orb2,.orb3,.orb4{filter:blur(100px)}
 }
 @media(max-width:480px){
@@ -668,7 +669,10 @@ main{padding-top:52px;min-height:100vh}
     <div class="pill ac" onclick="showPage('home',this)">Home</div>
     <div class="pill" onclick="showPage('profile',this)">Profile</div>
   </nav>
-  <div class="spacer"></div>
+  <div class="topbar-search">
+    <input class="search-in" id="ytIn" type="text" placeholder="Search videos..." onkeydown="if(event.key==='Enter')doS()">
+    <button class="search-btn" onclick="doS()">Search</button>
+  </div>
   <div id="userArea"></div>
 </div>
 
@@ -702,10 +706,6 @@ main{padding-top:52px;min-height:100vh}
 <main>
   <div class="page active" id="pg-home">
     <div class="content">
-      <div class="search-row">
-        <input class="search-in" id="ytIn" type="text" placeholder="Search videos..." onkeydown="if(event.key==='Enter')doS()">
-        <button class="search-btn" onclick="doS()">Search</button>
-      </div>
       <div id="recW" style="display:none">
         <div class="section-label">Recommended</div>
         <div class="vgrid" id="recG"></div>
