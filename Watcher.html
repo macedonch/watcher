@@ -814,14 +814,14 @@ function openSD(){
   if(!h.length){
     dd.innerHTML='<div class="sd-empty">No recent searches</div>';
   }else{
-    var items=h.slice(0,6).map(function(v){
-      var safe=v.title.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/'/g,"\'");
-      return '<div class="sd-item" onmousedown="event.preventDefault();opV(''+v.id+'',''+safe+'')">'
+    dd.innerHTML='<div class="sd-label">Recently watched</div>'+h.slice(0,6).map(function(v){
+      var t=v.title.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+      var id=v.id;
+      return '<div class="sd-item" onmousedown="event.preventDefault();opV(this.dataset.id,this.dataset.title)" data-id="'+id+'" data-title="'+t+'">'
         +'<div class="sd-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>'
-        +'<span class="sd-text">'+v.title.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</span>'
+        +'<span class="sd-text">'+t+'</span>'
         +'</div>';
     }).join('');
-    dd.innerHTML='<div class="sd-label">Recently watched</div>'+items;
   }
   dd.classList.add("open");
 }
