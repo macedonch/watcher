@@ -113,7 +113,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 .topbar{
   position:fixed;top:0;left:0;right:0;z-index:1000;
-  height:58px;padding:0 20px;
+  height:58px;padding:0 20px;position:relative;
   display:flex;align-items:center;gap:10px;
   background:rgba(10,10,10,0.55);
   backdrop-filter:blur(40px) saturate(180%) brightness(1.1);
@@ -124,7 +124,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .topbar-search{
   display:flex;gap:7px;
   width:420px;
-  position:relative;
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
 }
 .search-dropdown{
   position:absolute;top:calc(100% + 10px);left:0;right:0;
@@ -668,7 +670,7 @@ main{padding-top:58px;min-height:100vh}
     <div class="pill" onclick="showPage('profile',this)">Profile</div>
   </nav>
   <div class="topbar-search">
-    <input class="search-in" id="ytIn" type="text" placeholder="Search videos..." onkeydown="if(event.key==='Enter')doS()" onfocus="openSD()" onblur="closeSD()">
+    <input class="search-in" id="ytIn" type="text" placeholder="Search videos..." autocomplete="off" onkeydown="if(event.key==='Enter')doS()" onfocus="openSD()" onblur="closeSD()">
     <button class="search-btn" onclick="doS()">Search</button>
     <div class="search-dropdown" id="searchDD"></div>
   </div>
