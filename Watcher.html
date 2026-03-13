@@ -122,8 +122,62 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   animation:barDown .7s var(--smooth) both;
 }
 .topbar-search{
-  flex:1;display:flex;gap:7px;
-  max-width:500px;
+  display:flex;gap:7px;
+  width:420px;
+  position:relative;
+}
+.search-dropdown{
+  position:absolute;top:calc(100% + 10px);left:0;right:0;
+  background:rgba(14,14,14,0.92);
+  backdrop-filter:blur(40px) saturate(160%);
+  -webkit-backdrop-filter:blur(40px) saturate(160%);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:16px;
+  padding:8px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.08);
+  z-index:2000;
+  opacity:0;
+  transform:translateY(-8px) scale(0.98);
+  transform-origin:top center;
+  pointer-events:none;
+  transition:opacity .25s cubic-bezier(.16,1,.3,1),transform .25s cubic-bezier(.16,1,.3,1);
+}
+.search-dropdown.open{
+  opacity:1;
+  transform:translateY(0) scale(1);
+  pointer-events:all;
+}
+.sd-label{
+  font-size:.62rem;font-weight:700;color:rgba(255,255,255,0.25);
+  letter-spacing:.08em;text-transform:uppercase;
+  padding:4px 10px 8px;
+}
+.sd-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 10px;border-radius:10px;
+  cursor:pointer;transition:background .2s;
+}
+.sd-item:hover{background:rgba(255,255,255,0.07)}
+.sd-icon{
+  width:30px;height:30px;border-radius:8px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.08);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.sd-icon svg{width:13px;height:13px;stroke:rgba(255,255,255,0.4);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.sd-text{font-size:.82rem;font-weight:500;color:rgba(255,255,255,0.75);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sd-fill{
+  font-size:.7rem;color:rgba(255,255,255,0.25);
+  padding:2px 6px;border-radius:6px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.07);
+  flex-shrink:0;cursor:pointer;transition:color .2s;
+}
+.sd-fill:hover{color:rgba(255,255,255,0.5)}
+.sd-empty{
+  text-align:center;padding:20px;
+  font-size:.78rem;color:rgba(255,255,255,0.2);
 }
 .topbar::after{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
@@ -670,9 +724,11 @@ main{padding-top:58px;min-height:100vh}
     <div class="pill" onclick="showPage('profile',this)">Profile</div>
   </nav>
   <div class="topbar-search">
-    <input class="search-in" id="ytIn" type="text" placeholder="Search videos..." onkeydown="if(event.key==='Enter')doS()">
+    <input class="search-in" id="ytIn" type="text" placeholder="Search videos..." onkeydown="if(event.key==='Enter')doS()" onfocus="openSD()" onblur="closeSD()">
     <button class="search-btn" onclick="doS()">Search</button>
+    <div class="search-dropdown" id="searchDD"></div>
   </div>
+  <div class="spacer"></div>
   <div id="userArea"></div>
 </div>
 
@@ -885,6 +941,30 @@ loadTr();loadRec();loadP();
     runSplash();
   }
 })();
+
+function openSD(){
+  var h=gH();
+  var dd=document.getElementById("searchDD");
+  if(!h.length){
+    dd.innerHTML='<div class="sd-empty">No recent searches</div>';
+  }else{
+    var items=h.slice(0,6).map(function(v){
+      var safe=v.title.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/'/g,"\'");
+      return '<div class="sd-item" onmousedown="event.preventDefault();opV(''+v.id+'',''+safe+'')">'
+        +'<div class="sd-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>'
+        +'<span class="sd-text">'+v.title.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</span>'
+        +'</div>';
+    }).join('');
+    dd.innerHTML='<div class="sd-label">Recently watched</div>'+items;
+  }
+  dd.classList.add("open");
+}
+function closeSD(){
+  setTimeout(function(){
+    var dd=document.getElementById("searchDD");
+    if(dd)dd.classList.remove("open");
+  },150);
+}
 
 document.addEventListener("mousemove",function(e){
   var x=(e.clientX/window.innerWidth-.5)*18;
