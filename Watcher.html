@@ -182,6 +182,29 @@ main{padding-top:56px;padding-left:68px;min-height:100vh}
 .uname-step input{width:100%;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--text);font-family:var(--font);font-size:.88rem;outline:none;margin-bottom:10px;position:relative;z-index:1}
 .uname-step .err{color:rgba(255,80,80,.7);font-size:.75rem;margin-bottom:8px;min-height:20px;position:relative;z-index:1}
 input[type="file"]{display:none}
+.paste-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;flex-shrink:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.paste-btn:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.18);transform:scale(1.05)}
+.paste-btn svg{width:16px;height:16px;stroke:var(--text2);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.paste-modal{position:fixed;inset:0;z-index:2500;background:rgba(5,5,5,.82);backdrop-filter:blur(50px);display:none;align-items:center;justify-content:center}
+.paste-modal.open{display:flex}
+.paste-box{background:rgba(255,255,255,.07);backdrop-filter:blur(40px) saturate(160%) brightness(1.1);border:1px solid rgba(255,255,255,.16);border-radius:26px;padding:40px 36px;max-width:500px;width:90%;text-align:center;position:relative;overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 40px 100px rgba(0,0,0,.55)}
+.paste-box::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3) 50%,transparent)}
+.paste-box h2{font-family:var(--font-serif);font-style:italic;font-size:1.3rem;margin-bottom:6px;position:relative;z-index:1}
+.paste-box p{font-size:.82rem;color:var(--text2);margin-bottom:22px;line-height:1.5;position:relative;z-index:1}
+.paste-input{width:100%;padding:13px 18px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--text);font-family:var(--font);font-size:.88rem;outline:none;margin-bottom:14px;transition:all .25s;position:relative;z-index:1}
+.paste-input:focus{border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.09)}
+.paste-input::placeholder{color:var(--text4)}
+.paste-actions{display:flex;gap:8px;position:relative;z-index:1}
+.paste-play{flex:1;padding:12px;border-radius:14px;background:rgba(255,255,255,.9);color:#111;font-family:var(--font);font-size:.85rem;font-weight:700;border:none;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:8px}
+.paste-play:hover{background:#fff;transform:scale(1.02)}
+.paste-play svg{width:16px;height:16px;stroke:#111;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.paste-clip{padding:12px 18px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:var(--text2);font-family:var(--font);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:6px}
+.paste-clip:hover{background:rgba(255,255,255,.12);color:var(--text)}
+.paste-clip svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.paste-close{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .25s;z-index:2}
+.paste-close:hover{background:rgba(255,255,255,.12)}
+.paste-close svg{width:12px;height:12px;stroke:var(--text3);stroke-width:2;fill:none}
+.paste-err{font-size:.78rem;color:rgba(255,80,80,.7);margin-bottom:10px;min-height:18px;position:relative;z-index:1}
 
 @media(max-width:1100px){.vgrid{grid-template-columns:repeat(3,1fr)}.modal-side{width:280px}}
 @media(max-width:768px){.vgrid{grid-template-columns:repeat(2,1fr);gap:8px}.modal-inner{flex-direction:column;padding:56px 14px 24px}.modal-side{width:100%}.topbar{padding:0 14px;gap:8px}.sidebar{display:none}main{padding-left:0}.content{padding:22px 14px 64px}.topbar-search{width:200px}.ch-banner{height:140px}.ch-avatar{width:72px;height:72px}.list-thumb{width:120px;height:68px}}
@@ -201,6 +224,7 @@ input[type="file"]{display:none}
 <div class="topbar">
   <div class="logo" onclick="nav('home')">Watcher</div>
   <div class="topbar-search"><input class="search-in" id="ytIn" type="text" placeholder="Search videos..." autocomplete="off" onkeydown="if(event.key==='Enter')doS()"><button class="search-btn" onclick="doS()">Search</button></div>
+  <div class="paste-btn" onclick="openPaste()" title="Paste YouTube link"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></div>
   <div class="spacer"></div>
   <div id="userArea"></div>
 </div>
@@ -227,6 +251,20 @@ input[type="file"]{display:none}
 
 <input type="file" id="afI" accept="image/*" onchange="hImg(this,'avatar')">
 <input type="file" id="bfI" accept="image/*" onchange="hImg(this,'banner')">
+
+<div class="paste-modal" id="pasteM">
+  <div class="paste-box">
+    <div class="paste-close" onclick="closePaste()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+    <h2>Watch by Link</h2>
+    <p>Paste a YouTube video link and watch it here.</p>
+    <input class="paste-input" id="pasteIn" type="text" placeholder="https://youtube.com/watch?v=..." onkeydown="if(event.key==='Enter')playPaste()">
+    <div class="paste-err" id="pasteErr"></div>
+    <div class="paste-actions">
+      <button class="paste-clip" onclick="clipPaste()"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Paste</button>
+      <button class="paste-play" onclick="playPaste()"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>Watch</button>
+    </div>
+  </div>
+</div>
 
 <main>
   <div class="page active" id="pg-home"><div class="content">
@@ -302,7 +340,17 @@ function toggleWL(id,title,thumb,author,e){if(e)e.stopPropagation();var wl=gWL()
 function addLikedV(id,title,thumb,author){var lv=gLikedV();if(!lv.some(function(x){return x.id===id}))lv.unshift({id:id,title:title,thumb:thumb,author:author});sLikedV(lv)}
 function rmLikedV(id){var lv=gLikedV();sLikedV(lv.filter(function(x){return x.id!==id}))}
 function showToast(msg){var t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove("show")},2000)}
-function shareV(id){var url="https://youtube.com/watch?v="+id;if(navigator.clipboard)navigator.clipboard.writeText(url).then(function(){showToast("Link copied!")});else showToast("youtube.com/watch?v="+id)}
+function shareV(id){var url="https://macedonch.github.io/watcher/Watcher.html?v="+id;if(navigator.clipboard)navigator.clipboard.writeText(url).then(function(){showToast("Watcher link copied!")});else showToast("Link: "+url)}
+
+function openPaste(){document.getElementById("pasteM").classList.add("open");document.getElementById("pasteIn").value="";document.getElementById("pasteErr").textContent="";setTimeout(function(){document.getElementById("pasteIn").focus()},100)}
+function closePaste(){document.getElementById("pasteM").classList.remove("open")}
+function clipPaste(){if(navigator.clipboard)navigator.clipboard.readText().then(function(t){document.getElementById("pasteIn").value=t}).catch(function(){showToast("Paste manually")})}
+function extractYTid(url){if(!url)return null;var m=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);if(m)return m[1];if(/^[a-zA-Z0-9_-]{11}$/.test(url.trim()))return url.trim();return null}
+function playPaste(){var url=document.getElementById("pasteIn").value.trim();var id=extractYTid(url);if(!id){document.getElementById("pasteErr").textContent="Invalid link. Paste a YouTube URL or video ID.";return}closePaste();opV(id,"Video "+id,"","")}
+document.getElementById("pasteM").addEventListener("click",function(e){if(e.target===this)closePaste()});
+
+function checkURLparam(){var p=new URLSearchParams(window.location.search);var v=p.get("v");if(v&&/^[a-zA-Z0-9_-]{11}$/.test(v)){setTimeout(function(){opV(v,"Video","","")},500)}}
+checkURLparam();
 
 function hImg(inp,type){var f=inp.files[0];if(!f)return;if(type==="banner"&&f.size>2e6){alert("Banner max 2MB");return}if(type==="avatar"&&f.size>1e6){alert("Avatar max 1MB");return}var img=new Image(),rd=new FileReader();rd.onload=function(e){img.onload=function(){if(type==="banner"&&img.width<1200){alert("Banner min 1200px wide");return}var p=gLP();p[type]=e.target.result;sLP(p);loadP();renderUA()};img.src=e.target.result};rd.readAsDataURL(f);inp.value=""}
 
