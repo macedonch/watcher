@@ -207,9 +207,94 @@ input[type="file"]{display:none}
 .paste-close svg{width:12px;height:12px;stroke:var(--text3);stroke-width:2;fill:none}
 .paste-err{font-size:.78rem;color:rgba(255,80,80,.7);margin-bottom:10px;min-height:18px;position:relative;z-index:1}
 
+.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:900;height:56px;background:rgba(10,10,10,.85);backdrop-filter:blur(30px) saturate(160%);-webkit-backdrop-filter:blur(30px) saturate(160%);border-top:1px solid rgba(255,255,255,.08);padding:0 8px;align-items:center;justify-content:space-around}
+.mob-nav::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1) 40%,rgba(255,255,255,.1) 60%,transparent)}
+.mn-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 12px;border-radius:12px;cursor:pointer;transition:all .3s;color:var(--text3)}
+.mn-item.ac{color:var(--text);background:rgba(255,255,255,.08)}
+.mn-item svg{width:20px;height:20px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.mn-item span{font-size:.56rem;font-weight:600}
+
 @media(max-width:1100px){.vgrid{grid-template-columns:repeat(3,1fr)}.modal-side{width:280px}}
-@media(max-width:768px){.vgrid{grid-template-columns:repeat(2,1fr);gap:8px}.modal-inner{flex-direction:column;padding:56px 14px 24px}.modal-side{width:100%}.topbar{padding:0 14px;gap:8px}.sidebar{display:none}main{padding-left:0}.content{padding:22px 14px 64px}.topbar-search{width:200px}.ch-banner{height:140px}.ch-avatar{width:72px;height:72px}.list-thumb{width:120px;height:68px}}
-@media(max-width:480px){.vgrid{grid-template-columns:repeat(2,1fr);gap:6px}.logo{font-size:1.15rem}.topbar-search{width:160px}}
+
+@media(max-width:768px){
+  .vgrid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .modal-inner{flex-direction:column;padding:52px 12px 24px}
+  .modal-side{width:100%}
+  .topbar{padding:0 12px;gap:8px;height:50px}
+  .topbar-search{position:relative;left:auto;transform:none;width:auto;flex:1;min-width:0}
+  .search-in{padding:7px 12px;font-size:.8rem}
+  .search-btn{padding:7px 14px;font-size:.75rem}
+  .logo{font-size:1.1rem;margin-right:2px}
+  .sidebar{display:none}
+  .mob-nav{display:flex}
+  main{padding-left:0;padding-top:50px;padding-bottom:60px}
+  .content{padding:16px 12px 70px}
+  .paste-btn{width:32px;height:32px}
+  .paste-btn svg{width:14px;height:14px}
+  .user-btn{padding:3px 8px 3px 3px}
+  .user-btn img{width:24px;height:24px}
+  .user-btn span{display:none}
+  .signin-btn{padding:6px 12px;font-size:.7rem}
+  .chips{flex-wrap:nowrap;gap:5px;margin-bottom:16px;padding-bottom:6px}
+  .chip{padding:5px 12px;font-size:.7rem;flex-shrink:0}
+  .vcard{border-radius:14px}
+  .vplay{width:40px;height:40px}
+  .vplay svg{width:14px;height:14px}
+  .vbody{padding:10px 10px 12px}
+  .vbody h3{font-size:.76rem;margin-bottom:4px}
+  .vmeta{font-size:.63rem}
+  .vdur{font-size:.56rem;padding:2px 5px;bottom:6px;right:6px}
+  .vwl{width:26px;height:26px;border-radius:6px;top:6px;right:6px}
+  .vwl svg{width:12px;height:12px}
+  .player-w{border-radius:12px}
+  .m-title{font-size:1rem}
+  .m-actions{gap:4px}
+  .act{padding:7px 10px;font-size:.7rem;gap:4px}
+  .act svg{width:12px;height:12px}
+  .c-in{padding:9px 12px;font-size:.78rem}
+  .c-btn{padding:9px 12px;font-size:.74rem}
+  .ch-banner{height:120px;border-radius:14px}
+  .ch-avatar{width:68px;height:68px}
+  .ch-header{gap:12px;padding:0 14px}
+  .ch-name{font-size:1.2rem}
+  .ch-handle{font-size:.72rem}
+  .ch-tabs{margin:0 14px 18px}
+  .ch-sec{padding:0 14px}
+  .ep{padding:18px;border-radius:16px}
+  .ef input,.ef textarea{padding:10px 12px;font-size:.82rem}
+  .list-card{gap:10px;padding:10px}
+  .list-thumb{width:120px;height:68px;border-radius:8px}
+  .list-info h3{font-size:.78rem}
+  .s-card{padding:6px}
+  .s-thumb{width:130px;height:73px}
+  .s-info h4{font-size:.7rem}
+  .paste-box{padding:32px 24px;border-radius:20px}
+  .paste-box h2{font-size:1.1rem}
+  .paste-input{padding:11px 14px;font-size:.84rem}
+  .auth-box{padding:36px 28px;border-radius:22px}
+  .auth-box h2{font-size:1.3rem}
+  .modal-x{top:10px;right:12px;width:32px;height:32px}
+  .modal-x svg{width:12px;height:12px}
+  .toast{bottom:70px;font-size:.78rem;padding:8px 18px}
+}
+
+@media(max-width:480px){
+  .vgrid{grid-template-columns:repeat(2,1fr);gap:6px}
+  .logo{font-size:1rem}
+  .topbar{gap:6px;padding:0 8px}
+  .search-in{padding:6px 10px;font-size:.76rem}
+  .search-btn{display:none}
+  .content{padding:12px 8px 70px}
+  .chip{padding:5px 10px;font-size:.66rem}
+  .vbody{padding:8px 8px 10px}
+  .vbody h3{font-size:.72rem;-webkit-line-clamp:1}
+  .vmeta{font-size:.6rem;gap:4px}
+  .list-thumb{width:100px;height:56px}
+  .ch-banner{height:100px}
+  .ch-avatar{width:56px;height:56px}
+  .ch-name{font-size:1rem}
+  .modal-inner{padding:48px 8px 20px}
+}
 </style>
 </head>
 <body>
@@ -238,6 +323,14 @@ input[type="file"]{display:none}
   <div class="sb-item" onclick="nav('wl')" data-p="wl"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>Later</span></div>
   <div class="sb-sep"></div>
   <div class="sb-item" onclick="nav('profile')" data-p="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 00-16 0"/></svg><span>Profile</span></div>
+</div>
+
+<div class="mob-nav" id="mobNav">
+  <div class="mn-item ac" onclick="nav('home')" data-p="home"><svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0v-4a1 1 0 011-1h2a1 1 0 011 1v4"/></svg><span>Home</span></div>
+  <div class="mn-item" onclick="nav('history')" data-p="history"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>History</span></div>
+  <div class="mn-item" onclick="nav('liked')" data-p="liked"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg><span>Liked</span></div>
+  <div class="mn-item" onclick="nav('wl')" data-p="wl"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>Later</span></div>
+  <div class="mn-item" onclick="nav('profile')" data-p="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 00-16 0"/></svg><span>Profile</span></div>
 </div>
 
 <div class="modal" id="vModal">
@@ -437,6 +530,8 @@ function nav(pg){
   document.getElementById("pg-"+pg).classList.add("active");
   document.querySelectorAll(".sb-item").forEach(function(s){s.classList.remove("ac")});
   var sb=document.querySelector('.sb-item[data-p="'+pg+'"]');if(sb)sb.classList.add("ac");
+  document.querySelectorAll(".mn-item").forEach(function(s){s.classList.remove("ac")});
+  var mn=document.querySelector('.mn-item[data-p="'+pg+'"]');if(mn)mn.classList.add("ac");
   if(pg==="home"){document.getElementById("feedW").style.display="block";document.getElementById("seW").style.display="none";if(!document.getElementById("feedG").children.length)loadFeed()}
   if(pg==="history")renderHistory();
   if(pg==="liked")renderLiked();
