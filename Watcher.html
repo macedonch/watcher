@@ -345,7 +345,7 @@ input[type="file"]{display:none}
 <div class="toast" id="toast"></div>
 
 <div class="auth-overlay" id="authO"><div class="auth-box">
-  <div id="authS1"><h2>Welcome to Watcher</h2><p>Sign in to save your profile and watch history.</p><button class="g-btn" onclick="gSignIn()"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="">Sign in with Google</button><div class="auth-skip" onclick="skipA()">Continue as guest</div></div>
+  <div id="authS1"><h2>Welcome to Watcher</h2><p>Sign in to save your profile and watch history.</p><button class="g-btn" onclick="gSignIn()"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="">Sign in with Google</button><div class="auth-skip" onclick="skipA()">Continue as guest</div><div style="margin-top:20px;font-size:.65rem;color:rgba(255,255,255,.2)"><a href="privacy.html" style="color:rgba(255,255,255,.3)" target="_blank">Privacy Policy</a></div></div>
   <div id="authS2" class="uname-step"><h2>Choose Username</h2><p>English only, lowercase.</p><input id="unIn" type="text" placeholder="username" maxlength="20" oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9_]/g,'')"><div class="err" id="unErr"></div><button class="g-btn" onclick="submitUn()">Confirm</button></div>
 </div></div>
 
@@ -424,6 +424,7 @@ input[type="file"]{display:none}
       <div class="ef"><label>Username</label><input id="uIn" type="text" maxlength="20" oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9_]/g,'')"><div class="hn">English, numbers, underscore. Must be unique.</div></div>
       <div class="ef"><label>Description</label><textarea id="dIn" maxlength="500" placeholder="Tell viewers about your channel..."></textarea></div>
       <div class="svr"><button class="svb" onclick="saveP()">Save</button><button class="sob" id="soBtn" onclick="signOut()" style="display:none">Sign Out</button></div>
+      <div style="margin-top:16px;font-size:.65rem"><a href="privacy.html" style="color:rgba(255,255,255,.25)" target="_blank">Privacy Policy</a></div>
     </div></div>
     <div class="ch-sec" id="chSta" style="display:none"><div class="p-stats"><h3>Statistics</h3>
       <div class="p-row"><span class="p-row-l">Videos Watched</span><span class="p-row-v" id="wC">0</span></div>
@@ -455,24 +456,78 @@ function gH(){try{return JSON.parse(localStorage.getItem("wh")||"[]")}catch(e){r
 function aH(id,t,th,au){var h=gH();h=h.filter(function(x){return x.id!==id});h.unshift({id:id,title:t,thumb:th||"",author:au||"",t:Date.now()});if(h.length>50)h=h.slice(0,50);try{localStorage.setItem("wh",JSON.stringify(h))}catch(e){}}
 function gSC(){return parseInt(localStorage.getItem("wsc")||"0")}
 function iSC(){localStorage.setItem("wsc",""+(gSC()+1))}
-function gCm(id){try{return JSON.parse(localStorage.getItem("wc_"+id)||"[]")}catch(e){return[]}}
-function aCm(id,c){var l=gCm(id);l.unshift(c);try{localStorage.setItem("wc_"+id,JSON.stringify(l))}catch(e){}}
 function gLP(){try{return JSON.parse(localStorage.getItem("wp")||"{}")}catch(e){return{}}}
 function sLP(d){try{localStorage.setItem("wp",JSON.stringify(d))}catch(e){}}
-function gLk(id){try{return JSON.parse(localStorage.getItem("wlk_"+id)||"{}")}catch(e){return{}}}
-function sLk(id,d){try{localStorage.setItem("wlk_"+id,JSON.stringify(d))}catch(e){}}
-function gVS(id){try{return JSON.parse(localStorage.getItem("wvs_"+id)||'{"l":0,"d":0}')}catch(e){return{l:0,d:0}}}
-function sVS(id,d){try{localStorage.setItem("wvs_"+id,JSON.stringify(d))}catch(e){}}
 function gWL(){try{return JSON.parse(localStorage.getItem("wwl")||"[]")}catch(e){return[]}}
 function sWL(d){try{localStorage.setItem("wwl",JSON.stringify(d))}catch(e){}}
 function gLikedV(){try{return JSON.parse(localStorage.getItem("wlv")||"[]")}catch(e){return[]}}
 function sLikedV(d){try{localStorage.setItem("wlv",JSON.stringify(d))}catch(e){}}
 function tLks(){return gLikedV().length}
-function tCms(){var c=0;for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.startsWith("wc_")){try{c+=JSON.parse(localStorage.getItem(k)).length}catch(e){}}}return c}
+function tCms(){var p=gLP();return p._cmCount||0}
 function isInWL(id){return gWL().some(function(x){return x.id===id})}
 function toggleWL(id,title,thumb,author,e){if(e)e.stopPropagation();var wl=gWL();var idx=wl.findIndex(function(x){return x.id===id});if(idx>-1){wl.splice(idx,1);showToast("Removed from Watch Later")}else{wl.unshift({id:id,title:title,thumb:thumb,author:author,t:Date.now()});showToast("Added to Watch Later")}sWL(wl)}
 function addLikedV(id,title,thumb,author){var lv=gLikedV();if(!lv.some(function(x){return x.id===id}))lv.unshift({id:id,title:title,thumb:thumb,author:author});sLikedV(lv)}
 function rmLikedV(id){var lv=gLikedV();sLikedV(lv.filter(function(x){return x.id!==id}))}
+
+function fbGetVdata(vid,cb){
+  if(!fbOk||!db){cb({l:0,d:0,cc:0});return}
+  db.collection("vdata").doc(vid).get().then(function(d){cb(d.exists?d.data():{l:0,d:0,cc:0})}).catch(function(){cb({l:0,d:0,cc:0})})
+}
+function fbGetMyLike(vid,cb){
+  if(!fbOk||!db||!cUser){cb({});return}
+  db.collection("vlikes").doc(vid+"__"+cUser.uid).get().then(function(d){cb(d.exists?d.data():{})}).catch(function(){cb({})})
+}
+function fbToggleLike(vid,dir,info,cb){
+  if(!fbOk||!db||!cUser){cb();return}
+  var likeRef=db.collection("vlikes").doc(vid+"__"+cUser.uid);
+  var vRef=db.collection("vdata").doc(vid);
+  db.runTransaction(function(tx){
+    return tx.get(likeRef).then(function(ld){
+      return tx.get(vRef).then(function(vd){
+        var ul=ld.exists?ld.data():{};
+        var vs=vd.exists?vd.data():{l:0,d:0,cc:0};
+        if(dir===1){
+          if(ul.liked){ul.liked=false;vs.l=Math.max(0,(vs.l||0)-1)}
+          else{ul.liked=true;vs.l=(vs.l||0)+1;if(ul.disliked){ul.disliked=false;vs.d=Math.max(0,(vs.d||0)-1)}}
+        }else{
+          if(ul.disliked){ul.disliked=false;vs.d=Math.max(0,(vs.d||0)-1)}
+          else{ul.disliked=true;vs.d=(vs.d||0)+1;if(ul.liked){ul.liked=false;vs.l=Math.max(0,(vs.l||0)-1)}}
+        }
+        tx.set(likeRef,ul);
+        tx.set(vRef,vs,{merge:true});
+        return{ul:ul,vs:vs};
+      });
+    });
+  }).then(function(r){
+    if(r.ul.liked)addLikedV(vid,info.title,info.thumb,info.author);
+    else rmLikedV(vid);
+    cb(r.ul,r.vs);
+  }).catch(function(){cb()});
+}
+function fbLoadComments(vid,cb){
+  if(!fbOk||!db){cb([]);return}
+  db.collection("vdata").doc(vid).collection("comments").orderBy("ts","desc").limit(50).get().then(function(snap){
+    var arr=[];snap.forEach(function(d){arr.push(d.data())});cb(arr);
+  }).catch(function(){cb([])});
+}
+function fbAddComment(vid,text,cb){
+  if(!fbOk||!db||!cUser){cb();return}
+  var name=cUser.displayName||"User";
+  var cmt={u:name,t:text,ts:Date.now(),uid:cUser.uid};
+  var vRef=db.collection("vdata").doc(vid);
+  db.collection("vdata").doc(vid).collection("comments").add(cmt).then(function(){
+    return db.runTransaction(function(tx){
+      return tx.get(vRef).then(function(d){
+        var vs=d.exists?d.data():{l:0,d:0,cc:0};
+        vs.cc=(vs.cc||0)+1;
+        tx.set(vRef,vs,{merge:true});
+      });
+    });
+  }).then(function(){
+    var p=gLP();p._cmCount=(p._cmCount||0)+1;sLP(p);
+    cb();
+  }).catch(function(){cb()});
+}
 function showToast(msg){var t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove("show")},2000)}
 function shareV(id){var url="https://macedonch.github.io/watcher/Watcher.html?v="+id;if(navigator.clipboard)navigator.clipboard.writeText(url).then(function(){showToast("Watcher link copied!")});else showToast("Link: "+url)}
 
@@ -543,19 +598,33 @@ function opV(id,title,thumb,author){
   updMC();ldCm(id);ldRel(id);document.getElementById("vModal").classList.add("open");document.body.style.overflow="hidden";
 }
 function updMC(){
-  var vs=gVS(curV),ul=gLk(curV),cms=gCm(curV),wl=isInWL(curV);
-  document.getElementById("mCn").innerHTML='<span><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>'+vs.l+'</span><span><svg viewBox="0 0 24 24" style="transform:rotate(180deg)"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>'+vs.d+'</span><span><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>'+cms.length+'</span>';
-  document.getElementById("mAc").innerHTML='<div class="act'+(ul.liked?" on":"")+'" onclick="tgLk(1)"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>Like<span class="cnt">'+vs.l+'</span></div>'+'<div class="act'+(ul.disliked?" on":"")+'" onclick="tgLk(-1)"><svg viewBox="0 0 24 24" style="transform:rotate(180deg)"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>Dislike<span class="cnt">'+vs.d+'</span></div>'+'<div class="act'+(wl?" on":"")+'" onclick="toggleWL(\''+curV+"','"+esc(curVInfo.title)+"','"+esc(curVInfo.thumb)+"','"+esc(curVInfo.author)+"');updMC()\"><svg viewBox=\"0 0 24 24\"><path d=\"M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z\"/></svg>Save</div>"+'<div class="act" onclick="shareV(\''+curV+'\')"><svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>Share</div>';
+  fbGetVdata(curV,function(vs){
+    fbGetMyLike(curV,function(ul){
+      var wl=isInWL(curV);var cc=vs.cc||0;
+      document.getElementById("mCn").innerHTML='<span><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>'+(vs.l||0)+'</span><span><svg viewBox="0 0 24 24" style="transform:rotate(180deg)"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>'+(vs.d||0)+'</span><span><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>'+cc+'</span>';
+      document.getElementById("mAc").innerHTML='<div class="act'+(ul.liked?" on":"")+'" onclick="tgLk(1)"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>Like<span class="cnt">'+(vs.l||0)+'</span></div><div class="act'+(ul.disliked?" on":"")+'" onclick="tgLk(-1)"><svg viewBox="0 0 24 24" style="transform:rotate(180deg)"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>Dislike<span class="cnt">'+(vs.d||0)+'</span></div><div class="act'+(wl?" on":"")+'" onclick="toggleWL(\''+curV+"','"+esc(curVInfo.title)+"','"+esc(curVInfo.thumb)+"','"+esc(curVInfo.author)+"');updMC()\"><svg viewBox=\"0 0 24 24\"><path d=\"M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z\"/></svg>Save</div>"+'<div class="act" onclick="shareV(\''+curV+'\')"><svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>Share</div>';
+    });
+  });
 }
 function tgLk(dir){
-  var ul=gLk(curV),vs=gVS(curV);
-  if(dir===1){if(ul.liked){ul.liked=false;vs.l=Math.max(0,vs.l-1);rmLikedV(curV)}else{ul.liked=true;vs.l++;addLikedV(curV,curVInfo.title,curVInfo.thumb,curVInfo.author);if(ul.disliked){ul.disliked=false;vs.d=Math.max(0,vs.d-1)}}}
-  else{if(ul.disliked){ul.disliked=false;vs.d=Math.max(0,vs.d-1)}else{ul.disliked=true;vs.d++;if(ul.liked){ul.liked=false;vs.l=Math.max(0,vs.l-1);rmLikedV(curV)}}}
-  sLk(curV,ul);sVS(curV,vs);updMC();
+  if(!cUser){showToast("Sign in to like");return}
+  fbToggleLike(curV,dir,curVInfo,function(){updMC()});
 }
 function clV(){document.getElementById("plW").innerHTML="";document.getElementById("vModal").classList.remove("open");document.body.style.overflow=""}
-function ldCm(id){var l=gCm(id);document.getElementById("cTi").textContent="Comments ("+l.length+")";document.getElementById("cL").innerHTML=l.length?l.map(function(c){return'<div class="c-item"><div class="c-user">'+c.u+'</div><div class="c-text">'+c.t+'</div></div>'}).join(""):'<div style="font-size:.76rem;color:var(--text3);padding:8px">No comments yet.</div>'}
-function addC(){var t=document.getElementById("cIn").value.trim();if(!t||!curV)return;aCm(curV,{u:cUser?cUser.displayName:"Guest",t:t});document.getElementById("cIn").value="";ldCm(curV);updMC()}
+function ldCm(id){
+  document.getElementById("cTi").textContent="Comments";
+  document.getElementById("cL").innerHTML='<div class="ld" style="padding:20px"><div class="sp"></div></div>';
+  fbLoadComments(id,function(arr){
+    document.getElementById("cTi").textContent="Comments ("+arr.length+")";
+    document.getElementById("cL").innerHTML=arr.length?arr.map(function(c){return'<div class="c-item"><div class="c-user">'+c.u+'</div><div class="c-text">'+(c.t||"").replace(/</g,"&lt;")+'</div></div>'}).join(""):'<div style="font-size:.76rem;color:var(--text3);padding:8px">No comments yet.</div>';
+  });
+}
+function addC(){
+  var t=document.getElementById("cIn").value.trim();if(!t||!curV)return;
+  if(!cUser){showToast("Sign in to comment");return}
+  document.getElementById("cIn").value="";
+  fbAddComment(curV,t,function(){ldCm(curV);updMC()});
+}
 function ldRel(id){var el=document.getElementById("relL");el.innerHTML='<div class="ld"><div class="sp"></div></div>';jp("action=related&id="+id,function(e,d){if(e||!d||!d.ok||!d.items||!d.items.length){el.innerHTML='';return}el.innerHTML=d.items.map(function(v){var th=v.thumb||(v.id?"https://i.ytimg.com/vi/"+v.id+"/hqdefault.jpg":"");return"<div class=\"s-card\" onclick=\"clV();setTimeout(function(){opV('"+v.id+"','"+esc(v.title)+"','"+esc(th)+"','"+esc(v.author)+"')},300)\"><div class=\"s-thumb\"><img src=\""+th+"\" onerror=\"this.src='"+FB+"'\"></div><div class=\"s-info\"><h4>"+v.title+"</h4><div class=\"sm\">"+(v.author||"")+"</div></div></div>"}).join("")},20000)}
 
 document.getElementById("vModal").addEventListener("click",function(e){if(e.target===this)clV()});
