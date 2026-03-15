@@ -462,24 +462,54 @@ function renderUA(){var el=document.getElementById("userArea");if(cUser){var a=g
 var jc=0;
 var jc=0;
 function jp(p,cb){
-  fetch(GAS+"?"+p,{redirect:"follow"}).then(function(r){
-    if(!r.ok)throw new Error("HTTP "+r.status);
-    return r.text();
-  }).then(function(txt){
-    try{var d=JSON.parse(txt);cb(null,d)}catch(e){
-      var m=txt.match(/\{[\s\S]*\}/);
-      if(m)cb(null,JSON.parse(m[0]));
-      else cb(new Error("Bad JSON"),null);
-    }
-  }).catch(function(e){
-    dbg("fetch failed ("+e.message+"), trying JSONP...");
-    var id="_w"+(++jc),done=false;
-    window[id]=function(r){if(done)return;done=true;try{delete window[id]}catch(x){}var s=document.getElementById(id);if(s)s.remove();cb(null,r)};
-    var s=document.createElement("script");s.id=id;s.src=GAS+"?callback="+id+"&"+p;
-    s.onerror=function(){if(done)return;done=true;try{delete window[id]}catch(x){}s.remove();cb(new Error("JSONP also failed"),null)};
-    document.body.appendChild(s);
-    setTimeout(function(){if(done)return;done=true;try{delete window[id]}catch(x){}var s2=document.getElementById(id);if(s2)s2.remove();cb(new Error("Timeout"),null)},30000);
-  });
+  var url=GAS+"?"+p;
+  dbg("Loading: "+url.substring(0,80)+"...");
+  var done=false;
+  function finish(e,d){if(done)return;done=true;cb(e,d)}
+
+  var id="_w"+(++jc);
+  window[id]=function(r){
+    dbg("JSONP callback received");
+    finish(null,r);
+    try{delete window[id]}catch(x){}
+    var s=document.getElementById(id);if(s)s.remove();
+  };
+  var s=document.createElement("script");
+  s.id=id;
+  s.async=true;
+  s.src=GAS+"?callback="+id+"&"+p;
+  s.onload=function(){dbg("Script loaded, waiting for callback...")};
+  s.onerror=function(ev){
+    dbg("Script blocked, trying fetch...");
+    try{delete window[id]}catch(x){}
+    s.remove();
+    fetch(url,{redirect:"follow",mode:"cors"}).then(function(r){return r.text()}).then(function(txt){
+      dbg("Fetch got "+txt.length+" chars");
+      try{finish(null,JSON.parse(txt))}catch(ex){
+        var m=txt.match(/\{[\s\S]*\}/);
+        if(m)finish(null,JSON.parse(m[0]));
+        else finish(new Error("Bad data"),null);
+      }
+    }).catch(function(e2){
+      dbg("Fetch also failed: "+e2.message+". Trying XHR...");
+      var xhr=new XMLHttpRequest();
+      xhr.open("GET",url,true);
+      xhr.onload=function(){
+        dbg("XHR got "+xhr.responseText.length+" chars");
+        try{finish(null,JSON.parse(xhr.responseText))}catch(ex){finish(new Error("Bad XHR data"),null)}
+      };
+      xhr.onerror=function(){finish(new Error("All methods failed. Check GAS URL."),null)};
+      xhr.send();
+    });
+  };
+  document.head.appendChild(s);
+  setTimeout(function(){
+    if(done)return;
+    dbg("Timeout after 30s");
+    try{delete window[id]}catch(x){}
+    var s2=document.getElementById(id);if(s2)s2.remove();
+    finish(new Error("Timeout - server not responding"),null);
+  },30000);
 }
 
 function gH(){try{return JSON.parse(localStorage.getItem("wh")||"[]")}catch(e){return[]}}
