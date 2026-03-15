@@ -463,53 +463,32 @@ var jc=0;
 var jc=0;
 function jp(p,cb){
   var url=GAS+"?"+p;
-  dbg("Loading: "+url.substring(0,80)+"...");
   var done=false;
   function finish(e,d){if(done)return;done=true;cb(e,d)}
 
-  var id="_w"+(++jc);
-  window[id]=function(r){
-    dbg("JSONP callback received");
-    finish(null,r);
-    try{delete window[id]}catch(x){}
-    var s=document.getElementById(id);if(s)s.remove();
-  };
-  var s=document.createElement("script");
-  s.id=id;
-  s.async=true;
-  s.src=GAS+"?callback="+id+"&"+p;
-  s.onload=function(){dbg("Script loaded, waiting for callback...")};
-  s.onerror=function(ev){
-    dbg("Script blocked, trying fetch...");
-    try{delete window[id]}catch(x){}
-    s.remove();
-    fetch(url,{redirect:"follow",mode:"cors"}).then(function(r){return r.text()}).then(function(txt){
-      dbg("Fetch got "+txt.length+" chars");
-      try{finish(null,JSON.parse(txt))}catch(ex){
-        var m=txt.match(/\{[\s\S]*\}/);
-        if(m)finish(null,JSON.parse(m[0]));
-        else finish(new Error("Bad data"),null);
-      }
-    }).catch(function(e2){
-      dbg("Fetch also failed: "+e2.message+". Trying XHR...");
-      var xhr=new XMLHttpRequest();
-      xhr.open("GET",url,true);
-      xhr.onload=function(){
-        dbg("XHR got "+xhr.responseText.length+" chars");
-        try{finish(null,JSON.parse(xhr.responseText))}catch(ex){finish(new Error("Bad XHR data"),null)}
-      };
-      xhr.onerror=function(){finish(new Error("All methods failed. Check GAS URL."),null)};
-      xhr.send();
-    });
-  };
-  document.head.appendChild(s);
-  setTimeout(function(){
-    if(done)return;
-    dbg("Timeout after 30s");
-    try{delete window[id]}catch(x){}
-    var s2=document.getElementById(id);if(s2)s2.remove();
-    finish(new Error("Timeout - server not responding"),null);
-  },30000);
+  fetch(url,{redirect:"follow",mode:"cors"}).then(function(r){return r.text()}).then(function(txt){
+    try{finish(null,JSON.parse(txt))}catch(ex){
+      var m=txt.match(/\{[\s\S]*\}/);
+      if(m)finish(null,JSON.parse(m[0]));
+      else finish(new Error("Bad data"),null);
+    }
+  }).catch(function(){
+    var id="_w"+(++jc);
+    window[id]=function(r){
+      finish(null,r);
+      try{delete window[id]}catch(x){}
+      var s=document.getElementById(id);if(s)s.remove();
+    };
+    var s=document.createElement("script");
+    s.id=id;s.async=true;
+    s.src=GAS+"?callback="+id+"&"+p;
+    s.onerror=function(){
+      try{delete window[id]}catch(x){}s.remove();
+      finish(new Error("Connection failed"),null);
+    };
+    document.head.appendChild(s);
+  });
+  setTimeout(function(){finish(new Error("Timeout"),null)},30000);
 }
 
 function gH(){try{return JSON.parse(localStorage.getItem("wh")||"[]")}catch(e){return[]}}
@@ -631,31 +610,22 @@ function renderChips(){document.getElementById("chips").innerHTML=categories.map
 function pickCat(c,el){document.querySelectorAll(".chip").forEach(function(x){x.classList.remove("ac")});el.classList.add("ac");curCat=c;document.getElementById("seW").style.display="none";document.getElementById("feedW").style.display="block";feedIds={};document.getElementById("feedG").innerHTML="";feedLoading=false;loadFeed()}
 
 var feedIds={},feedLoading=false,feedPage=0,lastItems=[];
-function dbg(msg){var d=document.getElementById("feedLd");if(d)d.innerHTML='<div style="color:#aaa;font-size:.75rem;padding:10px">'+msg+'</div>'}
 function loadFeed(){
   if(feedLoading)return;feedLoading=true;
-  dbg("Requesting videos...");
+  document.getElementById("feedLd").style.display="block";
+  document.getElementById("feedLd").innerHTML='<div class="sp"></div>Loading videos...';
   var params="action=trending&region=RU";
   if(curCat)params+="&cat="+curCat;
   jp(params,function(e,d){
-    if(e){dbg("Network error: "+e.message+"<br><button onclick='feedLoading=false;loadFeed()' style='margin-top:8px;padding:8px 20px;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);cursor:pointer'>Retry</button>");feedLoading=false;return}
-    if(!d){dbg("Empty response from server<br><button onclick='feedLoading=false;loadFeed()' style='margin-top:8px;padding:8px 20px;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);cursor:pointer'>Retry</button>");feedLoading=false;return}
-    if(!d.ok){dbg("Server error: "+(d.error||"unknown")+"<br><button onclick='feedLoading=false;loadFeed()' style='margin-top:8px;padding:8px 20px;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);cursor:pointer'>Retry</button>");feedLoading=false;return}
-    if(!d.items||!d.items.length){dbg("No videos returned<br><button onclick='feedLoading=false;loadFeed()' style='margin-top:8px;padding:8px 20px;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);cursor:pointer'>Retry</button>");feedLoading=false;return}
+    if(e){document.getElementById("feedLd").innerHTML='<div style="padding:20px;font-size:.85rem;color:var(--text3)">Could not load videos<br><br><button onclick="feedLoading=false;loadFeed()" style="padding:8px 20px;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);cursor:pointer">Retry</button></div>';feedLoading=false;return}
+    if(!d||!d.ok||!d.items||!d.items.length){document.getElementById("feedLd").innerHTML='<div style="padding:20px;font-size:.85rem;color:var(--text3)">'+(d&&d.error?d.error:"No videos found")+'<br><br><button onclick="feedLoading=false;loadFeed()" style="padding:8px 20px;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);cursor:pointer">Retry</button></div>';feedLoading=false;return}
     lastItems=d.items;
-    var html="";
-    var count=0;
+    var html="",count=0;
     try{
       d.items.forEach(function(v){if(v.id&&!feedIds[v.id]){feedIds[v.id]=1;html+=vC(v);count++}});
-    }catch(ex){dbg("Render error: "+ex.message);feedLoading=false;return}
-    var fg=document.getElementById("feedG");
-    if(count>0){
-      fg.insertAdjacentHTML("beforeend",html);
-      dbg("Loaded "+count+" videos ("+fg.children.length+" total)");
-      setTimeout(function(){document.getElementById("feedLd").style.display="none"},1500);
-    }else{
-      dbg("0 new videos");
-    }
+    }catch(ex){document.getElementById("feedLd").innerHTML='Error: '+ex.message;feedLoading=false;return}
+    if(count>0)document.getElementById("feedG").insertAdjacentHTML("beforeend",html);
+    document.getElementById("feedLd").style.display="none";
     feedLoading=false;feedPage++;
   });
 }
