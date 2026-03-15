@@ -462,30 +462,24 @@ function renderUA(){var el=document.getElementById("userArea");if(cUser){var a=g
 var jc=0;
 var jc=0;
 function jp(p,cb){
-  var id="_w"+(++jc);
-  var done=false;
-  window[id]=function(r){
-    if(done)return;done=true;
-    try{delete window[id]}catch(x){}
-    var s=document.getElementById(id);if(s)s.remove();
-    cb(null,r);
-  };
-  var s=document.createElement("script");
-  s.id=id;
-  s.src=GAS+"?callback="+id+"&"+p;
-  s.onerror=function(){
-    if(done)return;done=true;
-    try{delete window[id]}catch(x){}
-    s.remove();
-    cb(new Error("Network error"),null);
-  };
-  document.body.appendChild(s);
-  setTimeout(function(){
-    if(done)return;done=true;
-    try{delete window[id]}catch(x){}
-    var s2=document.getElementById(id);if(s2)s2.remove();
-    cb(new Error("Timeout"),null);
-  },30000);
+  fetch(GAS+"?"+p,{redirect:"follow"}).then(function(r){
+    if(!r.ok)throw new Error("HTTP "+r.status);
+    return r.text();
+  }).then(function(txt){
+    try{var d=JSON.parse(txt);cb(null,d)}catch(e){
+      var m=txt.match(/\{[\s\S]*\}/);
+      if(m)cb(null,JSON.parse(m[0]));
+      else cb(new Error("Bad JSON"),null);
+    }
+  }).catch(function(e){
+    dbg("fetch failed ("+e.message+"), trying JSONP...");
+    var id="_w"+(++jc),done=false;
+    window[id]=function(r){if(done)return;done=true;try{delete window[id]}catch(x){}var s=document.getElementById(id);if(s)s.remove();cb(null,r)};
+    var s=document.createElement("script");s.id=id;s.src=GAS+"?callback="+id+"&"+p;
+    s.onerror=function(){if(done)return;done=true;try{delete window[id]}catch(x){}s.remove();cb(new Error("JSONP also failed"),null)};
+    document.body.appendChild(s);
+    setTimeout(function(){if(done)return;done=true;try{delete window[id]}catch(x){}var s2=document.getElementById(id);if(s2)s2.remove();cb(new Error("Timeout"),null)},30000);
+  });
 }
 
 function gH(){try{return JSON.parse(localStorage.getItem("wh")||"[]")}catch(e){return[]}}
