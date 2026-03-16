@@ -347,6 +347,52 @@ input[type="file"]{display:none}
   .m-title{font-size:.88rem}
   .s-thumb{width:100px;height:56px}
 }
+.room-wrap{display:flex;gap:16px;height:calc(100vh - 120px);min-height:400px}
+.room-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.room-player{position:relative;width:100%;padding-top:56.25%;background:#000;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1);flex-shrink:0}
+.room-player iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+.room-info{display:flex;align-items:center;gap:10px;padding:12px 0;flex-wrap:wrap}
+.room-id{font-size:.7rem;color:var(--text3);background:rgba(255,255,255,.04);padding:4px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.08)}
+.room-copy{padding:5px 12px;border-radius:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:var(--text2);font-size:.7rem;font-weight:600;cursor:pointer;font-family:var(--font)}
+.room-copy:hover{background:rgba(255,255,255,.12)}
+.room-vtitle{font-size:.9rem;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.room-side{width:320px;flex-shrink:0;display:flex;flex-direction:column;gap:10px}
+.room-panel{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;display:flex;flex-direction:column}
+.room-panel h3{font-size:.62rem;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.room-members{flex:0 0 auto;max-height:160px;overflow-y:auto}
+.room-member{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:.78rem;color:var(--text2)}
+.room-member .rm-dot{width:6px;height:6px;border-radius:50%;background:#4f4;flex-shrink:0}
+.room-member .rm-host{font-size:.6rem;color:var(--text3);margin-left:auto;background:rgba(255,255,255,.06);padding:1px 6px;border-radius:4px}
+.room-chat{flex:1;min-height:0;display:flex;flex-direction:column}
+.room-msgs{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:4px;padding:4px 0;min-height:100px;max-height:300px}
+.room-msg{font-size:.78rem;color:var(--text2);line-height:1.4;padding:4px 8px;border-radius:8px;background:rgba(255,255,255,.03)}
+.room-msg b{color:var(--text);font-weight:600;font-size:.72rem;margin-right:4px}
+.room-chatrow{display:flex;gap:6px;margin-top:8px}
+.room-chatin{flex:1;padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.04);color:var(--text);font-family:var(--font);font-size:.78rem;outline:none}
+.room-chatin:focus{border-color:rgba(255,255,255,.2)}
+.room-sendbtn{padding:8px 14px;border-radius:10px;background:rgba(255,255,255,.9);color:#111;font-family:var(--font);font-size:.75rem;font-weight:700;border:none;cursor:pointer}
+.room-controls{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.room-btn{padding:7px 14px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--text2);font-size:.72rem;font-weight:600;cursor:pointer;font-family:var(--font);display:flex;align-items:center;gap:5px}
+.room-btn:hover{background:rgba(255,255,255,.1);color:var(--text)}
+.room-btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.room-btn.primary{background:rgba(255,255,255,.9);color:#111;border:none}
+.room-btn.primary:hover{background:#fff}
+.room-btn.danger{color:rgba(255,80,80,.6);border-color:rgba(255,80,80,.12)}
+.room-btn.danger:hover{background:rgba(255,60,60,.07);color:rgba(255,80,80,.8)}
+.room-create{text-align:center;padding:60px 20px}
+.room-create h2{font-family:var(--font-serif);font-style:italic;font-size:1.5rem;margin-bottom:8px}
+.room-create p{font-size:.84rem;color:var(--text2);margin-bottom:24px;line-height:1.5}
+.room-create .room-btn.primary{display:inline-flex;padding:12px 28px;font-size:.88rem;border-radius:14px}
+.room-or{color:var(--text3);font-size:.78rem;margin:20px 0 12px}
+.room-joinrow{display:flex;gap:8px;max-width:360px;margin:0 auto}
+.room-joinin{flex:1;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:var(--text);font-family:var(--font);font-size:.84rem;outline:none}
+@media(max-width:768px){
+  .room-wrap{flex-direction:column;height:auto;min-height:auto}
+  .room-side{width:100%}
+  .room-msgs{max-height:200px}
+  .room-create{padding:40px 16px}
+  .room-create h2{font-size:1.2rem}
+}
 </style>
 </head>
 <body>
@@ -373,6 +419,7 @@ input[type="file"]{display:none}
   <div class="sb-item" onclick="nav('history')" data-p="history"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>History</span></div>
   <div class="sb-item" onclick="nav('liked')" data-p="liked"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg><span>Liked</span></div>
   <div class="sb-item" onclick="nav('wl')" data-p="wl"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>Later</span></div>
+  <div class="sb-item" onclick="nav('room')" data-p="room"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><span>Together</span></div>
   <div class="sb-sep"></div>
   <div class="sb-item" onclick="nav('profile')" data-p="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 00-16 0"/></svg><span>Profile</span></div>
 </div>
@@ -382,6 +429,7 @@ input[type="file"]{display:none}
   <div class="mn-item" onclick="nav('history')" data-p="history"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>History</span></div>
   <div class="mn-item" onclick="nav('liked')" data-p="liked"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg><span>Liked</span></div>
   <div class="mn-item" onclick="nav('wl')" data-p="wl"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>Later</span></div>
+  <div class="mn-item" onclick="nav('room')" data-p="room"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><span>Together</span></div>
   <div class="mn-item" onclick="nav('profile')" data-p="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 00-16 0"/></svg><span>Profile</span></div>
 </div>
 
@@ -422,6 +470,50 @@ input[type="file"]{display:none}
   <div class="page" id="pg-history"><div class="content"><div class="section-label">Watch History</div><div id="histList"></div></div></div>
   <div class="page" id="pg-liked"><div class="content"><div class="section-label">Liked Videos</div><div id="likedList"></div></div></div>
   <div class="page" id="pg-wl"><div class="content"><div class="section-label">Watch Later</div><div id="wlList"></div></div></div>
+
+  <div class="page" id="pg-room"><div class="content">
+    <div id="roomLobby" class="room-create">
+      <h2>Watch Together</h2>
+      <p>Create a room and invite friends to watch videos together in sync.</p>
+      <button class="room-btn primary" onclick="createRoom()"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Create Room</button>
+      <div class="room-or">or join an existing room</div>
+      <div class="room-joinrow">
+        <input class="room-joinin" id="joinIn" type="text" placeholder="Room code or link..." onkeydown="if(event.key==='Enter')joinRoom()">
+        <button class="room-btn primary" onclick="joinRoom()">Join</button>
+      </div>
+    </div>
+    <div id="roomActive" style="display:none">
+      <div class="room-wrap">
+        <div class="room-main">
+          <div class="room-player" id="rmPlayer"></div>
+          <div class="room-info">
+            <div class="room-vtitle" id="rmVTitle">No video selected</div>
+            <div class="room-id" id="rmId"></div>
+            <button class="room-copy" onclick="copyRoomLink()">Copy invite</button>
+          </div>
+          <div class="room-controls" id="rmControls">
+            <button class="room-btn" onclick="openRoomVideo()"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Change video</button>
+            <button class="room-btn" onclick="syncNow()"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>Sync</button>
+            <button class="room-btn danger" onclick="leaveRoom()"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Leave</button>
+          </div>
+        </div>
+        <div class="room-side">
+          <div class="room-panel room-members">
+            <h3>Members (<span id="rmCount">0</span>)</h3>
+            <div id="rmMembers"></div>
+          </div>
+          <div class="room-panel room-chat" style="flex:1">
+            <h3>Chat</h3>
+            <div class="room-msgs" id="rmMsgs"></div>
+            <div class="room-chatrow">
+              <input class="room-chatin" id="rmChatIn" placeholder="Message..." onkeydown="if(event.key==='Enter')sendRoomMsg()">
+              <button class="room-sendbtn" onclick="sendRoomMsg()">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
 
   <div class="page" id="pg-profile"><div style="max-width:880px;margin:0 auto;padding:0 0 60px">
     <div class="ch-banner" id="cBan" onclick="document.getElementById('bfI').click()"><div class="bph" id="banPh"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Upload banner (min 1200px wide)</div><div class="eb">Change banner</div></div>
@@ -715,7 +807,167 @@ function saveP(){
 
 if(!('ontouchstart' in window))document.addEventListener("mousemove",function(e){var x=(e.clientX/window.innerWidth-.5)*18;var y=(e.clientY/window.innerHeight-.5)*12;var o=document.querySelectorAll(".orb");o[0]&&(o[0].style.transform="translate("+x*.6+"px,"+y*.6+"px)");o[1]&&(o[1].style.transform="translate("+-x*.4+"px,"+-y*.4+"px)");o[2]&&(o[2].style.transform="translate("+x*.3+"px,"+y*.8+"px)");o[3]&&(o[3].style.transform="translate("+-x*.5+"px,"+y*.3+"px)")});
 
-renderChips();loadFeed();loadP();
+var rmId="",rmUnsubs=[],rmIsHost=false,rmPlayer=null,rmIgnoreSync=false,rmHostUid="";
+
+function genId(){return Math.random().toString(36).substring(2,8).toUpperCase()}
+function getUserName(){return(cUser&&cUser.displayName)||gLP().name||"Guest"}
+function getUserId(){return(cUser&&cUser.uid)||("g_"+Math.random().toString(36).substring(2,10))}
+
+function createRoom(){
+  if(!fbOk||!db){showToast("Sign in required");return}
+  var id=genId();
+  var uid=getUserId();
+  db.collection("rooms").doc(id).set({
+    videoId:"",videoTitle:"",hostUid:uid,hostName:getUserName(),
+    playing:false,currentTime:0,lastSync:Date.now(),created:Date.now()
+  }).then(function(){
+    return db.collection("rooms").doc(id).collection("members").doc(uid).set({name:getUserName(),uid:uid,joined:Date.now()});
+  }).then(function(){
+    rmId=id;rmIsHost=true;rmHostUid=uid;
+    showRoom();
+    showToast("Room created: "+id);
+  }).catch(function(e){showToast("Error: "+e.message)});
+}
+
+function joinRoom(){
+  if(!fbOk||!db){showToast("Sign in required");return}
+  var val=document.getElementById("joinIn").value.trim();
+  var id=val.replace(/.*room=/,"").replace(/[^A-Za-z0-9]/g,"").toUpperCase();
+  if(!id||id.length<4){showToast("Enter a room code");return}
+  db.collection("rooms").doc(id).get().then(function(d){
+    if(!d.exists){showToast("Room not found");return}
+    var uid=getUserId();
+    db.collection("rooms").doc(id).collection("members").doc(uid).set({name:getUserName(),uid:uid,joined:Date.now()}).then(function(){
+      rmId=id;
+      rmHostUid=d.data().hostUid;
+      rmIsHost=(d.data().hostUid===uid);
+      showRoom();
+    });
+  }).catch(function(e){showToast("Error: "+e.message)});
+}
+
+function showRoom(){
+  document.getElementById("roomLobby").style.display="none";
+  document.getElementById("roomActive").style.display="block";
+  document.getElementById("rmId").textContent="Room: "+rmId;
+  listenRoom();
+}
+
+function leaveRoom(){
+  rmUnsubs.forEach(function(fn){fn()});rmUnsubs=[];
+  if(fbOk&&db&&rmId){
+    var uid=getUserId();
+    db.collection("rooms").doc(rmId).collection("members").doc(uid).delete();
+  }
+  rmId="";rmIsHost=false;rmHostUid="";
+  document.getElementById("roomLobby").style.display="block";
+  document.getElementById("roomActive").style.display="none";
+  document.getElementById("rmPlayer").innerHTML="";
+  document.getElementById("rmMembers").innerHTML="";
+  document.getElementById("rmMsgs").innerHTML="";
+  rmPlayer=null;
+}
+
+function copyRoomLink(){
+  var url="https://macedonch.github.io/watcher/Watcher.html?room="+rmId;
+  if(navigator.clipboard)navigator.clipboard.writeText(url).then(function(){showToast("Invite link copied!")});
+  else showToast(url);
+}
+
+function listenRoom(){
+  var u1=db.collection("rooms").doc(rmId).onSnapshot(function(snap){
+    if(!snap.exists){showToast("Room closed");leaveRoom();return}
+    var d=snap.data();
+    rmHostUid=d.hostUid||rmHostUid;
+    document.getElementById("rmVTitle").textContent=d.videoTitle||"No video selected";
+    if(d.videoId&&!document.querySelector("#rmPlayer iframe[src*='"+d.videoId+"']")){
+      loadRoomVideo(d.videoId);
+    }
+    if(!rmIsHost&&!rmIgnoreSync&&d.videoId){
+      syncPlayerState(d);
+    }
+  });
+  rmUnsubs.push(u1);
+
+  var u2=db.collection("rooms").doc(rmId).collection("members").onSnapshot(function(snap){
+    var html="";var count=0;
+    snap.forEach(function(d){
+      var m=d.data();count++;
+      html+='<div class="room-member"><div class="rm-dot"></div>'+esc(m.name)+(m.uid===rmHostUid?'<span class="rm-host">host</span>':"")+'</div>';
+    });
+    document.getElementById("rmCount").textContent=count;
+    document.getElementById("rmMembers").innerHTML=html;
+  });
+  rmUnsubs.push(u2);
+
+  var u3=db.collection("rooms").doc(rmId).collection("chat").orderBy("ts","asc").limitToLast(50).onSnapshot(function(snap){
+    var html="";
+    snap.forEach(function(d){var m=d.data();html+='<div class="room-msg"><b>'+esc(m.user)+'</b>'+esc(m.text)+'</div>'});
+    var el=document.getElementById("rmMsgs");
+    el.innerHTML=html;
+    el.scrollTop=el.scrollHeight;
+  });
+  rmUnsubs.push(u3);
+}
+
+function loadRoomVideo(videoId){
+  document.getElementById("rmPlayer").innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+videoId+'?enablejsapi=1&rel=0&modestbranding=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen id="rmIframe"></iframe>';
+}
+
+function syncPlayerState(d){
+  var iframe=document.getElementById("rmIframe");
+  if(!iframe)return;
+  try{
+    if(d.playing){
+      iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}','*');
+    }else{
+      iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}','*');
+    }
+    if(d.currentTime){
+      iframe.contentWindow.postMessage('{"event":"command","func":"seekTo","args":['+d.currentTime+',true]}','*');
+    }
+  }catch(e){}
+}
+
+function syncNow(){
+  if(!rmIsHost){showToast("Only host can sync");return}
+  var iframe=document.getElementById("rmIframe");
+  if(!iframe){showToast("No video playing");return}
+  showToast("Synced to all members");
+  db.collection("rooms").doc(rmId).update({lastSync:Date.now()});
+}
+
+function openRoomVideo(){
+  var url=prompt("Paste YouTube link:");
+  if(!url)return;
+  var id=extractYTid(url);
+  if(!id){showToast("Invalid YouTube link");return}
+  var title=url;
+  jp("action=search&q="+encodeURIComponent(id),function(e,d){
+    if(!e&&d&&d.ok&&d.items&&d.items.length)title=d.items[0].title||id;
+    db.collection("rooms").doc(rmId).update({videoId:id,videoTitle:title,playing:true,currentTime:0,lastSync:Date.now()});
+    showToast("Video changed");
+  });
+}
+
+function sendRoomMsg(){
+  var text=document.getElementById("rmChatIn").value.trim();
+  if(!text||!rmId||!fbOk)return;
+  document.getElementById("rmChatIn").value="";
+  db.collection("rooms").doc(rmId).collection("chat").add({user:getUserName(),text:text,ts:Date.now()});
+}
+
+function checkRoomParam(){
+  var p=new URLSearchParams(window.location.search);
+  var r=p.get("room");
+  if(r){
+    nav("room");
+    document.getElementById("joinIn").value=r;
+    setTimeout(function(){joinRoom()},1000);
+  }
+}
+
+renderChips();loadFeed();loadP();checkRoomParam();
 
 var scrollT;
 window.addEventListener("scroll",function(){
