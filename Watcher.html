@@ -601,7 +601,7 @@ input[type="file"]{display:none}
   <div class="page" id="pg-wl"><div class="content"><div class="section-label">Watch Later</div><div id="wlList"></div></div></div>
 
   <div class="page" id="pg-channel"><div class="content">
-    <div class="yt-ch-back" onclick="history.back()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Back</div>
+    <div class="yt-ch-back" onclick="nav(prevPage||'home')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Back</div>
     <div id="chLoading"><div class="ld"><div class="sp"></div>Loading channel...</div></div>
     <div id="chContent" style="display:none">
       <div class="yt-ch-banner" id="ychBanner"></div>
@@ -828,13 +828,14 @@ function vC(v){
   var wl=isInWL(v.id);
   var letter=(v.author||"W").charAt(0).toUpperCase();
   var chid=v.channelId||"";
+  var avHtml=avCache[chid]?'<img src="'+avCache[chid]+'">':letter;
   return '<div class="vcard" data-id="'+v.id+'" data-title="'+esc(v.title)+'" data-thumb="'+esc(th)+'" data-author="'+esc(v.author)+'" data-chid="'+chid+'">'
     +'<div class="vthumb"><img src="'+th+'" loading="lazy" onerror="this.onerror=null;this.src=\''+FB+'\'">'
     +'<div class="vplay"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>'
     +'<div class="vwl'+(wl?" saved":"")+'" data-wl="1"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></div>'
     +(v.duration?'<div class="vdur">'+fD(v.duration)+'</div>':"")
     +'</div><div class="vbody">'
-    +'<div class="vch"><div class="vch-av" data-ach="'+chid+'">'+letter+'</div><div class="vch-name" data-ach="'+chid+'">'+esc(v.author)+'</div></div>'
+    +'<div class="vch"><div class="vch-av" data-ach="'+chid+'">'+avHtml+'</div><div class="vch-name" data-ach="'+chid+'">'+esc(v.author)+'</div></div>'
     +'<h3>'+(esc(v.title)||"Video")+'</h3>'
     +'<div class="vmeta">'+(v.views?'<span>'+fV(v.views)+' views</span>':"")+(v.uploaded?'<span>'+v.uploaded+'</span>':"")+'</div></div></div>';
 }
@@ -846,6 +847,38 @@ document.addEventListener("click",function(e){
   var card=e.target.closest(".vcard");
   if(card&&card.dataset.id){opV(card.dataset.id,card.dataset.title||"",card.dataset.thumb||"",card.dataset.author||"",card.dataset.chid||"")}
 });
+
+var avCache={};
+try{avCache=JSON.parse(localStorage.getItem("wavc")||"{}")}catch(e){avCache={}}
+function saveAvCache(){try{localStorage.setItem("wavc",JSON.stringify(avCache))}catch(e){}}
+var avQueue=[],avLoading=false;
+function queueAvatars(){
+  var els=document.querySelectorAll(".vch-av[data-ach]:not([data-avl])");
+  els.forEach(function(el){
+    var chid=el.dataset.ach;
+    if(!chid)return;
+    el.setAttribute("data-avl","1");
+    if(avCache[chid]){el.innerHTML='<img src="'+avCache[chid]+'">';return}
+    if(avQueue.indexOf(chid)===-1)avQueue.push(chid);
+  });
+  loadNextAvatar();
+}
+function loadNextAvatar(){
+  if(avLoading||!avQueue.length)return;
+  avLoading=true;
+  var chid=avQueue.shift();
+  jp("action=channel&id="+chid,function(e,d){
+    avLoading=false;
+    if(!e&&d&&d.ok&&d.channel&&d.channel.avatar){
+      avCache[chid]=d.channel.avatar;
+      saveAvCache();
+      document.querySelectorAll('.vch-av[data-ach="'+chid+'"]').forEach(function(el){el.innerHTML='<img src="'+d.channel.avatar+'">'});
+      document.querySelectorAll('.m-ch-av[data-ach="'+chid+'"],.m-ch-av').forEach(function(el){if(el.onclick&&el.innerHTML.length<10)el.innerHTML='<img src="'+d.channel.avatar+'">'});
+    }
+    if(avQueue.length)setTimeout(loadNextAvatar,300);
+  });
+}
+setInterval(queueAvatars,2000);
 
 var categories=[{n:"All",c:""},{n:"Music",c:"10"},{n:"Gaming",c:"20"},{n:"News",c:"25"},{n:"Sports",c:"17"},{n:"Education",c:"27"},{n:"Comedy",c:"23"},{n:"Tech",c:"28"}];
 var curCat="";
@@ -882,14 +915,19 @@ function opV(id,title,thumb,author,chid){
   aH(id,title,thumb,author);document.getElementById("mTi").textContent=title;document.getElementById("wC").textContent=gH().length;
   document.getElementById("plW").innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0&modestbranding=1" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen></iframe>';
   var letter=(author||"W").charAt(0).toUpperCase();
+  var avHtml=avCache[curChId]?'<img src="'+avCache[curChId]+'">':letter;
   var isSub=curChId&&getSubs().some(function(s){return s.id===curChId});
-  document.getElementById("mCh").innerHTML='<div class="m-ch-av" onclick="if(curChId){clV();openChannel(curChId)}">'+letter+'</div>'
+  document.getElementById("mCh").innerHTML='<div class="m-ch-av" onclick="if(curChId){clV();openChannel(curChId)}">'+avHtml+'</div>'
     +'<div class="m-ch-info" onclick="if(curChId){clV();openChannel(curChId)}"><div class="m-ch-name">'+esc(author)+'</div><div class="m-ch-subs" id="mChSubs"></div></div>'
     +(curChId?'<button class="m-sub-btn '+(isSub?"unsub":"sub")+'" onclick="toggleSubFromPlayer()" id="mSubBtn">'+(isSub?"Subscribed":"Subscribe")+'</button>':"");
   if(curChId){
     jp("action=channel&id="+curChId,function(e,d){
       if(!e&&d&&d.ok&&d.channel){
-        if(d.channel.avatar)document.querySelector("#mCh .m-ch-av").innerHTML='<img src="'+d.channel.avatar+'">';
+        if(d.channel.avatar){
+          avCache[curChId]=d.channel.avatar;saveAvCache();
+          document.querySelector("#mCh .m-ch-av").innerHTML='<img src="'+d.channel.avatar+'">';
+          document.querySelectorAll('.vch-av[data-ach="'+curChId+'"]').forEach(function(el){el.innerHTML='<img src="'+d.channel.avatar+'">'});
+        }
         document.getElementById("mChSubs").textContent=fV(d.channel.subs)+" subscribers";
       }
     });
@@ -951,7 +989,10 @@ function renderHistory(){var h=gH();document.getElementById("histList").innerHTM
 function renderLiked(){var lv=gLikedV();document.getElementById("likedList").innerHTML=lv.length?lv.map(function(v){return listCard(v,"liked")}).join(""):'<div class="empty-state"><h3>No liked videos</h3><p>Videos you like will appear here.</p></div>'}
 function renderWL(){var wl=gWL();document.getElementById("wlList").innerHTML=wl.length?wl.map(function(v){return listCard(v,"wl")}).join(""):'<div class="empty-state"><h3>No saved videos</h3><p>Click bookmark on any video to save it.</p></div>'}
 
+var curPage="home",prevPage="home";
 function nav(pg){
+  if(pg!=="channel")prevPage=curPage;
+  curPage=pg;
   document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active")});
   document.getElementById("pg-"+pg).classList.add("active");
   document.querySelectorAll(".sb-item").forEach(function(s){s.classList.remove("ac")});
