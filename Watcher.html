@@ -611,8 +611,16 @@ input[type="file"]{display:none}
         <button class="yt-ch-sub unsub" id="ychSubBtn" onclick="toggleSub()">Subscribe</button>
       </div>
       <div class="yt-ch-desc" id="ychDesc"></div>
-      <div class="section-label">Videos</div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="section-label" style="margin-bottom:0">Videos</div>
+        <div style="display:flex;gap:1px;padding:3px;background:rgba(255,255,255,.04);border-radius:9px;border:1px solid rgba(255,255,255,.09)">
+          <div class="chip ac" id="chSortNew" onclick="chSort('date')" style="margin:0;padding:4px 14px;font-size:.68rem;border:none;border-radius:7px">Newest</div>
+          <div class="chip" id="chSortOld" onclick="chSort('old')" style="margin:0;padding:4px 14px;font-size:.68rem;border:none;border-radius:7px">Oldest</div>
+          <div class="chip" id="chSortPop" onclick="chSort('viewCount')" style="margin:0;padding:4px 14px;font-size:.68rem;border:none;border-radius:7px">Popular</div>
+        </div>
+      </div>
       <div class="vgrid" id="ychGrid"></div>
+      <div class="load-more" id="chLmW" style="display:none"><button class="lm-btn" id="chLmBtn" onclick="loadChMore()">Load more</button></div>
     </div>
   </div></div>
 
@@ -1037,9 +1045,10 @@ function setNotifs(d){try{localStorage.setItem("wnotifs",JSON.stringify(d.slice(
 function getLastCheck(){return parseInt(localStorage.getItem("wnlc")||"0")}
 function setLastCheck(){localStorage.setItem("wnlc",""+Date.now())}
 
+var curChOrder="date",curChPage="",curChAllVids=[];
 function openChannel(chId){
   if(!chId){showToast("Channel not available");return}
-  curChId=chId;
+  curChId=chId;curChOrder="date";curChPage="";curChAllVids=[];
   document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active")});
   document.getElementById("pg-channel").classList.add("active");
   document.getElementById("chLoading").style.display="block";
@@ -1055,11 +1064,64 @@ function openChannel(chId){
     document.getElementById("ychDesc").textContent=ch.desc||"No description";
     document.getElementById("ychAv").innerHTML=ch.avatar?'<img src="'+ch.avatar+'">':'';
     document.getElementById("ychBanner").innerHTML=ch.banner?'<img src="'+ch.banner+'">':'';
+    if(ch.avatar){avCache[chId]=ch.avatar;saveAvCache()}
     var sub=isSub(chId);
     document.getElementById("ychSubBtn").className="yt-ch-sub "+(sub?"subd":"unsub");
     document.getElementById("ychSubBtn").textContent=sub?"Subscribed":"Subscribe";
-    document.getElementById("ychGrid").innerHTML=d.items&&d.items.length?d.items.map(vC).join(""):'<div class="ld" style="grid-column:1/-1">No videos</div>';
+    highlightChSort("date");
+    loadChVideos(false);
   });
+}
+function highlightChSort(order){
+  document.getElementById("chSortNew").className="chip"+(order==="date"?" ac":"");
+  document.getElementById("chSortOld").className="chip"+(order==="old"?" ac":"");
+  document.getElementById("chSortPop").className="chip"+(order==="viewCount"?" ac":"");
+}
+function chSort(order){
+  curChOrder=order;curChPage="";curChAllVids=[];curChOldPages=0;
+  highlightChSort(order);
+  document.getElementById("ychGrid").innerHTML='<div class="ld" style="grid-column:1/-1"><div class="sp"></div></div>';
+  loadChVideos(false);
+}
+var curChOldPages=0,chLoadingMore=false;
+function loadChVideos(append){
+  var apiOrder=curChOrder==="old"?"date":curChOrder;
+  chLoadingMore=true;
+  if(curChOrder==="old"&&!append){
+    document.getElementById("ychGrid").innerHTML='<div class="ld" style="grid-column:1/-1"><div class="sp"></div>Loading all videos (oldest first)...</div>';
+    document.getElementById("chLmW").style.display="none";
+  }
+  jp("action=ch_videos&id="+curChId+"&order="+apiOrder+(curChPage?"&page="+curChPage:""),function(e,d){
+    chLoadingMore=false;
+    document.getElementById("chLmBtn").textContent="Load more";
+    if(e||!d||!d.ok){
+      if(!append)document.getElementById("ychGrid").innerHTML='<div class="ld" style="grid-column:1/-1">Could not load videos</div>';
+      document.getElementById("chLmW").style.display="none";return;
+    }
+    var items=d.items||[];
+    curChPage=d.nextPage||"";
+    if(curChOrder==="old"){
+      curChAllVids=curChAllVids.concat(items);
+      curChOldPages++;
+      if(curChPage&&curChOldPages<50){
+        document.getElementById("ychGrid").innerHTML='<div class="ld" style="grid-column:1/-1"><div class="sp"></div>Loading videos... ('+curChAllVids.length+' found)</div>';
+        loadChVideos(true);return;
+      }
+      var sorted=curChAllVids.slice().reverse();
+      document.getElementById("ychGrid").innerHTML=sorted.length?sorted.map(vC).join(""):'<div class="ld" style="grid-column:1/-1">No videos</div>';
+      document.getElementById("chLmW").style.display="none";
+    }else{
+      if(append){document.getElementById("ychGrid").insertAdjacentHTML("beforeend",items.map(vC).join(""))}
+      else{document.getElementById("ychGrid").innerHTML=items.length?items.map(vC).join(""):'<div class="ld" style="grid-column:1/-1">No videos</div>'}
+      document.getElementById("chLmW").style.display=curChPage?"flex":"none";
+    }
+    queueAvatars();
+  });
+}
+function loadChMore(){
+  if(!curChPage||!curChId||chLoadingMore)return;
+  document.getElementById("chLmBtn").textContent="Loading...";
+  loadChVideos(true);
 }
 
 function toggleSub(){
