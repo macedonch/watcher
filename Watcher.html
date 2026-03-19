@@ -897,21 +897,41 @@ var feedIds={},feedLoading=false,feedPage=0,lastItems=[];
 function loadFeed(){
   if(feedLoading)return;feedLoading=true;
   document.getElementById("feedLd").style.display="block";
-  document.getElementById("feedLd").innerHTML='<div class="sp"></div>Loading videos...';
-  var params="action=trending&region=RU";
-  if(curCat)params+="&cat="+curCat;
-  jp(params,function(e,d){
-    if(e){document.getElementById("feedLd").innerHTML='<div style="padding:20px;font-size:.85rem;color:var(--text3)">Could not load videos<br><br><button onclick="feedLoading=false;loadFeed()" style="padding:8px 20px;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);cursor:pointer">Retry</button></div>';feedLoading=false;return}
-    if(!d||!d.ok||!d.items||!d.items.length){document.getElementById("feedLd").innerHTML='<div style="padding:20px;font-size:.85rem;color:var(--text3)">'+(d&&d.error?d.error:"No videos found")+'<br><br><button onclick="feedLoading=false;loadFeed()" style="padding:8px 20px;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);cursor:pointer">Retry</button></div>';feedLoading=false;return}
-    lastItems=d.items;
-    var html="",count=0;
-    try{
+  document.getElementById("feedLd").innerHTML='<div class="sp"></div>';
+  if(feedPage===0){
+    var params="action=trending&region=RU";
+    if(curCat)params+="&cat="+curCat;
+    jp(params,function(e,d){
+      feedLoading=false;
+      if(e||!d||!d.ok||!d.items||!d.items.length){
+        document.getElementById("feedLd").innerHTML='<div style="padding:20px;font-size:.85rem;color:var(--text3)">Could not load videos<br><br><button onclick="feedLoading=false;feedPage=0;loadFeed()" style="padding:8px 20px;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);cursor:pointer">Retry</button></div>';return;
+      }
+      lastItems=d.items;
+      var html="",count=0;
       d.items.forEach(function(v){if(v.id&&!feedIds[v.id]){feedIds[v.id]=1;html+=vC(v);count++}});
-    }catch(ex){document.getElementById("feedLd").innerHTML='Error: '+ex.message;feedLoading=false;return}
-    if(count>0)document.getElementById("feedG").insertAdjacentHTML("beforeend",html);
-    document.getElementById("feedLd").style.display="none";
-    feedLoading=false;feedPage++;
-  });
+      if(count>0)document.getElementById("feedG").insertAdjacentHTML("beforeend",html);
+      document.getElementById("feedLd").style.display="none";
+      feedPage++;queueAvatars();
+    });
+  }else{
+    var seeds=lastItems.length?lastItems:[];
+    if(!seeds.length){document.getElementById("feedLd").style.display="none";feedLoading=false;return}
+    var s=seeds[Math.floor(Math.random()*seeds.length)];
+    var q=(s.title||"").split(" ").slice(0,3).join(" ");
+    if(!q){document.getElementById("feedLd").style.display="none";feedLoading=false;return}
+    jp("action=search&q="+encodeURIComponent(q),function(e,d){
+      feedLoading=false;
+      if(e||!d||!d.ok||!d.items){document.getElementById("feedLd").style.display="none";return}
+      var html="",count=0;
+      d.items.forEach(function(v){if(v.id&&!feedIds[v.id]){feedIds[v.id]=1;html+=vC(v);count++}});
+      if(count>0){
+        lastItems=lastItems.concat(d.items);
+        document.getElementById("feedG").insertAdjacentHTML("beforeend",html);
+      }
+      document.getElementById("feedLd").style.display="none";
+      feedPage++;queueAvatars();
+    });
+  }
 }
 var lastSearchQ="",lastSearchPage="";
 function loadMore(){if(!lastSearchQ)return;document.querySelector("#seW .lm-btn").textContent="Loading...";jp("action=search&q="+encodeURIComponent(lastSearchQ)+(lastSearchPage?"&page="+lastSearchPage:""),function(e,d){document.querySelector("#seW .lm-btn").textContent="Load more";if(e||!d||!d.ok||!d.items)return;lastSearchPage=d.nextPage||"";var grid=document.getElementById("seG");if(grid)grid.insertAdjacentHTML("beforeend",d.items.map(vC).join(""));if(!d.nextPage)document.querySelector("#seW .load-more").style.display="none"})}
@@ -1048,11 +1068,13 @@ function setLastCheck(){localStorage.setItem("wnlc",""+Date.now())}
 var curChOrder="date",curChPage="",curChAllVids=[];
 function openChannel(chId){
   if(!chId){showToast("Channel not available");return}
-  curChId=chId;curChOrder="date";curChPage="";curChAllVids=[];
+  curChId=chId;curChOrder="date";curChPage="";curChAllVids=[];curChOldPages=0;chLoadingMore=false;
   document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active")});
   document.getElementById("pg-channel").classList.add("active");
   document.getElementById("chLoading").style.display="block";
   document.getElementById("chContent").style.display="none";
+  document.getElementById("ychGrid").innerHTML="";
+  document.getElementById("chLmW").style.display="none";
   window.scrollTo({top:0,behavior:"smooth"});
   jp("action=channel&id="+chId,function(e,d){
     if(e||!d||!d.ok||!d.channel){document.getElementById("chLoading").innerHTML='<div class="ld">Channel not found</div>';return}
@@ -1069,6 +1091,7 @@ function openChannel(chId){
     document.getElementById("ychSubBtn").className="yt-ch-sub "+(sub?"subd":"unsub");
     document.getElementById("ychSubBtn").textContent=sub?"Subscribed":"Subscribe";
     highlightChSort("date");
+    document.getElementById("ychGrid").innerHTML='<div class="ld" style="grid-column:1/-1"><div class="sp"></div></div>';
     loadChVideos(false);
   });
 }
