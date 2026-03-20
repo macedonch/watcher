@@ -568,7 +568,7 @@ input[type="file"]{display:none}
 <main>
   <div class="page active" id="pg-home"><div class="content">
     <div class="chips" id="chips"></div>
-    <div id="feedW"><div class="vgrid" id="feedG"></div><div class="ld" id="feedLd"><div class="sp"></div>Loading videos...</div></div>
+    <div id="feedW"><div class="vgrid" id="feedG"></div><div id="feedLd" style="min-height:60px;text-align:center;padding:20px"><div class="sp"></div>Loading videos...</div></div>
     <div id="seW" style="display:none"><div class="section-label" id="seL">Results</div><div class="vgrid" id="seG"></div><div class="load-more"><button class="lm-btn" onclick="loadMore()">Load more</button></div></div>
   </div></div>
 
@@ -891,34 +891,39 @@ setInterval(queueAvatars,2000);
 var categories=[{n:"All",c:""},{n:"Music",c:"10"},{n:"Gaming",c:"20"},{n:"News",c:"25"},{n:"Sports",c:"17"},{n:"Education",c:"27"},{n:"Comedy",c:"23"},{n:"Tech",c:"28"}];
 var curCat="";
 function renderChips(){document.getElementById("chips").innerHTML=categories.map(function(g){return'<div class="chip'+(g.c===curCat?" ac":"")+'" onclick="pickCat(\''+g.c+'\',this)">'+g.n+'</div>'}).join("")}
-function pickCat(c,el){document.querySelectorAll(".chip").forEach(function(x){x.classList.remove("ac")});el.classList.add("ac");curCat=c;document.getElementById("seW").style.display="none";document.getElementById("feedW").style.display="block";feedIds={};trendingPage="";document.getElementById("feedG").innerHTML="";feedLoading=false;feedPage=0;loadFeed()}
+function pickCat(c,el){document.querySelectorAll(".chip").forEach(function(x){x.classList.remove("ac")});el.classList.add("ac");curCat=c;document.getElementById("seW").style.display="none";document.getElementById("feedW").style.display="block";feedIds={};trendingPage="";feedDone=false;feedCooldown=0;document.getElementById("feedG").innerHTML="";feedLoading=false;feedPage=0;loadFeed()}
 
-var feedIds={},feedLoading=false,feedPage=0,lastItems=[],trendingPage="";
+var feedIds={},feedLoading=false,feedPage=0,lastItems=[],trendingPage="",feedCooldown=0,feedDone=false;
+function feedSpin(){document.getElementById("feedLd").innerHTML='<div class="sp" style="width:26px;height:26px;border:1.5px solid rgba(255,255,255,.07);border-top-color:rgba(255,255,255,.45);border-radius:50%;animation:spin .75s linear infinite;margin:0 auto"></div>'}
+function feedHide(){document.getElementById("feedLd").innerHTML=""}
 function loadFeed(){
-  if(feedLoading)return;feedLoading=true;
-  document.getElementById("feedLd").style.display="block";
-  document.getElementById("feedLd").innerHTML='<div class="sp"></div>';
+  if(feedLoading||feedDone)return;
+  if(Date.now()-feedCooldown<2000)return;
+  feedLoading=true;
+  feedSpin();
   var params="action=trending&region=RU";
   if(curCat)params+="&cat="+curCat;
   if(trendingPage)params+="&page="+trendingPage;
   jp(params,function(e,d){
+    feedCooldown=Date.now();
+    feedLoading=false;
+    feedHide();
     if(e||!d||!d.ok||!d.items||!d.items.length){
       if(feedPage===0){
-        document.getElementById("feedLd").innerHTML='<div style="padding:20px;font-size:.85rem;color:var(--text3)">Could not load videos<br><br><button onclick="feedLoading=false;feedPage=0;trendingPage=\'\';loadFeed()" style="padding:8px 20px;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);cursor:pointer">Retry</button></div>';
-      }else{
-        document.getElementById("feedLd").style.display="none";
-        loadFeedRelated();
+        document.getElementById("feedLd").innerHTML='<div style="padding:20px;font-size:.85rem;color:rgba(245,245,247,.28)">Could not load videos<br><br><button onclick="feedLoading=false;feedDone=false;feedPage=0;trendingPage=\'\';feedCooldown=0;loadFeed()" style="padding:8px 20px;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);cursor:pointer">Retry</button></div>';
+      }else if(!trendingPage){
+        feedDone=true;
       }
-      feedLoading=false;return;
+      return;
     }
     trendingPage=d.nextPage||"";
+    if(!trendingPage)feedDone=true;
     lastItems=lastItems.concat(d.items);if(lastItems.length>100)lastItems=lastItems.slice(-60);
     var html="",count=0;
     d.items.forEach(function(v){if(v.id&&!feedIds[v.id]){feedIds[v.id]=1;html+=vC(v);count++}});
     if(count>0)document.getElementById("feedG").insertAdjacentHTML("beforeend",html);
-    document.getElementById("feedLd").style.display="none";
-    feedLoading=false;feedPage++;queueAvatars();
-    if(feedPage%2===0){loadFeedRelated()}
+    feedPage++;queueAvatars();
+    if(feedPage%3===0){loadFeedRelated()}
   });
 }
 function loadFeedRelated(){
@@ -1466,12 +1471,13 @@ renderChips();loadFeed();loadP();checkRoomParam();setTimeout(checkNewVideos,3000
 var scrollT;
 window.addEventListener("scroll",function(){
   clearTimeout(scrollT);scrollT=setTimeout(function(){
+    if(feedLoading||feedDone)return;
     if(document.getElementById("pg-home").classList.contains("active")&&document.getElementById("feedW").style.display!=="none"){
       var sh=document.documentElement.scrollHeight;
       var st=window.scrollY+window.innerHeight;
-      if(st>sh-600)loadFeed();
+      if(st>sh-800)loadFeed();
     }
-  },150);
+  },500);
 });
 </script>
 </body>
