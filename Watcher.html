@@ -891,60 +891,47 @@ setInterval(queueAvatars,2000);
 var categories=[{n:"All",c:""},{n:"Music",c:"10"},{n:"Gaming",c:"20"},{n:"News",c:"25"},{n:"Sports",c:"17"},{n:"Education",c:"27"},{n:"Comedy",c:"23"},{n:"Tech",c:"28"}];
 var curCat="";
 function renderChips(){document.getElementById("chips").innerHTML=categories.map(function(g){return'<div class="chip'+(g.c===curCat?" ac":"")+'" onclick="pickCat(\''+g.c+'\',this)">'+g.n+'</div>'}).join("")}
-function pickCat(c,el){document.querySelectorAll(".chip").forEach(function(x){x.classList.remove("ac")});el.classList.add("ac");curCat=c;document.getElementById("seW").style.display="none";document.getElementById("feedW").style.display="block";feedIds={};feedRetry=0;document.getElementById("feedG").innerHTML="";feedLoading=false;feedPage=0;loadFeed()}
+function pickCat(c,el){document.querySelectorAll(".chip").forEach(function(x){x.classList.remove("ac")});el.classList.add("ac");curCat=c;document.getElementById("seW").style.display="none";document.getElementById("feedW").style.display="block";feedIds={};trendingPage="";document.getElementById("feedG").innerHTML="";feedLoading=false;feedPage=0;loadFeed()}
 
-var feedIds={},feedLoading=false,feedPage=0,lastItems=[],feedRetry=0;
+var feedIds={},feedLoading=false,feedPage=0,lastItems=[],trendingPage="";
 function loadFeed(){
   if(feedLoading)return;feedLoading=true;
   document.getElementById("feedLd").style.display="block";
   document.getElementById("feedLd").innerHTML='<div class="sp"></div>';
-  if(feedPage===0){
-    var params="action=trending&region=RU";
-    if(curCat)params+="&cat="+curCat;
-    jp(params,function(e,d){
-      feedLoading=false;feedRetry=0;
-      if(e||!d||!d.ok||!d.items||!d.items.length){
-        document.getElementById("feedLd").innerHTML='<div style="padding:20px;font-size:.85rem;color:var(--text3)">Could not load videos<br><br><button onclick="feedLoading=false;feedPage=0;loadFeed()" style="padding:8px 20px;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);cursor:pointer">Retry</button></div>';return;
-      }
-      lastItems=d.items;
-      var html="",count=0;
-      d.items.forEach(function(v){if(v.id&&!feedIds[v.id]){feedIds[v.id]=1;html+=vC(v);count++}});
-      if(count>0)document.getElementById("feedG").insertAdjacentHTML("beforeend",html);
-      document.getElementById("feedLd").style.display="none";
-      feedPage++;queueAvatars();
-    });
-  }else{
-    var seeds=lastItems.length?lastItems:[];
-    if(!seeds.length){document.getElementById("feedLd").style.display="none";feedLoading=false;return}
-    var idx=(feedPage+feedRetry)%seeds.length;
-    var s=seeds[idx];
-    var words=(s.title||"").replace(/[^\w\sа-яА-ЯёЁ]/g,"").split(/\s+/).filter(function(w){return w.length>2});
-    var q="";
-    if(words.length>=3)q=words.slice(0,3).join(" ");
-    else if(words.length>=1)q=words.join(" ");
-    else q=s.author||"music";
-    if(feedRetry>0&&s.author)q=s.author;
-    jp("action=search&q="+encodeURIComponent(q),function(e,d){
-      feedLoading=false;
-      if(e||!d||!d.ok||!d.items||!d.items.length){
-        if(feedRetry<5){feedRetry++;loadFeed()}
-        else{feedRetry=0;document.getElementById("feedLd").style.display="none"}
-        return;
-      }
-      var html="",count=0;
-      d.items.forEach(function(v){if(v.id&&!feedIds[v.id]){feedIds[v.id]=1;html+=vC(v);count++}});
-      if(count>0){
-        lastItems=lastItems.concat(d.items.slice(0,5));
-        if(lastItems.length>100)lastItems=lastItems.slice(-60);
-        document.getElementById("feedG").insertAdjacentHTML("beforeend",html);
-        document.getElementById("feedLd").style.display="none";
-        feedPage++;feedRetry=0;queueAvatars();
+  var params="action=trending&region=RU";
+  if(curCat)params+="&cat="+curCat;
+  if(trendingPage)params+="&page="+trendingPage;
+  jp(params,function(e,d){
+    if(e||!d||!d.ok||!d.items||!d.items.length){
+      if(feedPage===0){
+        document.getElementById("feedLd").innerHTML='<div style="padding:20px;font-size:.85rem;color:var(--text3)">Could not load videos<br><br><button onclick="feedLoading=false;feedPage=0;trendingPage=\'\';loadFeed()" style="padding:8px 20px;border-radius:10px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);cursor:pointer">Retry</button></div>';
       }else{
-        if(feedRetry<5){feedRetry++;loadFeed()}
-        else{feedRetry=0;document.getElementById("feedLd").style.display="none"}
+        document.getElementById("feedLd").style.display="none";
+        loadFeedRelated();
       }
-    });
-  }
+      feedLoading=false;return;
+    }
+    trendingPage=d.nextPage||"";
+    lastItems=lastItems.concat(d.items);if(lastItems.length>100)lastItems=lastItems.slice(-60);
+    var html="",count=0;
+    d.items.forEach(function(v){if(v.id&&!feedIds[v.id]){feedIds[v.id]=1;html+=vC(v);count++}});
+    if(count>0)document.getElementById("feedG").insertAdjacentHTML("beforeend",html);
+    document.getElementById("feedLd").style.display="none";
+    feedLoading=false;feedPage++;queueAvatars();
+    if(feedPage%2===0){loadFeedRelated()}
+  });
+}
+function loadFeedRelated(){
+  var h=gH();
+  if(!h.length)return;
+  var vid=h[Math.floor(Math.random()*Math.min(h.length,10))];
+  jp("action=related&id="+vid.id,function(e,d){
+    if(e||!d||!d.ok||!d.items)return;
+    var html="",count=0;
+    d.items.forEach(function(v){if(v.id&&!feedIds[v.id]){feedIds[v.id]=1;html+=vC(v);count++}});
+    if(count>0)document.getElementById("feedG").insertAdjacentHTML("beforeend",html);
+    queueAvatars();
+  });
 }
 var lastSearchQ="",lastSearchPage="";
 function loadMore(){if(!lastSearchQ)return;document.querySelector("#seW .lm-btn").textContent="Loading...";jp("action=search&q="+encodeURIComponent(lastSearchQ)+(lastSearchPage?"&page="+lastSearchPage:""),function(e,d){document.querySelector("#seW .lm-btn").textContent="Load more";if(e||!d||!d.ok||!d.items)return;lastSearchPage=d.nextPage||"";var grid=document.getElementById("seG");if(grid)grid.insertAdjacentHTML("beforeend",d.items.map(vC).join(""));if(!d.nextPage)document.querySelector("#seW .load-more").style.display="none"})}
