@@ -531,6 +531,36 @@ input[type="file"]{display:none}
 .donate-btn:active{transform:scale(.95)}
 .donate-btn svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 @media(max-width:768px){.donate-btn span{display:none}.donate-btn{padding:6px 8px}}
+
+.admin-btn{display:none;align-items:center;gap:5px;padding:6px 12px;border-radius:20px;background:rgba(255,80,80,.06);border:1px solid rgba(255,80,80,.15);color:rgba(255,120,120,.8);font-family:var(--font);font-size:.66rem;font-weight:700;cursor:pointer;text-decoration:none;transition:all .35s;flex-shrink:0;letter-spacing:.02em}
+.admin-btn.show{display:flex}
+.admin-btn:hover{background:rgba(255,80,80,.12);border-color:rgba(255,80,80,.25);color:rgba(255,140,140,1)}
+.admin-btn:active{transform:scale(.95)}
+.admin-btn svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none}
+.adm-panel{position:fixed;top:0;right:0;bottom:0;width:360px;z-index:4000;background:rgba(14,14,18,.97);border-left:1px solid rgba(255,255,255,.08);transform:translateX(100%);transition:transform .45s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column;overflow:hidden}
+.adm-panel.open{transform:translateX(0)}
+.adm-overlay{position:fixed;inset:0;z-index:3999;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .35s}
+.adm-overlay.open{opacity:1;pointer-events:auto}
+.adm-hd{padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between}
+.adm-hd h3{font-size:.95rem;font-weight:700;color:rgba(255,120,120,.9)}
+.adm-close{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s}
+.adm-close:hover{background:rgba(255,255,255,.12)}
+.adm-close svg{width:14px;height:14px;stroke:var(--text2);stroke-width:2;fill:none}
+.adm-body{flex:1;overflow-y:auto;padding:16px 20px}
+.adm-section{margin-bottom:24px}
+.adm-section h4{font-size:.62rem;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.adm-action{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);cursor:pointer;transition:all .25s;margin-bottom:8px}
+.adm-action:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1)}
+.adm-action svg{width:18px;height:18px;stroke:var(--text2);stroke-width:1.8;fill:none;flex-shrink:0}
+.adm-action .adm-act-info{flex:1}
+.adm-action .adm-act-title{font-size:.8rem;font-weight:600;margin-bottom:1px}
+.adm-action .adm-act-desc{font-size:.66rem;color:var(--text3)}
+.adm-input{width:100%;padding:9px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--text);font-family:var(--font);font-size:.82rem;outline:none;margin-bottom:8px;transition:border-color .3s}
+.adm-input:focus{border-color:rgba(255,80,80,.3)}
+.adm-sm-btn{padding:8px 18px;border-radius:10px;background:rgba(255,80,80,.12);border:1px solid rgba(255,80,80,.2);color:rgba(255,140,140,.9);font-family:var(--font);font-size:.75rem;font-weight:600;cursor:pointer;transition:all .3s}
+.adm-sm-btn:hover{background:rgba(255,80,80,.2)}
+.adm-log{font-size:.72rem;color:var(--text3);padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+@media(max-width:768px){.adm-panel{width:100%}.admin-btn span{display:none}}
 .modal{transition:opacity .35s ease}
 .modal.open{animation:modalIn .4s cubic-bezier(.16,1,.3,1) both}
 @keyframes modalIn{from{opacity:0}to{opacity:1}}
@@ -599,6 +629,7 @@ input[type="file"]{display:none}
   <div class="topbar-search"><input class="search-in" id="ytIn" type="text" placeholder="Search videos..." autocomplete="off" onkeydown="if(event.key==='Enter')doS()"><button class="search-btn" onclick="doS()">Search</button></div>
   <div class="paste-btn" onclick="openPaste()" title="Paste YouTube link"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></div>
   <div class="spacer"></div>
+  <div class="admin-btn" id="adminBtn" onclick="toggleAdmin()"><svg viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4"/></svg><span>Admin</span></div>
   <a class="donate-btn" href="https://www.donationalerts.com/r/watcherdonate" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span>Support</span></a>
   <div class="notif-btn" id="notifBtn" onclick="toggleNotif()">
     <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
@@ -646,6 +677,38 @@ input[type="file"]{display:none}
 
 <input type="file" id="afI" accept="image/*" onchange="hImg(this,'avatar')">
 <input type="file" id="bfI" accept="image/*" onchange="hImg(this,'banner')">
+
+<div class="adm-overlay" id="admOverlay" onclick="toggleAdmin()"></div>
+<div class="adm-panel" id="admPanel">
+  <div class="adm-hd"><h3>Admin Panel</h3><div class="adm-close" onclick="toggleAdmin()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div></div>
+  <div class="adm-body">
+    <div class="adm-section">
+      <h4>Delete Comment</h4>
+      <input class="adm-input" id="admDelVid" placeholder="Video ID">
+      <input class="adm-input" id="admDelCid" placeholder="Comment ID">
+      <button class="adm-sm-btn" onclick="admDelComment()">Delete</button>
+    </div>
+    <div class="adm-section">
+      <h4>Delete All Comments on Video</h4>
+      <input class="adm-input" id="admWipeVid" placeholder="Video ID">
+      <button class="adm-sm-btn" onclick="admWipeComments()">Wipe All</button>
+    </div>
+    <div class="adm-section">
+      <h4>Broadcast Message</h4>
+      <input class="adm-input" id="admBcMsg" placeholder="Message text...">
+      <button class="adm-sm-btn" onclick="admBroadcast()">Send to all rooms</button>
+    </div>
+    <div class="adm-section">
+      <h4>Site Stats</h4>
+      <div id="admStats"><div class="adm-log">Loading...</div></div>
+      <button class="adm-sm-btn" onclick="admLoadStats()" style="margin-top:6px">Refresh</button>
+    </div>
+    <div class="adm-section">
+      <h4>Admin Log</h4>
+      <div id="admLog"><div class="adm-log">No actions yet</div></div>
+    </div>
+  </div>
+</div>
 
 <div class="paste-modal" id="pasteM">
   <div class="paste-box">
@@ -811,13 +874,15 @@ input[type="file"]{display:none}
 var GAS="https://script.google.com/macros/s/AKfycbyqGg-z8tBea2m-ExxjgHBHVCQflwmml-Va635A2TgOZ41qwahZwtp4fqWGpSe6VHaA/exec";
 var firebaseConfig={apiKey:"AIzaSyBztYlWz4AVK254G2AzfI1oPV0YUMlh--8",authDomain:"watcher-f93de.firebaseapp.com",projectId:"watcher-f93de",storageBucket:"watcher-f93de.firebasestorage.app",messagingSenderId:"970037849379",appId:"1:970037849379:web:38a3b7c1582f34c2f83096"};
 var fbOk=false,cUser=null,db=null;
+var ADMINS=["watcher"];
+var curUsername="";
 try{firebase.initializeApp(firebaseConfig);db=firebase.firestore();fbOk=firebaseConfig.apiKey!=="YOUR_API_KEY"}catch(e){fbOk=false}
 if(fbOk){firebase.auth().getRedirectResult().catch(function(){});firebase.auth().onAuthStateChanged(function(u){cUser=u;renderUA();if(u)checkUn(u);else if(!localStorage.getItem("wSk"))document.getElementById("authO").classList.add("open")})}else renderUA();
 function gSignIn(){if(!fbOk)return;var p=new firebase.auth.GoogleAuthProvider();firebase.auth().signInWithPopup(p).catch(function(e){if(e.code==="auth/popup-blocked"||e.code==="auth/cancelled-popup-request"){firebase.auth().signInWithRedirect(p)}else{alert("Sign-in failed: "+e.message)}})}
-function checkUn(u){document.getElementById("authO").classList.remove("open");db.collection("users").doc(u.uid).get().then(function(d){if(!d.exists||!d.data().username){document.getElementById("authS1").style.display="none";document.getElementById("authS2").classList.add("show");document.getElementById("authO").classList.add("open")}else loadP()})}
+function checkUn(u){document.getElementById("authO").classList.remove("open");db.collection("users").doc(u.uid).get().then(function(d){if(!d.exists||!d.data().username){document.getElementById("authS1").style.display="none";document.getElementById("authS2").classList.add("show");document.getElementById("authO").classList.add("open")}else{curUsername=d.data().username;checkAdmin();loadP()}})}
 function submitUn(){var u=document.getElementById("unIn").value.trim();if(!u||u.length<3){document.getElementById("unErr").textContent="Min 3 characters";return}if(!/^[a-z0-9_]+$/.test(u)){document.getElementById("unErr").textContent="a-z, 0-9, _ only";return}document.getElementById("unErr").textContent="Checking...";db.collection("usernames").doc(u).get().then(function(d){if(d.exists){document.getElementById("unErr").textContent="Taken!";return}var b=db.batch();b.set(db.collection("usernames").doc(u),{uid:cUser.uid});b.set(db.collection("users").doc(cUser.uid),{username:u,name:cUser.displayName||"",photo:cUser.photoURL||"",email:cUser.email||"",joined:new Date().toISOString()},{merge:true});b.commit().then(function(){document.getElementById("authO").classList.remove("open");loadP()})})}
 function skipA(){localStorage.setItem("wSk","1");document.getElementById("authO").classList.remove("open")}
-function signOut(){if(fbOk)firebase.auth().signOut();localStorage.removeItem("wSk");cUser=null;renderUA();nav("home")}
+function signOut(){if(fbOk)firebase.auth().signOut();localStorage.removeItem("wSk");cUser=null;curUsername="";checkAdmin();renderUA();nav("home")}
 function renderUA(){var el=document.getElementById("userArea");if(cUser){var a=gLP().avatar||cUser.photoURL;var ph=a?'<img src="'+a+'">':'<div class="avatar-placeholder" style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:rgba(245,245,247,.28);stroke-width:2;fill:none"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 00-16 0"/></svg></div>';el.innerHTML='<div class="user-btn" onclick="nav(\'profile\')">'+ph+'<span>'+(cUser.displayName||"User")+'</span></div>'}else el.innerHTML='<button class="signin-btn" onclick="'+(fbOk?'gSignIn()':'nav(\"profile\")')+'">Sign In</button>'}
 
 var jc=0;
@@ -1797,6 +1862,51 @@ function startDmWith(otherUid){
       });
     }
   });
+}
+
+function isAdmin(){return ADMINS.indexOf(curUsername)>-1}
+function checkAdmin(){if(isAdmin())document.getElementById("adminBtn").classList.add("show");else document.getElementById("adminBtn").classList.remove("show")}
+function toggleAdmin(){if(!isAdmin())return;document.getElementById("admPanel").classList.toggle("open");document.getElementById("admOverlay").classList.toggle("open")}
+var admLogs=[];
+function admLog(msg){admLogs.unshift(new Date().toLocaleTimeString()+" — "+msg);document.getElementById("admLog").innerHTML=admLogs.slice(0,20).map(function(l){return'<div class="adm-log">'+esc(l)+'</div>'}).join("")}
+
+function admDelComment(){
+  var vid=document.getElementById("admDelVid").value.trim();
+  var cid=document.getElementById("admDelCid").value.trim();
+  if(!vid||!cid||!fbOk){showToast("Fill both fields");return}
+  db.collection("vdata").doc(vid).collection("comments").doc(cid).delete().then(function(){showToast("Comment deleted");admLog("Deleted comment "+cid+" on "+vid)}).catch(function(e){showToast("Error: "+e.message)});
+}
+function admWipeComments(){
+  var vid=document.getElementById("admWipeVid").value.trim();
+  if(!vid||!fbOk){showToast("Enter video ID");return}
+  if(!confirm("Delete ALL comments on "+vid+"?"))return;
+  db.collection("vdata").doc(vid).collection("comments").get().then(function(snap){
+    var batch=db.batch();var count=0;
+    snap.forEach(function(doc){batch.delete(doc.ref);count++});
+    if(count===0){showToast("No comments found");return}
+    batch.commit().then(function(){showToast(count+" comments deleted");admLog("Wiped "+count+" comments on "+vid)});
+  });
+}
+function admBroadcast(){
+  var msg=document.getElementById("admBcMsg").value.trim();
+  if(!msg||!fbOk||!cUser){showToast("Enter message");return}
+  db.collection("rooms").get().then(function(snap){
+    var count=0;
+    snap.forEach(function(doc){
+      db.collection("rooms").doc(doc.id).collection("chat").add({u:"[ADMIN]",t:msg,ts:Date.now()});
+      count++;
+    });
+    showToast("Sent to "+count+" rooms");admLog("Broadcast to "+count+" rooms: "+msg);
+    document.getElementById("admBcMsg").value="";
+  });
+}
+function admLoadStats(){
+  var el=document.getElementById("admStats");
+  el.innerHTML='<div class="adm-log">Loading...</div>';
+  var stats={users:0,rooms:0,chats:0};
+  db.collection("users").get().then(function(s){stats.users=s.size;return db.collection("rooms").get()}).then(function(s){stats.rooms=s.size;return db.collection("chats").get()}).then(function(s){stats.chats=s.size;
+    el.innerHTML='<div class="adm-log">Users: '+stats.users+'</div><div class="adm-log">Active rooms: '+stats.rooms+'</div><div class="adm-log">DM chats: '+stats.chats+'</div>';
+  }).catch(function(e){el.innerHTML='<div class="adm-log">Error: '+e.message+'</div>'});
 }
 
 function checkDmParam(){
