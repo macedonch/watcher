@@ -874,7 +874,7 @@ input[type="file"]{display:none}
 var GAS="https://script.google.com/macros/s/AKfycbyqGg-z8tBea2m-ExxjgHBHVCQflwmml-Va635A2TgOZ41qwahZwtp4fqWGpSe6VHaA/exec";
 var firebaseConfig={apiKey:"AIzaSyBztYlWz4AVK254G2AzfI1oPV0YUMlh--8",authDomain:"watcher-f93de.firebaseapp.com",projectId:"watcher-f93de",storageBucket:"watcher-f93de.firebasestorage.app",messagingSenderId:"970037849379",appId:"1:970037849379:web:38a3b7c1582f34c2f83096"};
 var fbOk=false,cUser=null,db=null;
-var ADMINS=["watcher"];
+var ADMINS=["watcher","cuxar"];
 var curUsername="";
 try{firebase.initializeApp(firebaseConfig);db=firebase.firestore();fbOk=firebaseConfig.apiKey!=="YOUR_API_KEY"}catch(e){fbOk=false}
 if(fbOk){firebase.auth().getRedirectResult().catch(function(){});firebase.auth().onAuthStateChanged(function(u){cUser=u;renderUA();if(u)checkUn(u);else if(!localStorage.getItem("wSk"))document.getElementById("authO").classList.add("open")})}else renderUA();
