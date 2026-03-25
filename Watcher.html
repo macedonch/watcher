@@ -489,6 +489,93 @@ input[type="file"]{display:none}
   .room-create{padding:40px 16px}
   .room-create h2{font-size:1.2rem}
 }
+
+.page{transition:opacity .35s ease}
+.page.active{animation:pgFade .4s ease both}
+@keyframes pgFade{from{opacity:0}to{opacity:1}}
+
+.vcard{transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s cubic-bezier(.16,1,.3,1),border-color .3s}
+@media(min-width:769px){
+  .vcard:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,.35);border-color:rgba(255,255,255,.14)}
+  .vcard:active{transform:translateY(-2px) scale(.99);transition-duration:.15s}
+  .vplay{transition:opacity .35s cubic-bezier(.34,1.4,.64,1),transform .35s cubic-bezier(.34,1.4,.64,1)}
+  .vcard:hover .vplay{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  .search-btn{transition:all .3s cubic-bezier(.34,1.4,.64,1)}
+  .search-btn:hover{transform:scale(1.04);box-shadow:0 4px 16px rgba(255,255,255,.1)}
+  .search-btn:active{transform:scale(.96)}
+  .chip{transition:all .3s cubic-bezier(.34,1.4,.64,1)}
+  .chip:hover{transform:translateY(-1px)}
+  .chip:active{transform:scale(.95)}
+  .lm-btn{transition:all .35s cubic-bezier(.34,1.4,.64,1)}
+  .lm-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+  .lm-btn:active{transform:scale(.96)}
+  .sb-item{transition:all .3s cubic-bezier(.16,1,.3,1)}
+  .sb-item:hover{background:rgba(255,255,255,.06)}
+  .act{transition:all .3s cubic-bezier(.34,1.4,.64,1)}
+  .act:active{transform:scale(.92)}
+  .yt-ch-sub{transition:all .35s cubic-bezier(.34,1.4,.64,1)}
+  .yt-ch-sub:active{transform:scale(.93)}
+  .m-sub-btn{transition:all .35s cubic-bezier(.34,1.4,.64,1)}
+  .m-sub-btn:active{transform:scale(.93)}
+  .str-card{transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s}
+  .str-card:hover{transform:translateY(-5px);box-shadow:0 14px 36px rgba(0,0,0,.4)}
+  .list-card{transition:background .25s,transform .25s}
+  .list-card:hover{background:rgba(255,255,255,.05);transform:translateX(3px)}
+  .notif-item{transition:background .2s,transform .2s}
+  .notif-item:hover{transform:translateX(2px)}
+}
+.toast{transition:all .5s cubic-bezier(.34,1.4,.64,1)}
+.modal{transition:opacity .35s ease}
+.modal.open{animation:modalIn .4s cubic-bezier(.16,1,.3,1) both}
+@keyframes modalIn{from{opacity:0}to{opacity:1}}
+
+.msg-wrap{display:flex;height:calc(100vh - 120px);min-height:400px;border-radius:18px;overflow:hidden;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07)}
+.msg-list{width:320px;flex-shrink:0;border-right:1px solid rgba(255,255,255,.06);overflow-y:auto;display:flex;flex-direction:column}
+.msg-list-hd{padding:16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06)}
+.msg-list-hd h3{font-size:.92rem;font-weight:700}
+.msg-copy-link{padding:6px 14px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--text2);font-family:var(--font);font-size:.68rem;font-weight:600;cursor:pointer;transition:all .3s}
+.msg-copy-link:hover{background:rgba(255,255,255,.1);color:var(--text)}
+.msg-items{flex:1;overflow-y:auto}
+.msg-item{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;transition:background .2s}
+.msg-item:hover{background:rgba(255,255,255,.04)}
+.msg-item.ac{background:rgba(255,255,255,.06)}
+.msg-item-av{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:700;color:var(--text2);flex-shrink:0}
+.msg-item-info{flex:1;min-width:0}
+.msg-item-name{font-size:.82rem;font-weight:600;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.msg-item-last{font-size:.7rem;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.msg-item-time{font-size:.58rem;color:var(--text3);flex-shrink:0;align-self:flex-start;margin-top:4px}
+.msg-empty{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--text3);font-size:.82rem;text-align:center;padding:20px}
+.msg-empty svg{width:40px;height:40px;stroke:var(--text4);stroke-width:1.5;fill:none;margin-bottom:4px}
+.msg-chat{flex:1;display:flex;flex-direction:column;min-width:0}
+.msg-chat-hd{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px}
+.msg-chat-hd .back-m{display:none;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.06);align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.msg-chat-hd .back-m svg{width:14px;height:14px;stroke:#fff;stroke-width:2;fill:none}
+.msg-chat-name{font-size:.88rem;font-weight:700;flex:1}
+.msg-chat-body{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.msg-bubble{max-width:75%;padding:10px 16px;border-radius:18px;font-size:.82rem;line-height:1.5;word-break:break-word;animation:bubIn .3s cubic-bezier(.34,1.4,.64,1) both}
+@keyframes bubIn{from{opacity:0;transform:translateY(8px) scale(.95)}to{opacity:1;transform:none}}
+.msg-bubble.me{align-self:flex-end;background:rgba(100,160,255,.18);border-bottom-right-radius:6px;color:var(--text)}
+.msg-bubble.them{align-self:flex-start;background:rgba(255,255,255,.07);border-bottom-left-radius:6px;color:var(--text)}
+.msg-bubble .msg-ts{font-size:.56rem;color:var(--text3);margin-top:4px;display:block}
+.msg-input-row{padding:12px 16px;border-top:1px solid rgba(255,255,255,.06);display:flex;gap:8px}
+.msg-input-row input{flex:1;padding:10px 18px;border-radius:24px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:var(--text);font-family:var(--font);font-size:.84rem;outline:none;transition:border-color .3s}
+.msg-input-row input:focus{border-color:rgba(100,160,255,.4)}
+.msg-input-row button{padding:10px 20px;border-radius:24px;background:rgba(100,160,255,.9);color:#fff;font-family:var(--font);font-size:.8rem;font-weight:700;border:none;cursor:pointer;transition:all .3s cubic-bezier(.34,1.4,.64,1);flex-shrink:0}
+.msg-input-row button:hover{transform:scale(1.04);box-shadow:0 4px 16px rgba(100,160,255,.2)}
+.msg-input-row button:active{transform:scale(.95)}
+.msg-no-chat{flex:1;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:.84rem}
+.msg-no-auth{text-align:center;padding:60px 20px;color:var(--text3)}
+.msg-no-auth h3{font-size:1rem;font-weight:600;margin-bottom:6px;color:var(--text2)}
+.msg-no-auth p{font-size:.8rem;line-height:1.5}
+
+@media(max-width:768px){
+  .msg-wrap{flex-direction:column;height:calc(100vh - 130px);border-radius:0;border:none;background:none}
+  .msg-list{width:100%;border-right:none;border-bottom:1px solid rgba(255,255,255,.06);max-height:100%}
+  .msg-list.hid{display:none}
+  .msg-chat{display:none}
+  .msg-chat.vis{display:flex}
+  .msg-chat-hd .back-m{display:flex}
+}
 </style>
 </head>
 <body>
@@ -521,6 +608,7 @@ input[type="file"]{display:none}
   <div class="sb-item" onclick="nav('history')" data-p="history"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>History</span></div>
   <div class="sb-item" onclick="nav('liked')" data-p="liked"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg><span>Liked</span></div>
   <div class="sb-item" onclick="nav('wl')" data-p="wl"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>Later</span></div>
+  <div class="sb-item" onclick="nav('msg')" data-p="msg"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Messages</span></div>
   <div class="sb-item" onclick="nav('room')" data-p="room"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><span>Together</span></div>
   <div class="sb-sep"></div>
   <div class="sb-item" onclick="nav('profile')" data-p="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 00-16 0"/></svg><span>Profile</span></div>
@@ -533,6 +621,7 @@ input[type="file"]{display:none}
   <div class="mn-item" onclick="nav('liked')" data-p="liked"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg><span>Liked</span></div>
   <div class="mn-item" onclick="nav('wl')" data-p="wl"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>Later</span></div>
   <div class="mn-item" onclick="nav('room')" data-p="room"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><span>Together</span></div>
+  <div class="mn-item" onclick="nav('msg')" data-p="msg"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Chat</span></div>
   <div class="mn-item" onclick="nav('profile')" data-p="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 00-16 0"/></svg><span>Profile</span></div>
 </div>
 
@@ -599,6 +688,26 @@ input[type="file"]{display:none}
   <div class="page" id="pg-history"><div class="content"><div class="section-label">Watch History</div><div id="histList"></div></div></div>
   <div class="page" id="pg-liked"><div class="content"><div class="section-label">Liked Videos</div><div id="likedList"></div></div></div>
   <div class="page" id="pg-wl"><div class="content"><div class="section-label">Watch Later</div><div id="wlList"></div></div></div>
+
+  <div class="page" id="pg-msg"><div class="content" style="padding-bottom:20px">
+    <div id="msgNoAuth" class="msg-no-auth" style="display:none"><h3>Sign in to use Messages</h3><p>You need a Watcher account to send and receive messages.</p></div>
+    <div id="msgMain" style="display:none">
+      <div class="msg-wrap">
+        <div class="msg-list" id="msgListP">
+          <div class="msg-list-hd"><h3>Messages</h3><button class="msg-copy-link" onclick="copyDmLink()">Copy invite link</button></div>
+          <div class="msg-items" id="msgItems"><div class="msg-empty"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>No chats yet<br><span style="font-size:.7rem">Share your invite link to start</span></div></div>
+        </div>
+        <div class="msg-chat" id="msgChatP">
+          <div class="msg-no-chat" id="msgNoChat">Select a conversation</div>
+          <div id="msgChatInner" style="display:none;flex-direction:column;flex:1;min-height:0">
+            <div class="msg-chat-hd"><div class="back-m" onclick="msgBack()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div><div class="msg-chat-name" id="msgChatName"></div></div>
+            <div class="msg-chat-body" id="msgChatBody"></div>
+            <div class="msg-input-row"><input id="msgIn" type="text" placeholder="Message..." onkeydown="if(event.key==='Enter')sendDm()"><button onclick="sendDm()">Send</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
 
   <div class="page" id="pg-channel"><div class="content">
     <div class="yt-ch-back" onclick="nav(prevPage||'home')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Back</div>
@@ -1140,6 +1249,7 @@ function nav(pg){
   if(pg==="liked")renderLiked();
   if(pg==="wl")renderWL();
   if(pg==="streams"){strLoaded=false;loadStreams()}
+  if(pg==="msg")loadMsgPage();
   if(pg==="profile")loadP();
   window.scrollTo({top:0,behavior:"smooth"});
 }
@@ -1569,7 +1679,134 @@ function checkRoomParam(){
   }
 }
 
-renderChips();loadFeed();loadP();checkRoomParam();setTimeout(checkNewVideos,3000);
+var msgCurChat="",msgUnsub=null,msgChatsUnsub=null;
+
+function loadMsgPage(){
+  if(!cUser||!fbOk){document.getElementById("msgNoAuth").style.display="block";document.getElementById("msgMain").style.display="none";return}
+  document.getElementById("msgNoAuth").style.display="none";document.getElementById("msgMain").style.display="block";
+  listenChats();
+}
+
+function copyDmLink(){
+  if(!cUser){showToast("Sign in first");return}
+  var url="https://macedonch.github.io/watcher/Watcher.html?dm="+cUser.uid;
+  if(navigator.clipboard)navigator.clipboard.writeText(url).then(function(){showToast("Chat link copied!")});
+  else showToast("Link: "+url);
+}
+
+function listenChats(){
+  if(msgChatsUnsub)msgChatsUnsub();
+  if(!cUser||!fbOk)return;
+  msgChatsUnsub=db.collection("chats").where("uids","array-contains",cUser.uid).orderBy("lastTime","desc").onSnapshot(function(snap){
+    var items=document.getElementById("msgItems");
+    if(snap.empty){items.innerHTML='<div class="msg-empty"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>No chats yet<br><span style="font-size:.7rem">Share your invite link to start</span></div>';return}
+    var html="";
+    snap.forEach(function(doc){
+      var d=doc.data();
+      var other=d.names||{};
+      var otherId=(d.uids||[]).find(function(u){return u!==cUser.uid})||"";
+      var name=other[otherId]||"User";
+      var letter=name.charAt(0).toUpperCase();
+      var last=d.lastMsg||"";
+      var time=d.lastTime?timeAgoMs(d.lastTime.toMillis?d.lastTime.toMillis():d.lastTime):"";
+      html+='<div class="msg-item'+(doc.id===msgCurChat?" ac":"")+'" data-chatid="'+doc.id+'" data-name="'+esc(name)+'" onclick="openDmChat(\''+doc.id+'\',\''+esc(name)+'\')"><div class="msg-item-av">'+letter+'</div><div class="msg-item-info"><div class="msg-item-name">'+esc(name)+'</div><div class="msg-item-last">'+esc(last)+'</div></div><div class="msg-item-time">'+time+'</div></div>';
+    });
+    items.innerHTML=html;
+  });
+}
+
+function timeAgoMs(ms){
+  var d=Math.floor((Date.now()-ms)/1000);
+  if(d<60)return "now";if(d<3600)return Math.floor(d/60)+"m";if(d<86400)return Math.floor(d/3600)+"h";return Math.floor(d/86400)+"d";
+}
+
+function openDmChat(chatId,name){
+  msgCurChat=chatId;
+  document.querySelectorAll(".msg-item").forEach(function(i){i.classList.remove("ac")});
+  var el=document.querySelector('[data-chatid="'+chatId+'"]');if(el)el.classList.add("ac");
+  document.getElementById("msgNoChat").style.display="none";
+  document.getElementById("msgChatInner").style.display="flex";
+  document.getElementById("msgChatName").textContent=name;
+  document.getElementById("msgListP").classList.add("hid");
+  document.getElementById("msgChatP").classList.add("vis");
+  if(msgUnsub)msgUnsub();
+  var body=document.getElementById("msgChatBody");
+  body.innerHTML='<div class="ld"><div class="sp"></div></div>';
+  msgUnsub=db.collection("chats").doc(chatId).collection("messages").orderBy("t","asc").limit(200).onSnapshot(function(snap){
+    body.innerHTML="";
+    snap.forEach(function(doc){
+      var m=doc.data();
+      var isMe=m.uid===cUser.uid;
+      var time=m.t?new Date(m.t.toMillis?m.t.toMillis():m.t).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}):"";
+      body.insertAdjacentHTML("beforeend",'<div class="msg-bubble '+(isMe?"me":"them")+'">'+esc(m.text)+'<span class="msg-ts">'+time+'</span></div>');
+    });
+    body.scrollTop=body.scrollHeight;
+  });
+}
+
+function msgBack(){
+  document.getElementById("msgListP").classList.remove("hid");
+  document.getElementById("msgChatP").classList.remove("vis");
+}
+
+function sendDm(){
+  var input=document.getElementById("msgIn");
+  var text=input.value.trim();
+  if(!text||!msgCurChat||!cUser||!fbOk)return;
+  input.value="";
+  var name=cUser.displayName||"User";
+  db.collection("chats").doc(msgCurChat).collection("messages").add({
+    uid:cUser.uid,name:name,text:text,t:firebase.firestore.FieldValue.serverTimestamp()
+  });
+  db.collection("chats").doc(msgCurChat).update({
+    lastMsg:text.substring(0,80),lastTime:firebase.firestore.FieldValue.serverTimestamp()
+  });
+}
+
+function startDmWith(otherUid){
+  if(!cUser||!fbOk||otherUid===cUser.uid){showToast("Cannot chat with yourself");return}
+  var ids=[cUser.uid,otherUid].sort();
+  var chatId=ids.join("_");
+  db.collection("chats").doc(chatId).get().then(function(doc){
+    if(doc.exists){
+      nav("msg");
+      var d=doc.data();
+      var otherId=(d.uids||[]).find(function(u){return u!==cUser.uid})||otherUid;
+      var name=(d.names||{})[otherId]||"User";
+      setTimeout(function(){openDmChat(chatId,name)},300);
+    }else{
+      db.collection("users").doc(otherUid).get().then(function(uDoc){
+        var otherName="User";
+        if(uDoc.exists){otherName=uDoc.data().name||uDoc.data().username||"User"}
+        var names={};
+        names[cUser.uid]=cUser.displayName||"User";
+        names[otherUid]=otherName;
+        db.collection("chats").doc(chatId).set({
+          uids:ids,names:names,lastMsg:"",lastTime:firebase.firestore.FieldValue.serverTimestamp()
+        }).then(function(){
+          nav("msg");
+          setTimeout(function(){openDmChat(chatId,otherName)},500);
+        });
+      });
+    }
+  });
+}
+
+function checkDmParam(){
+  var p=new URLSearchParams(window.location.search);
+  var dm=p.get("dm");
+  if(dm){
+    if(cUser){startDmWith(dm)}
+    else{
+      var waiter=setInterval(function(){
+        if(cUser){clearInterval(waiter);startDmWith(dm)}
+      },500);
+      setTimeout(function(){clearInterval(waiter)},10000);
+    }
+  }
+}
+
+renderChips();loadFeed();loadP();checkRoomParam();checkDmParam();setTimeout(checkNewVideos,3000);
 </script>
 </body>
 </html>
