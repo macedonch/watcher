@@ -537,30 +537,69 @@ input[type="file"]{display:none}
 .admin-btn:hover{background:rgba(255,80,80,.12);border-color:rgba(255,80,80,.25);color:rgba(255,140,140,1)}
 .admin-btn:active{transform:scale(.95)}
 .admin-btn svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none}
-.adm-panel{position:fixed;top:0;right:0;bottom:0;width:360px;z-index:4000;background:rgba(14,14,18,.97);border-left:1px solid rgba(255,255,255,.08);transform:translateX(100%);transition:transform .45s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column;overflow:hidden}
-.adm-panel.open{transform:translateX(0)}
-.adm-overlay{position:fixed;inset:0;z-index:3999;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .35s}
+.adm-overlay{position:fixed;inset:0;z-index:3999;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .4s}
 .adm-overlay.open{opacity:1;pointer-events:auto}
-.adm-hd{padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between}
-.adm-hd h3{font-size:.95rem;font-weight:700;color:rgba(255,120,120,.9)}
-.adm-close{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s}
-.adm-close:hover{background:rgba(255,255,255,.12)}
+.adm-panel{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.92);z-index:4000;width:780px;max-width:95vw;height:560px;max-height:85vh;background:rgba(14,14,20,.98);border:1px solid rgba(255,255,255,.1);border-radius:24px;display:flex;overflow:hidden;opacity:0;pointer-events:none;transition:all .45s cubic-bezier(.16,1,.3,1);box-shadow:0 40px 100px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.06)}
+.adm-panel.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+.adm-nav{width:180px;flex-shrink:0;background:rgba(255,255,255,.02);border-right:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;padding:16px 10px}
+.adm-nav-hd{display:flex;align-items:center;gap:8px;padding:8px 10px 18px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:10px}
+.adm-nav-hd svg{width:20px;height:20px;stroke:rgba(255,100,100,.8);stroke-width:2;fill:none}
+.adm-nav-hd span{font-size:.85rem;font-weight:700;color:rgba(255,120,120,.9);letter-spacing:-.01em}
+.adm-tab{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;cursor:pointer;transition:all .25s;margin-bottom:2px;color:var(--text3)}
+.adm-tab:hover{background:rgba(255,255,255,.04);color:var(--text2)}
+.adm-tab.ac{background:rgba(255,100,100,.08);color:rgba(255,140,140,.9)}
+.adm-tab svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;flex-shrink:0}
+.adm-tab span{font-size:.78rem;font-weight:600}
+.adm-nav-foot{margin-top:auto;padding:10px;text-align:center;font-size:.58rem;color:var(--text4)}
+.adm-main{flex:1;display:flex;flex-direction:column;min-width:0}
+.adm-main-hd{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid rgba(255,255,255,.06)}
+.adm-main-hd h2{font-size:1rem;font-weight:700}
+.adm-close{width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .25s}
+.adm-close:hover{background:rgba(255,80,80,.1);border-color:rgba(255,80,80,.2)}
 .adm-close svg{width:14px;height:14px;stroke:var(--text2);stroke-width:2;fill:none}
-.adm-body{flex:1;overflow-y:auto;padding:16px 20px}
-.adm-section{margin-bottom:24px}
-.adm-section h4{font-size:.62rem;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
-.adm-action{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);cursor:pointer;transition:all .25s;margin-bottom:8px}
-.adm-action:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1)}
-.adm-action svg{width:18px;height:18px;stroke:var(--text2);stroke-width:1.8;fill:none;flex-shrink:0}
-.adm-action .adm-act-info{flex:1}
-.adm-action .adm-act-title{font-size:.8rem;font-weight:600;margin-bottom:1px}
-.adm-action .adm-act-desc{font-size:.66rem;color:var(--text3)}
-.adm-input{width:100%;padding:9px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--text);font-family:var(--font);font-size:.82rem;outline:none;margin-bottom:8px;transition:border-color .3s}
-.adm-input:focus{border-color:rgba(255,80,80,.3)}
-.adm-sm-btn{padding:8px 18px;border-radius:10px;background:rgba(255,80,80,.12);border:1px solid rgba(255,80,80,.2);color:rgba(255,140,140,.9);font-family:var(--font);font-size:.75rem;font-weight:600;cursor:pointer;transition:all .3s}
-.adm-sm-btn:hover{background:rgba(255,80,80,.2)}
-.adm-log{font-size:.72rem;color:var(--text3);padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03)}
-@media(max-width:768px){.adm-panel{width:100%}.admin-btn span{display:none}}
+.adm-content{flex:1;overflow-y:auto;padding:20px 24px}
+.adm-view{display:none}.adm-view.ac{display:block}
+.adm-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.adm-stat-card{padding:18px 16px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);text-align:center;transition:all .3s}
+.adm-stat-card:hover{background:rgba(255,255,255,.05);transform:translateY(-2px)}
+.adm-stat-num{font-size:1.6rem;font-weight:700;margin-bottom:2px;letter-spacing:-.03em}
+.adm-stat-label{font-size:.64rem;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+.adm-stat-card.blue .adm-stat-num{color:rgba(100,160,255,.9)}
+.adm-stat-card.green .adm-stat-num{color:rgba(100,220,160,.9)}
+.adm-stat-card.orange .adm-stat-num{color:rgba(255,160,100,.9)}
+.adm-card{padding:18px;border-radius:16px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);margin-bottom:14px}
+.adm-card h4{font-size:.72rem;font-weight:700;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.adm-card h4 svg{width:15px;height:15px;stroke:currentColor;stroke-width:2;fill:none}
+.adm-input{width:100%;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--text);font-family:var(--font);font-size:.82rem;outline:none;margin-bottom:8px;transition:all .3s}
+.adm-input:focus{border-color:rgba(255,100,100,.3);background:rgba(255,255,255,.06)}
+.adm-input::placeholder{color:var(--text4)}
+.adm-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:10px;font-family:var(--font);font-size:.78rem;font-weight:700;border:none;cursor:pointer;transition:all .3s cubic-bezier(.34,1.4,.64,1)}
+.adm-btn:active{transform:scale(.94)}
+.adm-btn.red{background:rgba(255,80,80,.15);color:rgba(255,140,140,.9);border:1px solid rgba(255,80,80,.2)}
+.adm-btn.red:hover{background:rgba(255,80,80,.25)}
+.adm-btn.blue{background:rgba(100,160,255,.12);color:rgba(140,180,255,.9);border:1px solid rgba(100,160,255,.2)}
+.adm-btn.blue:hover{background:rgba(100,160,255,.22)}
+.adm-btn.green{background:rgba(100,220,160,.1);color:rgba(130,230,170,.9);border:1px solid rgba(100,220,160,.2)}
+.adm-btn.green:hover{background:rgba(100,220,160,.2)}
+.adm-btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none}
+.adm-result{margin-top:10px;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);font-size:.76rem;color:var(--text2);display:none}
+.adm-result.show{display:block;animation:admFade .3s ease both}
+@keyframes admFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.adm-log-item{padding:8px 12px;border-radius:8px;background:rgba(255,255,255,.02);margin-bottom:4px;display:flex;align-items:center;gap:10px;font-size:.74rem;animation:admFade .3s ease both}
+.adm-log-time{font-size:.6rem;color:var(--text3);flex-shrink:0;width:56px}
+.adm-log-tag{font-size:.56rem;font-weight:700;padding:2px 8px;border-radius:6px;flex-shrink:0;text-transform:uppercase;letter-spacing:.05em}
+.adm-log-tag.del{background:rgba(255,80,80,.1);color:rgba(255,120,120,.8)}
+.adm-log-tag.msg{background:rgba(100,160,255,.1);color:rgba(140,180,255,.8)}
+.adm-log-tag.info{background:rgba(100,220,160,.08);color:rgba(130,230,170,.8)}
+.adm-log-text{flex:1;color:var(--text2);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(max-width:768px){
+  .adm-panel{width:100%;height:100%;max-width:100vw;max-height:100vh;border-radius:0}
+  .adm-nav{width:60px;padding:10px 6px}.adm-nav-hd span,.adm-tab span,.adm-nav-foot{display:none}
+  .adm-nav-hd{padding:8px 0 14px;justify-content:center}.adm-tab{justify-content:center;padding:10px}
+  .adm-stats-grid{grid-template-columns:1fr}
+  .admin-btn span{display:none}
+  .adm-overlay{backdrop-filter:none;-webkit-backdrop-filter:none}
+}
 .modal{transition:opacity .35s ease}
 .modal.open{animation:modalIn .4s cubic-bezier(.16,1,.3,1) both}
 @keyframes modalIn{from{opacity:0}to{opacity:1}}
@@ -680,32 +719,73 @@ input[type="file"]{display:none}
 
 <div class="adm-overlay" id="admOverlay" onclick="toggleAdmin()"></div>
 <div class="adm-panel" id="admPanel">
-  <div class="adm-hd"><h3>Admin Panel</h3><div class="adm-close" onclick="toggleAdmin()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div></div>
-  <div class="adm-body">
-    <div class="adm-section">
-      <h4>Delete Comment</h4>
-      <input class="adm-input" id="admDelVid" placeholder="Video ID">
-      <input class="adm-input" id="admDelCid" placeholder="Comment ID">
-      <button class="adm-sm-btn" onclick="admDelComment()">Delete</button>
-    </div>
-    <div class="adm-section">
-      <h4>Delete All Comments on Video</h4>
-      <input class="adm-input" id="admWipeVid" placeholder="Video ID">
-      <button class="adm-sm-btn" onclick="admWipeComments()">Wipe All</button>
-    </div>
-    <div class="adm-section">
-      <h4>Broadcast Message</h4>
-      <input class="adm-input" id="admBcMsg" placeholder="Message text...">
-      <button class="adm-sm-btn" onclick="admBroadcast()">Send to all rooms</button>
-    </div>
-    <div class="adm-section">
-      <h4>Site Stats</h4>
-      <div id="admStats"><div class="adm-log">Loading...</div></div>
-      <button class="adm-sm-btn" onclick="admLoadStats()" style="margin-top:6px">Refresh</button>
-    </div>
-    <div class="adm-section">
-      <h4>Admin Log</h4>
-      <div id="admLog"><div class="adm-log">No actions yet</div></div>
+  <div class="adm-nav">
+    <div class="adm-nav-hd"><svg viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4"/></svg><span>Admin</span></div>
+    <div class="adm-tab ac" onclick="admSwitchTab('dash',this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Dashboard</span></div>
+    <div class="adm-tab" onclick="admSwitchTab('users',this)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span>Users</span></div>
+    <div class="adm-tab" onclick="admSwitchTab('comments',this)"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Comments</span></div>
+    <div class="adm-tab" onclick="admSwitchTab('broadcast',this)"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg><span>Broadcast</span></div>
+    <div class="adm-tab" onclick="admSwitchTab('log',this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Log</span></div>
+    <div class="adm-nav-foot">v1.0</div>
+  </div>
+  <div class="adm-main">
+    <div class="adm-main-hd"><h2 id="admTitle">Dashboard</h2><div class="adm-close" onclick="toggleAdmin()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div></div>
+    <div class="adm-content">
+
+      <div class="adm-view ac" id="admV-dash">
+        <div class="adm-stats-grid" id="admStatsGrid">
+          <div class="adm-stat-card blue"><div class="adm-stat-num" id="admSUsers">—</div><div class="adm-stat-label">Users</div></div>
+          <div class="adm-stat-card green"><div class="adm-stat-num" id="admSRooms">—</div><div class="adm-stat-label">Rooms</div></div>
+          <div class="adm-stat-card orange"><div class="adm-stat-num" id="admSChats">—</div><div class="adm-stat-label">DM Chats</div></div>
+        </div>
+        <div class="adm-card">
+          <h4><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Quick Info</h4>
+          <div style="font-size:.78rem;color:var(--text2);line-height:1.7">
+            Logged in as: <strong id="admWho" style="color:var(--text)"></strong><br>
+            Admins: <span id="admList" style="color:var(--text3)"></span>
+          </div>
+        </div>
+        <button class="adm-btn blue" onclick="admLoadStats()" style="margin-top:4px"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>Refresh Stats</button>
+      </div>
+
+      <div class="adm-view" id="admV-users">
+        <div class="adm-card">
+          <h4><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Lookup User</h4>
+          <input class="adm-input" id="admUserQ" placeholder="Enter username..." onkeydown="if(event.key==='Enter')admLookupUser()">
+          <button class="adm-btn blue" onclick="admLookupUser()"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Search</button>
+          <div class="adm-result" id="admUserResult"></div>
+        </div>
+      </div>
+
+      <div class="adm-view" id="admV-comments">
+        <div class="adm-card">
+          <h4><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Delete Comment</h4>
+          <input class="adm-input" id="admDelVid" placeholder="Video ID (from URL)">
+          <input class="adm-input" id="admDelCid" placeholder="Comment ID">
+          <button class="adm-btn red" onclick="admDelComment()"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Delete</button>
+          <div class="adm-result" id="admDelResult"></div>
+        </div>
+        <div class="adm-card">
+          <h4><svg viewBox="0 0 24 24"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>Wipe All Comments</h4>
+          <input class="adm-input" id="admWipeVid" placeholder="Video ID">
+          <button class="adm-btn red" onclick="admWipeComments()"><svg viewBox="0 0 24 24"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2z"/></svg>Wipe All</button>
+          <div class="adm-result" id="admWipeResult"></div>
+        </div>
+      </div>
+
+      <div class="adm-view" id="admV-broadcast">
+        <div class="adm-card">
+          <h4><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/></svg>Send to All Rooms</h4>
+          <input class="adm-input" id="admBcMsg" placeholder="Type your announcement...">
+          <button class="adm-btn green" onclick="admBroadcast()"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Broadcast</button>
+          <div class="adm-result" id="admBcResult"></div>
+        </div>
+      </div>
+
+      <div class="adm-view" id="admV-log">
+        <div id="admLog"><div style="text-align:center;padding:30px;color:var(--text3);font-size:.82rem">No actions yet</div></div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -874,7 +954,7 @@ input[type="file"]{display:none}
 var GAS="https://script.google.com/macros/s/AKfycbyqGg-z8tBea2m-ExxjgHBHVCQflwmml-Va635A2TgOZ41qwahZwtp4fqWGpSe6VHaA/exec";
 var firebaseConfig={apiKey:"AIzaSyBztYlWz4AVK254G2AzfI1oPV0YUMlh--8",authDomain:"watcher-f93de.firebaseapp.com",projectId:"watcher-f93de",storageBucket:"watcher-f93de.firebasestorage.app",messagingSenderId:"970037849379",appId:"1:970037849379:web:38a3b7c1582f34c2f83096"};
 var fbOk=false,cUser=null,db=null;
-var ADMINS=["watcher","cuxar"];
+var ADMINS=["watcher"];
 var curUsername="";
 try{firebase.initializeApp(firebaseConfig);db=firebase.firestore();fbOk=firebaseConfig.apiKey!=="YOUR_API_KEY"}catch(e){fbOk=false}
 if(fbOk){firebase.auth().getRedirectResult().catch(function(){});firebase.auth().onAuthStateChanged(function(u){cUser=u;renderUA();if(u)checkUn(u);else if(!localStorage.getItem("wSk"))document.getElementById("authO").classList.add("open")})}else renderUA();
@@ -1865,48 +1945,87 @@ function startDmWith(otherUid){
 }
 
 function isAdmin(){return ADMINS.indexOf(curUsername)>-1}
-function checkAdmin(){if(isAdmin())document.getElementById("adminBtn").classList.add("show");else document.getElementById("adminBtn").classList.remove("show")}
+function checkAdmin(){
+  if(isAdmin()){document.getElementById("adminBtn").classList.add("show");document.getElementById("admWho").textContent="@"+curUsername;document.getElementById("admList").textContent=ADMINS.map(function(a){return"@"+a}).join(", ");admLoadStats()}
+  else document.getElementById("adminBtn").classList.remove("show");
+}
 function toggleAdmin(){if(!isAdmin())return;document.getElementById("admPanel").classList.toggle("open");document.getElementById("admOverlay").classList.toggle("open")}
+function admSwitchTab(tab,el){
+  document.querySelectorAll(".adm-tab").forEach(function(t){t.classList.remove("ac")});el.classList.add("ac");
+  document.querySelectorAll(".adm-view").forEach(function(v){v.classList.remove("ac")});
+  var v=document.getElementById("admV-"+tab);if(v)v.classList.add("ac");
+  var titles={dash:"Dashboard",users:"Users",comments:"Comments",broadcast:"Broadcast",log:"Activity Log"};
+  document.getElementById("admTitle").textContent=titles[tab]||"Admin";
+}
 var admLogs=[];
-function admLog(msg){admLogs.unshift(new Date().toLocaleTimeString()+" — "+msg);document.getElementById("admLog").innerHTML=admLogs.slice(0,20).map(function(l){return'<div class="adm-log">'+esc(l)+'</div>'}).join("")}
+function admLog(type,msg){
+  admLogs.unshift({time:new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}),type:type,msg:msg});
+  document.getElementById("admLog").innerHTML=admLogs.slice(0,30).map(function(l){
+    return'<div class="adm-log-item"><span class="adm-log-time">'+l.time+'</span><span class="adm-log-tag '+l.type+'">'+l.type+'</span><span class="adm-log-text">'+esc(l.msg)+'</span></div>';
+  }).join("");
+}
+function admShowResult(id,msg){var el=document.getElementById(id);if(el){el.textContent=msg;el.classList.add("show");setTimeout(function(){el.classList.remove("show")},5000)}}
 
 function admDelComment(){
+  if(!isAdmin())return;
   var vid=document.getElementById("admDelVid").value.trim();
   var cid=document.getElementById("admDelCid").value.trim();
-  if(!vid||!cid||!fbOk){showToast("Fill both fields");return}
-  db.collection("vdata").doc(vid).collection("comments").doc(cid).delete().then(function(){showToast("Comment deleted");admLog("Deleted comment "+cid+" on "+vid)}).catch(function(e){showToast("Error: "+e.message)});
+  if(!vid||!cid||!fbOk){admShowResult("admDelResult","Fill both fields");return}
+  db.collection("vdata").doc(vid).collection("comments").doc(cid).delete().then(function(){
+    admShowResult("admDelResult","Comment deleted");admLog("del","Comment "+cid+" on video "+vid);
+    document.getElementById("admDelVid").value="";document.getElementById("admDelCid").value="";
+  }).catch(function(e){admShowResult("admDelResult","Error: "+e.message)});
 }
 function admWipeComments(){
+  if(!isAdmin())return;
   var vid=document.getElementById("admWipeVid").value.trim();
-  if(!vid||!fbOk){showToast("Enter video ID");return}
+  if(!vid||!fbOk){admShowResult("admWipeResult","Enter video ID");return}
   if(!confirm("Delete ALL comments on "+vid+"?"))return;
   db.collection("vdata").doc(vid).collection("comments").get().then(function(snap){
     var batch=db.batch();var count=0;
     snap.forEach(function(doc){batch.delete(doc.ref);count++});
-    if(count===0){showToast("No comments found");return}
-    batch.commit().then(function(){showToast(count+" comments deleted");admLog("Wiped "+count+" comments on "+vid)});
+    if(count===0){admShowResult("admWipeResult","No comments found");return}
+    batch.commit().then(function(){admShowResult("admWipeResult",count+" comments deleted");admLog("del","Wiped "+count+" comments on "+vid);document.getElementById("admWipeVid").value=""});
   });
 }
 function admBroadcast(){
+  if(!isAdmin())return;
   var msg=document.getElementById("admBcMsg").value.trim();
-  if(!msg||!fbOk||!cUser){showToast("Enter message");return}
+  if(!msg||!fbOk||!cUser){admShowResult("admBcResult","Enter a message");return}
   db.collection("rooms").get().then(function(snap){
     var count=0;
-    snap.forEach(function(doc){
-      db.collection("rooms").doc(doc.id).collection("chat").add({u:"[ADMIN]",t:msg,ts:Date.now()});
-      count++;
-    });
-    showToast("Sent to "+count+" rooms");admLog("Broadcast to "+count+" rooms: "+msg);
+    snap.forEach(function(doc){db.collection("rooms").doc(doc.id).collection("chat").add({u:"[ADMIN] "+curUsername,t:msg,ts:Date.now()});count++});
+    admShowResult("admBcResult","Sent to "+count+" rooms");admLog("msg","Broadcast: "+msg);
     document.getElementById("admBcMsg").value="";
   });
 }
 function admLoadStats(){
-  var el=document.getElementById("admStats");
-  el.innerHTML='<div class="adm-log">Loading...</div>';
-  var stats={users:0,rooms:0,chats:0};
-  db.collection("users").get().then(function(s){stats.users=s.size;return db.collection("rooms").get()}).then(function(s){stats.rooms=s.size;return db.collection("chats").get()}).then(function(s){stats.chats=s.size;
-    el.innerHTML='<div class="adm-log">Users: '+stats.users+'</div><div class="adm-log">Active rooms: '+stats.rooms+'</div><div class="adm-log">DM chats: '+stats.chats+'</div>';
-  }).catch(function(e){el.innerHTML='<div class="adm-log">Error: '+e.message+'</div>'});
+  if(!fbOk)return;
+  document.getElementById("admSUsers").textContent="...";
+  document.getElementById("admSRooms").textContent="...";
+  document.getElementById("admSChats").textContent="...";
+  db.collection("users").get().then(function(s){document.getElementById("admSUsers").textContent=s.size;return db.collection("rooms").get()}).then(function(s){document.getElementById("admSRooms").textContent=s.size;return db.collection("chats").get()}).then(function(s){document.getElementById("admSChats").textContent=s.size}).catch(function(){});
+}
+function admLookupUser(){
+  if(!isAdmin()||!fbOk)return;
+  var q=document.getElementById("admUserQ").value.trim().toLowerCase();
+  if(!q){admShowResult("admUserResult","Enter a username");return}
+  db.collection("usernames").doc(q).get().then(function(d){
+    if(!d.exists){admShowResult("admUserResult","User @"+q+" not found");return}
+    var uid=d.data().uid;
+    db.collection("users").doc(uid).get().then(function(u){
+      var data=u.exists?u.data():{};
+      var el=document.getElementById("admUserResult");
+      el.innerHTML='<div style="padding:4px 0"><strong style="color:var(--text)">@'+esc(q)+'</strong></div>'
+        +'<div style="font-size:.72rem;color:var(--text2);line-height:1.8">'
+        +'Name: '+(data.name||"—")+'<br>'
+        +'Email: '+(data.email||"—")+'<br>'
+        +'UID: <span style="font-size:.6rem;color:var(--text3)">'+uid+'</span><br>'
+        +'Joined: '+(data.joined||"—")
+        +'</div>';
+      el.classList.add("show");admLog("info","Looked up @"+q);
+    });
+  }).catch(function(e){admShowResult("admUserResult","Error: "+e.message)});
 }
 
 function checkDmParam(){
