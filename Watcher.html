@@ -604,48 +604,6 @@ input[type="file"]{display:none}
 .modal.open{animation:modalIn .4s cubic-bezier(.16,1,.3,1) both}
 @keyframes modalIn{from{opacity:0}to{opacity:1}}
 
-.gift-shop{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:24px}
-.gift-card{padding:16px 10px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);text-align:center;cursor:pointer;transition:all .4s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
-.gift-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.14);box-shadow:0 12px 30px rgba(0,0,0,.3)}
-.gift-card:active{transform:scale(.96)}
-.gift-icon{width:56px;height:56px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;border-radius:16px;position:relative}
-.gift-icon svg{width:36px;height:36px}
-.gift-name{font-size:.74rem;font-weight:600;margin-bottom:4px;color:var(--text)}
-.gift-price{font-size:.66rem;font-weight:700;color:var(--text3);display:flex;align-items:center;justify-content:center;gap:3px}
-.gift-price b{color:rgba(100,220,160,.8)}
-.gift-tier{position:absolute;top:6px;right:6px;font-size:.48rem;font-weight:800;padding:2px 6px;border-radius:6px;letter-spacing:.06em;text-transform:uppercase}
-.t-common .gift-tier{background:rgba(180,180,180,.1);color:rgba(180,180,180,.6)}
-.t-rare .gift-tier{background:rgba(100,160,255,.1);color:rgba(130,180,255,.8)}
-.t-epic .gift-tier{background:rgba(180,100,255,.1);color:rgba(200,140,255,.8)}
-.t-legend .gift-tier{background:rgba(255,180,50,.1);color:rgba(255,200,80,.9)}
-.t-common .gift-icon{background:rgba(255,255,255,.04)}
-.t-rare .gift-icon{background:rgba(100,160,255,.06)}
-.t-epic .gift-icon{background:rgba(180,100,255,.06)}
-.t-legend .gift-icon{background:linear-gradient(135deg,rgba(255,180,50,.08),rgba(255,100,50,.08))}
-.gift-modal-ov{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center}
-.gift-modal-ov.open{display:flex}
-.gift-modal{background:rgba(16,16,22,.97);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:36px;max-width:360px;width:90%;text-align:center;animation:admFade .35s cubic-bezier(.16,1,.3,1) both}
-.gift-modal .gift-icon{width:80px;height:80px;margin:0 auto 16px;border-radius:20px}
-.gift-modal .gift-icon svg{width:52px;height:52px}
-.gift-modal h3{font-size:1.1rem;font-weight:700;margin-bottom:4px}
-.gift-modal .gm-tier{font-size:.6rem;font-weight:700;margin-bottom:12px;text-transform:uppercase;letter-spacing:.08em}
-.gift-modal .gm-price{font-size:1.3rem;font-weight:700;color:rgba(100,220,160,.9);margin-bottom:16px}
-.gift-modal .gm-desc{font-size:.78rem;color:var(--text2);line-height:1.6;margin-bottom:20px}
-.gift-buy-btn{padding:12px 32px;border-radius:20px;background:rgba(100,220,160,.15);border:1px solid rgba(100,220,160,.25);color:rgba(130,240,180,.95);font-family:var(--font);font-size:.88rem;font-weight:700;cursor:pointer;transition:all .35s cubic-bezier(.34,1.4,.64,1);width:100%}
-.gift-buy-btn:hover{background:rgba(100,220,160,.25);transform:translateY(-1px)}
-.gift-buy-btn:active{transform:scale(.96)}
-.gm-close{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;cursor:pointer}
-.gm-close svg{width:12px;height:12px;stroke:var(--text3);stroke-width:2;fill:none}
-.gift-tabs{display:flex;gap:6px;margin-bottom:18px;overflow-x:auto;scrollbar-width:none}
-.gift-tabs::-webkit-scrollbar{display:none}
-.gift-tab{padding:6px 16px;border-radius:18px;font-size:.72rem;font-weight:600;color:var(--text3);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);cursor:pointer;transition:all .25s;white-space:nowrap}
-.gift-tab.ac{color:var(--text);background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14)}
-.profile-gifts{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
-.profile-gift{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;transition:transform .25s}
-.profile-gift:hover{transform:scale(1.15)}
-.profile-gift svg{width:28px;height:28px}
-@media(max-width:768px){.gift-shop{grid-template-columns:repeat(2,1fr);gap:10px}.gift-modal-ov{backdrop-filter:none}}
-
 .msg-wrap{display:flex;height:calc(100vh - 120px);min-height:400px;border-radius:18px;overflow:hidden;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07)}
 .msg-list{width:320px;flex-shrink:0;border-right:1px solid rgba(255,255,255,.06);overflow-y:auto;display:flex;flex-direction:column}
 .msg-list-hd{padding:16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06)}
@@ -728,7 +686,6 @@ input[type="file"]{display:none}
   <div class="sb-item" onclick="nav('liked')" data-p="liked"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg><span>Liked</span></div>
   <div class="sb-item" onclick="nav('wl')" data-p="wl"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>Later</span></div>
   <div class="sb-item" onclick="nav('msg')" data-p="msg"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Messages</span></div>
-  <div class="sb-item" onclick="nav('gifts')" data-p="gifts"><svg viewBox="0 0 24 24"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg><span>Gifts</span></div>
   <div class="sb-item" onclick="nav('room')" data-p="room"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><span>Together</span></div>
   <div class="sb-sep"></div>
   <div class="sb-item" onclick="nav('profile')" data-p="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 00-16 0"/></svg><span>Profile</span></div>
@@ -742,7 +699,6 @@ input[type="file"]{display:none}
   <div class="mn-item" onclick="nav('wl')" data-p="wl"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>Later</span></div>
   <div class="mn-item" onclick="nav('room')" data-p="room"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><span>Together</span></div>
   <div class="mn-item" onclick="nav('msg')" data-p="msg"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Chat</span></div>
-  <div class="mn-item" onclick="nav('gifts')" data-p="gifts"><svg viewBox="0 0 24 24"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/></svg><span>Gifts</span></div>
   <div class="mn-item" onclick="nav('profile')" data-p="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 00-16 0"/></svg><span>Profile</span></div>
 </div>
 
@@ -822,13 +778,6 @@ input[type="file"]{display:none}
             <button class="adm-btn red" onclick="admSetPremium(false)">Remove</button>
           </div>
           <div class="adm-result" id="admPremResult"></div>
-        </div>
-        <div class="adm-card">
-          <h4><svg viewBox="0 0 24 24"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/></svg>Grant Gift</h4>
-          <input class="adm-input" id="admGiftUser" placeholder="Username...">
-          <input class="adm-input" id="admGiftId" placeholder="Gift ID (heart, diamond, universe...)">
-          <button class="adm-btn green" onclick="admGrantGift()"><svg viewBox="0 0 24 24"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/></svg>Grant</button>
-          <div class="adm-result" id="admGiftResult"></div>
         </div>
       </div>
 
@@ -955,16 +904,6 @@ input[type="file"]{display:none}
     </div>
   </div></div>
 
-  <div class="page" id="pg-gifts"><div class="content">
-    <div class="section-label">Gift Shop</div>
-    <div class="gift-tabs" id="giftTabs"></div>
-    <div class="gift-shop" id="giftGrid"></div>
-  </div></div>
-
-  <div class="gift-modal-ov" id="giftModalOv" onclick="if(event.target===this)closeGiftModal()">
-    <div class="gift-modal" id="giftModal" style="position:relative"></div>
-  </div>
-
   <div class="page" id="pg-channel"><div class="content">
     <div class="yt-ch-back" onclick="nav(prevPage||'home')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Back</div>
     <div id="chLoading"><div class="ld"><div class="sp"></div>Loading channel...</div></div>
@@ -1038,7 +977,6 @@ input[type="file"]{display:none}
     <div class="ch-header"><div class="ch-avatar" onclick="document.getElementById('afI').click()"><div class="aph" id="avPh"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 00-16 0"/></svg></div><div class="ae"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div></div>
     <div class="ch-meta"><div class="ch-name" id="cNm">Guest</div><div class="ch-handle" id="cHn">@guest</div><div class="ch-sub" id="cSub">0 videos watched</div></div></div>
     <div class="ch-desc"><div id="cDsc" class="ch-desc-e">No description yet.</div></div>
-    <div style="padding:0 20px;margin-bottom:20px"><div class="profile-gifts" id="profileGifts"></div></div>
     <div class="ch-tabs"><div class="ch-tab ac" onclick="sTab('set',this)">Settings</div><div class="ch-tab" onclick="sTab('sta',this)">Stats</div></div>
     <div class="ch-sec" id="chSet"><div class="ep"><h3>Channel Settings</h3>
       <div class="ef"><label>Display Name</label><input id="nIn" type="text" maxlength="30"></div>
@@ -1517,7 +1455,6 @@ function nav(pg){
   if(pg==="wl")renderWL();
   if(pg==="streams"){strLoaded=false;loadStreams()}
   if(pg==="msg")loadMsgPage();
-  if(pg==="gifts")renderGiftShop();
   if(pg==="profile")loadP();
   window.scrollTo({top:0,behavior:"smooth"});
 }
@@ -1531,7 +1468,6 @@ function loadP(){
   document.getElementById("wC").textContent=gH().length;document.getElementById("sC").textContent=gSC();
   document.getElementById("lkC").textContent=tLks();document.getElementById("cmC").textContent=tCms();
   document.getElementById("mSi").textContent=p.joined||new Date().toLocaleDateString();
-  if(cUser&&fbOk)renderProfileGifts(cUser.uid,document.getElementById("profileGifts"));
 }
 function saveP(){
   var n=document.getElementById("nIn").value.trim(),u=document.getElementById("uIn").value.trim(),ds=document.getElementById("dIn").value.trim();
@@ -2286,171 +2222,6 @@ function handleSlashCmd(text){
   return false;
 }
 
-var GIFTS=[
-{id:"heart",name:"Heart",price:10,tier:"common",desc:"A simple token of love",svg:'<svg viewBox="0 0 36 36"><path d="M18 32C10 26 3 20 3 13a7 7 0 0114-1h2a7 7 0 0114 1c0 7-7 13-15 19z" fill="#e8607a" opacity=".85"/></svg>'},
-{id:"star",name:"Star",price:10,tier:"common",desc:"Shine bright",svg:'<svg viewBox="0 0 36 36"><polygon points="18,2 22,14 35,14 24,22 28,34 18,26 8,34 12,22 1,14 14,14" fill="#f0c040" opacity=".85"/></svg>'},
-{id:"moon",name:"Moon",price:10,tier:"common",desc:"Night guardian",svg:'<svg viewBox="0 0 36 36"><path d="M28 18a12 12 0 01-18.6 10A14 14 0 1028 18z" fill="#a8b8d8" opacity=".85"/></svg>'},
-{id:"snow",name:"Snowflake",price:10,tier:"common",desc:"Winter magic",svg:'<svg viewBox="0 0 36 36"><g stroke="#90d4f7" stroke-width="2" fill="none" stroke-linecap="round"><line x1="18" y1="3" x2="18" y2="33"/><line x1="5" y1="10.5" x2="31" y2="25.5"/><line x1="5" y1="25.5" x2="31" y2="10.5"/><line x1="18" y1="7" x2="14" y2="4"/><line x1="18" y1="7" x2="22" y2="4"/><line x1="18" y1="29" x2="14" y2="32"/><line x1="18" y1="29" x2="22" y2="32"/></g></svg>'},
-{id:"cloud",name:"Cloud",price:10,tier:"common",desc:"Fluffy dreams",svg:'<svg viewBox="0 0 36 36"><path d="M8 26a6 6 0 010-12 1 1 0 010-2 8 8 0 0115-3.5A5 5 0 0130 14a6 6 0 01-2 11.6z" fill="#c0d8e8" opacity=".8"/></svg>'},
-{id:"rose",name:"Rose",price:25,tier:"common",desc:"Elegant beauty",svg:'<svg viewBox="0 0 36 36"><circle cx="18" cy="15" r="8" fill="#d94070"/><ellipse cx="18" cy="14" rx="4" ry="6" fill="#e86090" opacity=".7"/><path d="M18 23v10" stroke="#4a8040" stroke-width="2.5"/><ellipse cx="14" cy="28" rx="4" ry="2" fill="#5a9850" opacity=".7"/></svg>'},
-{id:"bolt",name:"Lightning",price:25,tier:"common",desc:"Electric energy",svg:'<svg viewBox="0 0 36 36"><polygon points="20,2 10,18 16,18 14,34 26,16 20,16" fill="#ffd040"/></svg>'},
-{id:"flame",name:"Flame",price:25,tier:"common",desc:"Burning passion",svg:'<svg viewBox="0 0 36 36"><path d="M18 3c0 0 10 12 10 20a10 10 0 01-20 0C8 15 18 3 18 3z" fill="#f07030"/><path d="M18 14c0 0 5 6 5 12a5 5 0 01-10 0C13 20 18 14 18 14z" fill="#ffc040" opacity=".8"/></svg>'},
-{id:"butterfly",name:"Butterfly",price:25,tier:"common",desc:"Free spirit",svg:'<svg viewBox="0 0 36 36"><ellipse cx="11" cy="14" rx="8" ry="10" fill="#b070e0" opacity=".7"/><ellipse cx="25" cy="14" rx="8" ry="10" fill="#70b0e0" opacity=".7"/><ellipse cx="13" cy="24" rx="5" ry="7" fill="#b070e0" opacity=".5"/><ellipse cx="23" cy="24" rx="5" ry="7" fill="#70b0e0" opacity=".5"/><rect x="17" y="6" width="2" height="24" rx="1" fill="#604080"/></svg>'},
-{id:"rainbow",name:"Rainbow",price:25,tier:"common",desc:"After every storm",svg:'<svg viewBox="0 0 36 36"><path d="M4 28a14 14 0 0128 0" fill="none" stroke="#e04040" stroke-width="2.5"/><path d="M7 28a11 11 0 0122 0" fill="none" stroke="#f0a030" stroke-width="2.5"/><path d="M10 28a8 8 0 0116 0" fill="none" stroke="#e8e040" stroke-width="2.5"/><path d="M13 28a5 5 0 0110 0" fill="none" stroke="#50b850" stroke-width="2.5"/><path d="M15 28a3 3 0 016 0" fill="none" stroke="#5080d0" stroke-width="2.5"/></svg>'},
-{id:"crystal",name:"Crystal",price:50,tier:"rare",desc:"Perfectly cut clarity",svg:'<svg viewBox="0 0 36 36"><polygon points="18,2 28,14 24,34 12,34 8,14" fill="#70c0f0" opacity=".6"/><polygon points="18,2 28,14 18,34 8,14" fill="#90d8ff" opacity=".4"/><polygon points="18,2 18,34" fill="none" stroke="#fff" stroke-width=".5" opacity=".5"/></svg>'},
-{id:"diamond",name:"Diamond",price:50,tier:"rare",desc:"Unbreakable brilliance",svg:'<svg viewBox="0 0 36 36"><polygon points="8,12 18,3 28,12 18,34" fill="#b8e0ff" opacity=".7"/><polygon points="8,12 18,12 18,34" fill="#80c0f0" opacity=".5"/><polygon points="8,12 18,3 18,12" fill="#d0f0ff" opacity=".6"/></svg>'},
-{id:"crown",name:"Crown",price:50,tier:"rare",desc:"Born to rule",svg:'<svg viewBox="0 0 36 36"><path d="M5 28V14l6 6 7-12 7 12 6-6v14z" fill="#f0c030"/><rect x="5" y="26" width="26" height="4" rx="1" fill="#d8a020"/><circle cx="12" cy="16" r="1.5" fill="#e04040"/><circle cx="18" cy="10" r="1.5" fill="#50b0f0"/><circle cx="24" cy="16" r="1.5" fill="#50c050"/></svg>'},
-{id:"sword",name:"Sword",price:50,tier:"rare",desc:"Warrior spirit",svg:'<svg viewBox="0 0 36 36"><rect x="16.5" y="2" width="3" height="22" rx="1" fill="#c0c8d0"/><rect x="16.5" y="2" width="3" height="6" rx="1" fill="#e0e8f0" opacity=".7"/><rect x="11" y="23" width="14" height="3" rx="1.5" fill="#8a7040"/><rect x="15" y="26" width="6" height="8" rx="1" fill="#6a5030"/></svg>'},
-{id:"shield",name:"Shield",price:50,tier:"rare",desc:"Defender of friends",svg:'<svg viewBox="0 0 36 36"><path d="M18 3L5 9v10c0 8 5.5 14 13 17 7.5-3 13-9 13-17V9z" fill="#5080c0" opacity=".8"/><path d="M18 10L10 14v6c0 5 3.5 9 8 11V10z" fill="#6898d8" opacity=".5"/></svg>'},
-{id:"phoenix",name:"Phoenix",price:100,tier:"rare",desc:"Rise from ashes",svg:'<svg viewBox="0 0 36 36"><path d="M18 4c-3 5-8 8-8 16a8 8 0 0016 0c0-8-5-11-8-16z" fill="#f07030"/><path d="M18 10c-2 4-5 6-5 12a5 5 0 0010 0c0-6-3-8-5-12z" fill="#ffc040" opacity=".7"/><path d="M18 16c-1 2-2.5 3-2.5 6a2.5 2.5 0 005 0c0-3-1.5-4-2.5-6z" fill="#fff8e0" opacity=".7"/></svg>'},
-{id:"eye",name:"Dragon Eye",price:100,tier:"rare",desc:"Ancient wisdom",svg:'<svg viewBox="0 0 36 36"><ellipse cx="18" cy="18" rx="15" ry="10" fill="#40a060" opacity=".6"/><circle cx="18" cy="18" r="6" fill="#f0d030"/><ellipse cx="18" cy="18" rx="2" ry="6" fill="#101010"/></svg>'},
-{id:"galaxy",name:"Galaxy",price:100,tier:"epic",desc:"Infinite universe",svg:'<svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" fill="#1a1040" opacity=".8"/><ellipse cx="18" cy="18" rx="14" ry="5" fill="#6050b0" opacity=".3" transform="rotate(-30 18 18)"/><ellipse cx="18" cy="18" rx="12" ry="3" fill="#8070d0" opacity=".4" transform="rotate(-30 18 18)"/><circle cx="18" cy="18" r="2.5" fill="#fff" opacity=".8"/><circle cx="10" cy="12" r=".8" fill="#fff" opacity=".6"/><circle cx="26" cy="22" r=".8" fill="#fff" opacity=".6"/><circle cx="22" cy="10" r=".6" fill="#fff" opacity=".5"/><circle cx="12" cy="26" r=".6" fill="#fff" opacity=".5"/></svg>'},
-{id:"nebula",name:"Nebula",price:100,tier:"epic",desc:"Cosmic clouds of creation",svg:'<svg viewBox="0 0 36 36"><circle cx="14" cy="16" r="10" fill="#a050d0" opacity=".3"/><circle cx="22" cy="20" r="10" fill="#5080e0" opacity=".3"/><circle cx="18" cy="14" r="8" fill="#e060a0" opacity=".2"/><circle cx="18" cy="18" r="3" fill="#fff" opacity=".5"/><circle cx="12" cy="12" r="1" fill="#fff" opacity=".7"/><circle cx="24" cy="16" r="1" fill="#fff" opacity=".6"/></svg>'},
-{id:"aurora",name:"Aurora",price:100,tier:"epic",desc:"Northern lights dance",svg:'<svg viewBox="0 0 36 36"><path d="M2 30Q8 10 14 28Q18 8 22 26Q28 6 34 30" fill="none" stroke="#40e8a0" stroke-width="3" opacity=".6"/><path d="M4 28Q10 14 16 26Q20 12 24 24Q30 10 32 28" fill="none" stroke="#60a0f0" stroke-width="3" opacity=".4"/><path d="M6 26Q12 18 18 24Q22 16 26 22Q32 14 34 26" fill="none" stroke="#c060e0" stroke-width="2" opacity=".3"/></svg>'},
-{id:"prism",name:"Prism",price:300,tier:"epic",desc:"Refracting pure light",svg:'<svg viewBox="0 0 36 36"><polygon points="18,3 32,30 4,30" fill="none" stroke="#fff" stroke-width="1.5" opacity=".6"/><polygon points="18,3 32,30 4,30" fill="#fff" opacity=".04"/><line x1="18" y1="3" x2="10" y2="30" stroke="#e04040" stroke-width="1.5" opacity=".5"/><line x1="18" y1="3" x2="14" y2="30" stroke="#f0a030" stroke-width="1.5" opacity=".5"/><line x1="18" y1="3" x2="18" y2="30" stroke="#40e040" stroke-width="1.5" opacity=".5"/><line x1="18" y1="3" x2="22" y2="30" stroke="#4080f0" stroke-width="1.5" opacity=".5"/><line x1="18" y1="3" x2="26" y2="30" stroke="#a040e0" stroke-width="1.5" opacity=".5"/></svg>'},
-{id:"infinity",name:"Infinity",price:300,tier:"epic",desc:"Beyond all limits",svg:'<svg viewBox="0 0 36 36"><path d="M10 18c0-4 3-7 7-7s5 3 1 7c-4 4-1 7 1 7s7-3 7-7-3-7-7-7-5 3-1 7c4 4 1 7-1 7s-7-3-7-7z" fill="none" stroke="#c0a0f0" stroke-width="2.5" stroke-linecap="round"/></svg>'},
-{id:"eclipse",name:"Eclipse",price:300,tier:"epic",desc:"When worlds align",svg:'<svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="13" fill="#f0c040" opacity=".3"/><circle cx="18" cy="18" r="10" fill="#f0c040" opacity=".4"/><circle cx="20" cy="18" r="10" fill="#0a0a14"/><circle cx="12" cy="18" r="1.5" fill="#fff" opacity=".15"/></svg>'},
-{id:"bdiamond",name:"Black Diamond",price:500,tier:"legend",desc:"Rarest gem in existence",svg:'<svg viewBox="0 0 36 36"><polygon points="8,12 18,3 28,12 18,34" fill="#2a2a3a"/><polygon points="8,12 18,12 18,34" fill="#1a1a28"/><polygon points="8,12 18,3 18,12" fill="#3a3a4a"/><polygon points="18,3 28,12 18,12" fill="#444458"/><path d="M8 12h20" stroke="#fff" stroke-width=".5" opacity=".2"/></svg>'},
-{id:"cosmiccrown",name:"Cosmic Crown",price:500,tier:"legend",desc:"Ruler of galaxies",svg:'<svg viewBox="0 0 36 36"><path d="M5 28V14l6 6 7-12 7 12 6-6v14z" fill="#b060f0" opacity=".7"/><rect x="5" y="26" width="26" height="4" rx="1" fill="#8040c0"/><circle cx="12" cy="16" r="1.5" fill="#fff" opacity=".7"/><circle cx="18" cy="10" r="1.5" fill="#fff" opacity=".7"/><circle cx="24" cy="16" r="1.5" fill="#fff" opacity=".7"/><circle cx="10" cy="22" r=".6" fill="#fff" opacity=".3"/><circle cx="26" cy="22" r=".6" fill="#fff" opacity=".3"/></svg>'},
-{id:"supernova",name:"Supernova",price:500,tier:"legend",desc:"Explosive stellar energy",svg:'<svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="5" fill="#fff" opacity=".9"/><circle cx="18" cy="18" r="10" fill="#f0a040" opacity=".15"/><circle cx="18" cy="18" r="14" fill="#f06030" opacity=".08"/><line x1="18" y1="2" x2="18" y2="8" stroke="#fff" stroke-width="1" opacity=".4"/><line x1="18" y1="28" x2="18" y2="34" stroke="#fff" stroke-width="1" opacity=".4"/><line x1="2" y1="18" x2="8" y2="18" stroke="#fff" stroke-width="1" opacity=".4"/><line x1="28" y1="18" x2="34" y2="18" stroke="#fff" stroke-width="1" opacity=".4"/><line x1="6.7" y1="6.7" x2="10.9" y2="10.9" stroke="#fff" stroke-width=".7" opacity=".3"/><line x1="25.1" y1="25.1" x2="29.3" y2="29.3" stroke="#fff" stroke-width=".7" opacity=".3"/><line x1="29.3" y1="6.7" x2="25.1" y2="10.9" stroke="#fff" stroke-width=".7" opacity=".3"/><line x1="10.9" y1="25.1" x2="6.7" y2="29.3" stroke="#fff" stroke-width=".7" opacity=".3"/></svg>'},
-{id:"eternalflame",name:"Eternal Flame",price:1000,tier:"legend",desc:"Burns forever, never fades",svg:'<svg viewBox="0 0 36 36"><path d="M18 2c-4 7-12 12-12 22a12 12 0 0024 0C30 14 22 9 18 2z" fill="#d04020" opacity=".8"/><path d="M18 10c-3 5-7 8-7 16a7 7 0 0014 0c0-8-4-11-7-16z" fill="#f08030" opacity=".7"/><path d="M18 18c-2 3-4 5-4 10a4 4 0 008 0c0-5-2-7-4-10z" fill="#ffd060" opacity=".8"/><path d="M18 24c-1 1-2 2-2 4a2 2 0 004 0c0-2-1-3-2-4z" fill="#fff8e0" opacity=".9"/></svg>'},
-{id:"universe",name:"Universe",price:1000,tier:"legend",desc:"Everything that ever was",svg:'<svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="16" fill="#0a0820"/><circle cx="18" cy="18" r="16" fill="url(#ug)" opacity=".4"/><circle cx="12" cy="12" r="1" fill="#fff" opacity=".8"/><circle cx="24" cy="10" r=".7" fill="#fff" opacity=".6"/><circle cx="8" cy="22" r=".5" fill="#fff" opacity=".5"/><circle cx="28" cy="26" r=".8" fill="#fff" opacity=".7"/><circle cx="20" cy="28" r=".5" fill="#fff" opacity=".5"/><circle cx="14" cy="8" r=".4" fill="#80c0ff" opacity=".6"/><circle cx="26" cy="18" r=".5" fill="#ffa0a0" opacity=".5"/><ellipse cx="18" cy="18" rx="12" ry="3" fill="#6050a0" opacity=".2" transform="rotate(-20 18 18)"/><circle cx="18" cy="18" r="2" fill="#e0d0ff" opacity=".6"/><defs><radialGradient id="ug"><stop offset="0%" stop-color="#4030a0" stop-opacity=".5"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs></svg>'}
-];
-var giftTiers=["all","common","rare","epic","legend"];
-var giftTierNames={all:"All",common:"Common",rare:"Rare",epic:"Epic",legend:"Legendary"};
-var curGiftFilter="all";
-var TON_WALLET="UQBnkVH7bGHT8bH4MHghV1k6-z047g6YUsza-QUOtMrzCnUZ";
-var TON_API="https://toncenter.com/api/v2";
-var tonPrices={10:0.05,25:0.1,50:0.2,100:0.5,300:1.5,500:2.5,1000:5};
-var pendingGift=null;
-
-function renderGiftShop(){
-  document.getElementById("giftTabs").innerHTML=giftTiers.map(function(t){return'<div class="gift-tab'+(t===curGiftFilter?" ac":"")+'" onclick="filterGifts(\''+t+'\')">'+giftTierNames[t]+'</div>'}).join("");
-  var filtered=curGiftFilter==="all"?GIFTS:GIFTS.filter(function(g){return g.tier===curGiftFilter});
-  document.getElementById("giftGrid").innerHTML=filtered.map(function(g){
-    var ton=tonPrices[g.price]||0.1;
-    return'<div class="gift-card t-'+g.tier+'" onclick="openGiftModal(\''+g.id+'\')">'
-      +'<div class="gift-tier">'+g.tier+'</div>'
-      +'<div class="gift-icon">'+g.svg+'</div>'
-      +'<div class="gift-name">'+g.name+'</div>'
-      +'<div class="gift-price"><b>'+ton+'</b> TON</div></div>';
-  }).join("");
-}
-function filterGifts(t){curGiftFilter=t;renderGiftShop()}
-
-function openGiftModal(id){
-  var g=GIFTS.find(function(x){return x.id===id});if(!g)return;
-  var ton=tonPrices[g.price]||0.1;
-  var tc={common:"rgba(180,180,180,.6)",rare:"rgba(130,180,255,.8)",epic:"rgba(200,140,255,.8)",legend:"rgba(255,200,80,.9)"};
-  document.getElementById("giftModal").innerHTML='<div class="gm-close" onclick="closeGiftModal()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>'
-    +'<div class="gift-icon t-'+g.tier+'" style="width:80px;height:80px;margin:0 auto 16px;border-radius:20px;display:flex;align-items:center;justify-content:center">'+g.svg.replace(/width="36"/g,'width="52"').replace(/height="36"/g,'height="52"').replace(/viewBox/,'viewBox')+'</div>'
-    +'<h3>'+g.name+'</h3>'
-    +'<div class="gm-tier" style="color:'+tc[g.tier]+'">'+g.tier+'</div>'
-    +'<div class="gm-price">'+ton+' TON</div>'
-    +'<div class="gm-desc">'+g.desc+'</div>'
-    +'<button class="gift-buy-btn" onclick="buyGift(\''+g.id+'\')">Pay with TON</button>'
-    +'<div id="giftPayStatus" style="margin-top:12px;font-size:.76rem;color:var(--text3)"></div>';
-  document.getElementById("giftModalOv").classList.add("open");
-}
-function closeGiftModal(){document.getElementById("giftModalOv").classList.remove("open");pendingGift=null}
-
-function buyGift(id){
-  if(!cUser){showToast("Sign in to buy gifts");return}
-  var g=GIFTS.find(function(x){return x.id===id});if(!g)return;
-  var ton=tonPrices[g.price]||0.1;
-  var comment="wg_"+id+"_"+cUser.uid.substring(0,8)+"_"+Date.now().toString(36);
-  pendingGift={id:id,ton:ton,comment:comment,ts:Date.now()};
-  var nanoton=Math.round(ton*1e9);
-  var tkLink="https://app.tonkeeper.com/transfer/"+TON_WALLET+"?amount="+nanoton+"&text="+encodeURIComponent(comment);
-  var statusEl=document.getElementById("giftPayStatus");
-  statusEl.innerHTML='<div style="margin-bottom:10px;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);font-size:.7rem;color:var(--text3);word-break:break-all">Comment: <strong style="color:var(--text2)">'+esc(comment)+'</strong></div>'
-    +'<a href="'+tkLink+'" target="_blank" style="display:block;padding:12px;border-radius:12px;background:rgba(0,136,204,.12);border:1px solid rgba(0,136,204,.25);color:rgba(60,180,240,.95);font-size:.82rem;font-weight:700;text-align:center;text-decoration:none;margin-bottom:8px;transition:all .25s">Open Tonkeeper</a>'
-    +'<div style="display:flex;gap:8px;margin-bottom:10px">'
-    +'<button onclick="navigator.clipboard.writeText(\''+TON_WALLET+'\');showToast(\'Address copied!\')" style="flex:1;padding:8px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--text2);font-family:var(--font);font-size:.68rem;font-weight:600;cursor:pointer">Copy Address</button>'
-    +'<button onclick="navigator.clipboard.writeText(\''+comment+'\');showToast(\'Comment copied!\')" style="flex:1;padding:8px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--text2);font-family:var(--font);font-size:.68rem;font-weight:600;cursor:pointer">Copy Comment</button>'
-    +'</div>'
-    +'<div style="font-size:.64rem;color:var(--text4);text-align:center;margin-bottom:10px">Send <b style="color:var(--text3)">'+ton+' TON</b> to the address above with the exact comment</div>'
-    +'<button class="gift-buy-btn" style="background:rgba(100,220,160,.12);border-color:rgba(100,220,160,.2)" onclick="verifyTonPayment()">I Paid — Verify</button>'
-    +'<div id="giftVerifyMsg" style="margin-top:8px;font-size:.72rem;color:var(--text3)"></div>';
-}
-
-function verifyTonPayment(){
-  if(!pendingGift||!cUser){showToast("No pending purchase");return}
-  var msg=document.getElementById("giftVerifyMsg");
-  msg.innerHTML='<div class="sp" style="width:18px;height:18px;border:1.5px solid rgba(255,255,255,.07);border-top-color:rgba(255,255,255,.45);border-radius:50%;animation:spin .75s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px"></div>Checking blockchain...';
-  fetch(TON_API+"/getTransactions?address="+encodeURIComponent(TON_WALLET)+"&limit=30&archival=true").then(function(r){return r.json()}).then(function(data){
-    if(!data.ok||!data.result){msg.textContent="Could not check. Try again in 30 sec.";return}
-    var found=false;
-    var cutoff=pendingGift.ts/1000-60;
-    for(var i=0;i<data.result.length;i++){
-      var tx=data.result[i];
-      if(!tx.in_msg)continue;
-      var txComment="";
-      if(tx.in_msg.msg_data&&tx.in_msg.msg_data.text){try{txComment=atob(tx.in_msg.msg_data.text)}catch(e){txComment=""}}
-      if(tx.in_msg.message)txComment=tx.in_msg.message;
-      var txVal=parseInt(tx.in_msg.value||0)/1e9;
-      if(txComment===pendingGift.comment&&txVal>=pendingGift.ton*0.95){found=true;break}
-    }
-    if(found){
-      msg.innerHTML='<span style="color:rgba(100,220,160,.9);font-weight:700">Payment confirmed!</span>';
-      grantGiftToSelf(pendingGift.id,pendingGift.comment);
-      pendingGift=null;
-    }else{
-      msg.innerHTML='Payment not found yet. Wait 1-2 min after sending, then click Verify again.<br><span style="font-size:.64rem;color:var(--text4)">Make sure comment matches exactly.</span>';
-    }
-  }).catch(function(e){
-    msg.textContent="Network error. Try again.";
-  });
-}
-
-function grantGiftToSelf(giftId,txComment){
-  if(!cUser||!fbOk)return;
-  db.collection("users").doc(cUser.uid).get().then(function(d){
-    var data=d.exists?d.data():{};
-    var gifts=data.gifts||[];
-    gifts.push({id:giftId,at:new Date().toISOString(),by:"ton",tx:txComment});
-    return db.collection("users").doc(cUser.uid).update({gifts:gifts});
-  }).then(function(){
-    showToast("Gift received!");
-    setTimeout(function(){closeGiftModal();loadP()},1500);
-  }).catch(function(e){showToast("Error: "+e.message)});
-}
-
-function admGrantGift(){
-  if(!isAdmin()||!fbOk)return;
-  var u=document.getElementById("admGiftUser").value.trim().toLowerCase();
-  var gid=document.getElementById("admGiftId").value.trim().toLowerCase();
-  if(!u||!gid){admShowResult("admGiftResult","Fill both fields");return}
-  var g=GIFTS.find(function(x){return x.id===gid});
-  if(!g){admShowResult("admGiftResult","Gift ID not found. Options: "+GIFTS.map(function(x){return x.id}).join(", "));return}
-  getUidByUsername(u,function(uid){
-    if(!uid){admShowResult("admGiftResult","User @"+u+" not found");return}
-    db.collection("users").doc(uid).get().then(function(d){
-      var data=d.exists?d.data():{};
-      var gifts=data.gifts||[];
-      gifts.push({id:gid,at:new Date().toISOString(),by:curUsername});
-      return db.collection("users").doc(uid).update({gifts:gifts});
-    }).then(function(){
-      admShowResult("admGiftResult","Gave "+g.name+" to @"+u);admLog("info","Gave gift "+g.name+" to @"+u);
-      document.getElementById("admGiftUser").value="";document.getElementById("admGiftId").value="";
-    }).catch(function(e){admShowResult("admGiftResult","Error: "+e.message)});
-  });
-}
-
-function renderProfileGifts(uid,el){
-  if(!fbOk)return;
-  db.collection("users").doc(uid).get().then(function(d){
-    var data=d.exists?d.data():{};
-    var gifts=data.gifts||[];
-    if(!gifts.length){el.innerHTML="";return}
-    el.innerHTML=gifts.map(function(ug){
-      var g=GIFTS.find(function(x){return x.id===ug.id});
-      if(!g)return"";
-      var bg={common:"rgba(255,255,255,.04)",rare:"rgba(100,160,255,.06)",epic:"rgba(180,100,255,.06)",legend:"rgba(255,180,50,.08)"};
-      return'<div class="profile-gift" style="background:'+(bg[g.tier]||bg.common)+'" title="'+esc(g.name)+'">'+g.svg+'</div>';
-    }).join("");
-  });
-}
 
 function checkDmParam(){
   var p=new URLSearchParams(window.location.search);
