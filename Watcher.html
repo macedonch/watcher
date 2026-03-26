@@ -2361,14 +2361,15 @@ function buyGift(id){
   var comment="wg_"+id+"_"+cUser.uid.substring(0,8)+"_"+Date.now().toString(36);
   pendingGift={id:id,ton:ton,comment:comment,ts:Date.now()};
   var nanoton=Math.round(ton*1e9);
-  var tonLink="ton://transfer/"+TON_WALLET+"?amount="+nanoton+"&text="+encodeURIComponent(comment);
-  var tgLink="https://t.me/wallet?startattach=transfer_"+TON_WALLET+"_"+nanoton+"_"+encodeURIComponent(comment);
+  var tkLink="https://app.tonkeeper.com/transfer/"+TON_WALLET+"?amount="+nanoton+"&text="+encodeURIComponent(comment);
   var statusEl=document.getElementById("giftPayStatus");
   statusEl.innerHTML='<div style="margin-bottom:10px;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);font-size:.7rem;color:var(--text3);word-break:break-all">Comment: <strong style="color:var(--text2)">'+esc(comment)+'</strong></div>'
+    +'<a href="'+tkLink+'" target="_blank" style="display:block;padding:12px;border-radius:12px;background:rgba(0,136,204,.12);border:1px solid rgba(0,136,204,.25);color:rgba(60,180,240,.95);font-size:.82rem;font-weight:700;text-align:center;text-decoration:none;margin-bottom:8px;transition:all .25s">Open Tonkeeper</a>'
     +'<div style="display:flex;gap:8px;margin-bottom:10px">'
-    +'<a href="'+tonLink+'" target="_blank" style="flex:1;padding:10px;border-radius:12px;background:rgba(0,136,204,.12);border:1px solid rgba(0,136,204,.25);color:rgba(60,180,240,.95);font-size:.76rem;font-weight:700;text-align:center;text-decoration:none;display:block;transition:all .25s">Tonkeeper</a>'
-    +'<a href="'+tgLink+'" target="_blank" style="flex:1;padding:10px;border-radius:12px;background:rgba(100,160,255,.1);border:1px solid rgba(100,160,255,.2);color:rgba(140,190,255,.95);font-size:.76rem;font-weight:700;text-align:center;text-decoration:none;display:block;transition:all .25s">TG Wallet</a>'
+    +'<button onclick="navigator.clipboard.writeText(\''+TON_WALLET+'\');showToast(\'Address copied!\')" style="flex:1;padding:8px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--text2);font-family:var(--font);font-size:.68rem;font-weight:600;cursor:pointer">Copy Address</button>'
+    +'<button onclick="navigator.clipboard.writeText(\''+comment+'\');showToast(\'Comment copied!\')" style="flex:1;padding:8px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--text2);font-family:var(--font);font-size:.68rem;font-weight:600;cursor:pointer">Copy Comment</button>'
     +'</div>'
+    +'<div style="font-size:.64rem;color:var(--text4);text-align:center;margin-bottom:10px">Send <b style="color:var(--text3)">'+ton+' TON</b> to the address above with the exact comment</div>'
     +'<button class="gift-buy-btn" style="background:rgba(100,220,160,.12);border-color:rgba(100,220,160,.2)" onclick="verifyTonPayment()">I Paid — Verify</button>'
     +'<div id="giftVerifyMsg" style="margin-top:8px;font-size:.72rem;color:var(--text3)"></div>';
 }
