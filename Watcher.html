@@ -722,11 +722,13 @@ input[type="file"]{display:none}
   <div class="adm-nav">
     <div class="adm-nav-hd"><svg viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4"/></svg><span>Admin</span></div>
     <div class="adm-tab ac" onclick="admSwitchTab('dash',this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Dashboard</span></div>
+    <div class="adm-tab" onclick="admSwitchTab('mod',this)"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Moderation</span></div>
     <div class="adm-tab" onclick="admSwitchTab('users',this)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span>Users</span></div>
+    <div class="adm-tab" onclick="admSwitchTab('rooms',this)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><span>Rooms</span></div>
     <div class="adm-tab" onclick="admSwitchTab('comments',this)"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Comments</span></div>
-    <div class="adm-tab" onclick="admSwitchTab('broadcast',this)"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg><span>Broadcast</span></div>
+    <div class="adm-tab" onclick="admSwitchTab('broadcast',this)"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/></svg><span>Broadcast</span></div>
     <div class="adm-tab" onclick="admSwitchTab('log',this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Log</span></div>
-    <div class="adm-nav-foot">v1.0</div>
+    <div class="adm-nav-foot">v2.0</div>
   </div>
   <div class="adm-main">
     <div class="adm-main-hd"><h2 id="admTitle">Dashboard</h2><div class="adm-close" onclick="toggleAdmin()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div></div>
@@ -745,7 +747,37 @@ input[type="file"]{display:none}
             Admins: <span id="admList" style="color:var(--text3)"></span>
           </div>
         </div>
-        <button class="adm-btn blue" onclick="admLoadStats()" style="margin-top:4px"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>Refresh Stats</button>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+          <button class="adm-btn blue" onclick="admLoadStats()"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>Refresh</button>
+        </div>
+      </div>
+
+      <div class="adm-view" id="admV-mod">
+        <div class="adm-card">
+          <h4><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>Ban / Unban User</h4>
+          <input class="adm-input" id="admBanUser" placeholder="Username to ban/unban..." onkeydown="if(event.key==='Enter')admBanUser()">
+          <div style="display:flex;gap:8px">
+            <button class="adm-btn red" onclick="admBanUser()"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>Ban</button>
+            <button class="adm-btn green" onclick="admUnbanUser()"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Unban</button>
+          </div>
+          <div class="adm-result" id="admBanResult"></div>
+        </div>
+        <div class="adm-card">
+          <h4><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Warn User (3 = autoban)</h4>
+          <input class="adm-input" id="admWarnUser" placeholder="Username..." onkeydown="if(event.key==='Enter')admWarnUser()">
+          <input class="adm-input" id="admWarnReason" placeholder="Reason (optional)...">
+          <button class="adm-btn red" onclick="admWarnUser()"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>Warn</button>
+          <div class="adm-result" id="admWarnResult"></div>
+        </div>
+        <div class="adm-card">
+          <h4><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Premium Badge</h4>
+          <input class="adm-input" id="admPremUser" placeholder="Username...">
+          <div style="display:flex;gap:8px">
+            <button class="adm-btn blue" onclick="admSetPremium(true)"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Give Premium</button>
+            <button class="adm-btn red" onclick="admSetPremium(false)">Remove</button>
+          </div>
+          <div class="adm-result" id="admPremResult"></div>
+        </div>
       </div>
 
       <div class="adm-view" id="admV-users">
@@ -757,16 +789,28 @@ input[type="file"]{display:none}
         </div>
       </div>
 
+      <div class="adm-view" id="admV-rooms">
+        <div class="adm-card">
+          <h4><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Active Rooms</h4>
+          <div id="admRoomsList" style="margin-bottom:10px"><div style="font-size:.78rem;color:var(--text3)">Click refresh to load</div></div>
+          <div style="display:flex;gap:8px">
+            <button class="adm-btn blue" onclick="admListRooms()"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>Refresh</button>
+            <button class="adm-btn red" onclick="admClearRooms()"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>Clear All</button>
+          </div>
+          <div class="adm-result" id="admRoomsResult"></div>
+        </div>
+      </div>
+
       <div class="adm-view" id="admV-comments">
         <div class="adm-card">
           <h4><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Delete Comment</h4>
           <input class="adm-input" id="admDelVid" placeholder="Video ID (from URL)">
           <input class="adm-input" id="admDelCid" placeholder="Comment ID">
-          <button class="adm-btn red" onclick="admDelComment()"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Delete</button>
+          <button class="adm-btn red" onclick="admDelComment()"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/></svg>Delete</button>
           <div class="adm-result" id="admDelResult"></div>
         </div>
         <div class="adm-card">
-          <h4><svg viewBox="0 0 24 24"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>Wipe All Comments</h4>
+          <h4><svg viewBox="0 0 24 24"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2z"/></svg>Wipe All Comments</h4>
           <input class="adm-input" id="admWipeVid" placeholder="Video ID">
           <button class="adm-btn red" onclick="admWipeComments()"><svg viewBox="0 0 24 24"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2z"/></svg>Wipe All</button>
           <div class="adm-result" id="admWipeResult"></div>
@@ -964,7 +1008,7 @@ function loadAdmins(cb){
   }).catch(function(){if(cb)cb()});
 }
 try{firebase.initializeApp(firebaseConfig);db=firebase.firestore();fbOk=firebaseConfig.apiKey!=="YOUR_API_KEY"}catch(e){fbOk=false}
-if(fbOk){firebase.auth().getRedirectResult().catch(function(){});firebase.auth().onAuthStateChanged(function(u){cUser=u;renderUA();if(u)checkUn(u);else if(!localStorage.getItem("wSk"))document.getElementById("authO").classList.add("open")})}else renderUA();
+if(fbOk){firebase.auth().getRedirectResult().catch(function(){});firebase.auth().onAuthStateChanged(function(u){cUser=u;renderUA();if(u){checkBan();checkUn(u)}else if(!localStorage.getItem("wSk"))document.getElementById("authO").classList.add("open")})}else renderUA();
 function gSignIn(){if(!fbOk)return;var p=new firebase.auth.GoogleAuthProvider();firebase.auth().signInWithPopup(p).catch(function(e){if(e.code==="auth/popup-blocked"||e.code==="auth/cancelled-popup-request"){firebase.auth().signInWithRedirect(p)}else{alert("Sign-in failed: "+e.message)}})}
 function checkUn(u){document.getElementById("authO").classList.remove("open");db.collection("users").doc(u.uid).get().then(function(d){if(!d.exists||!d.data().username){document.getElementById("authS1").style.display="none";document.getElementById("authS2").classList.add("show");document.getElementById("authO").classList.add("open")}else{curUsername=d.data().username;loadAdmins(function(){checkAdmin()});loadP()}})}
 function submitUn(){var u=document.getElementById("unIn").value.trim();if(!u||u.length<3){document.getElementById("unErr").textContent="Min 3 characters";return}if(!/^[a-z0-9_]+$/.test(u)){document.getElementById("unErr").textContent="a-z, 0-9, _ only";return}document.getElementById("unErr").textContent="Checking...";db.collection("usernames").doc(u).get().then(function(d){if(d.exists){document.getElementById("unErr").textContent="Taken!";return}var b=db.batch();b.set(db.collection("usernames").doc(u),{uid:cUser.uid});b.set(db.collection("users").doc(cUser.uid),{username:u,name:cUser.displayName||"",photo:cUser.photoURL||"",email:cUser.email||"",joined:new Date().toISOString()},{merge:true});b.commit().then(function(){document.getElementById("authO").classList.remove("open");loadP()})})}
@@ -1378,6 +1422,7 @@ function ldCm(id){
 function addC(){
   var t=document.getElementById("cIn").value.trim();if(!t||!curV)return;
   if(!cUser){showToast("Sign in to comment");return}
+  if(!checkBanBeforeAction("commenting"))return;
   document.getElementById("cIn").value="";
   fbAddComment(curV,t,function(){ldCm(curV);updMC()});
 }
@@ -1824,6 +1869,8 @@ function openRoomVideo(){
 function sendRoomMsg(){
   var text=document.getElementById("rmChatIn").value.trim();
   if(!text||!rmId||!fbOk)return;
+  if(handleSlashCmd(text)){document.getElementById("rmChatIn").value="";return}
+  if(!checkBanBeforeAction("chatting"))return;
   document.getElementById("rmChatIn").value="";
   db.collection("rooms").doc(rmId).collection("chat").add({user:getUserName(),text:text,ts:Date.now()});
 }
@@ -1912,6 +1959,8 @@ function sendDm(){
   var input=document.getElementById("msgIn");
   var text=input.value.trim();
   if(!text||!msgCurChat||!cUser||!fbOk)return;
+  if(handleSlashCmd(text)){input.value="";return}
+  if(!checkBanBeforeAction("messaging"))return;
   input.value="";
   var name=cUser.displayName||"User";
   db.collection("chats").doc(msgCurChat).collection("messages").add({
@@ -1961,7 +2010,7 @@ function admSwitchTab(tab,el){
   document.querySelectorAll(".adm-tab").forEach(function(t){t.classList.remove("ac")});el.classList.add("ac");
   document.querySelectorAll(".adm-view").forEach(function(v){v.classList.remove("ac")});
   var v=document.getElementById("admV-"+tab);if(v)v.classList.add("ac");
-  var titles={dash:"Dashboard",users:"Users",comments:"Comments",broadcast:"Broadcast",log:"Activity Log"};
+  var titles={dash:"Dashboard",mod:"Moderation",users:"Users",rooms:"Rooms",comments:"Comments",broadcast:"Broadcast",log:"Activity Log"};
   document.getElementById("admTitle").textContent=titles[tab]||"Admin";
 }
 var admLogs=[];
@@ -2020,19 +2069,154 @@ function admLookupUser(){
   db.collection("usernames").doc(q).get().then(function(d){
     if(!d.exists){admShowResult("admUserResult","User @"+q+" not found");return}
     var uid=d.data().uid;
-    db.collection("users").doc(uid).get().then(function(u){
-      var data=u.exists?u.data():{};
+    Promise.all([
+      db.collection("users").doc(uid).get(),
+      db.collection("bans").doc(uid).get(),
+      db.collection("warns").doc(uid).get()
+    ]).then(function(results){
+      var data=results[0].exists?results[0].data():{};
+      var banned=results[1].exists;
+      var warns=results[2].exists&&results[2].data().list?results[2].data().list:[];
       var el=document.getElementById("admUserResult");
-      el.innerHTML='<div style="padding:4px 0"><strong style="color:var(--text)">@'+esc(q)+'</strong></div>'
+      var badges='';
+      if(data.premium)badges+='<span style="background:rgba(255,200,50,.12);color:rgba(255,210,80,.9);padding:2px 8px;border-radius:6px;font-size:.58rem;font-weight:700;margin-left:6px">⭐ PREMIUM</span>';
+      if(banned)badges+='<span style="background:rgba(255,80,80,.12);color:rgba(255,120,120,.9);padding:2px 8px;border-radius:6px;font-size:.58rem;font-weight:700;margin-left:6px">BANNED</span>';
+      el.innerHTML='<div style="padding:4px 0"><strong style="color:var(--text)">@'+esc(q)+'</strong>'+badges+'</div>'
         +'<div style="font-size:.72rem;color:var(--text2);line-height:1.8">'
         +'Name: '+(data.name||"—")+'<br>'
         +'Email: '+(data.email||"—")+'<br>'
         +'UID: <span style="font-size:.6rem;color:var(--text3)">'+uid+'</span><br>'
-        +'Joined: '+(data.joined||"—")
+        +'Joined: '+(data.joined||"—")+'<br>'
+        +'Warnings: <span style="color:'+(warns.length>=2?"rgba(255,120,120,.9)":"var(--text3)")+'">'+warns.length+'/3</span>'
+        +(warns.length?'<div style="margin-top:4px;font-size:.66rem;color:var(--text3)">'+warns.map(function(w,i){return(i+1)+'. '+esc(w.reason||"—")+" ("+esc(w.by||"")+")"}).join("<br>")+"</div>":"")
         +'</div>';
       el.classList.add("show");admLog("info","Looked up @"+q);
     });
   }).catch(function(e){admShowResult("admUserResult","Error: "+e.message)});
+}
+
+function getUidByUsername(username,cb){
+  db.collection("usernames").doc(username.toLowerCase()).get().then(function(d){
+    if(!d.exists){cb(null);return}cb(d.data().uid);
+  }).catch(function(){cb(null)});
+}
+function admBanUser(){
+  if(!isAdmin()||!fbOk)return;
+  var u=document.getElementById("admBanUser").value.trim().toLowerCase();
+  if(!u){admShowResult("admBanResult","Enter username");return}
+  getUidByUsername(u,function(uid){
+    if(!uid){admShowResult("admBanResult","User @"+u+" not found");return}
+    db.collection("bans").doc(uid).set({username:u,bannedBy:curUsername,bannedAt:new Date().toISOString(),reason:"Banned by admin"}).then(function(){
+      admShowResult("admBanResult","@"+u+" banned");admLog("del","Banned @"+u);
+      document.getElementById("admBanUser").value="";
+    });
+  });
+}
+function admUnbanUser(){
+  if(!isAdmin()||!fbOk)return;
+  var u=document.getElementById("admBanUser").value.trim().toLowerCase();
+  if(!u){admShowResult("admBanResult","Enter username");return}
+  getUidByUsername(u,function(uid){
+    if(!uid){admShowResult("admBanResult","User @"+u+" not found");return}
+    db.collection("bans").doc(uid).delete().then(function(){
+      admShowResult("admBanResult","@"+u+" unbanned");admLog("info","Unbanned @"+u);
+      document.getElementById("admBanUser").value="";
+    });
+  });
+}
+function admWarnUser(){
+  if(!isAdmin()||!fbOk)return;
+  var u=document.getElementById("admWarnUser").value.trim().toLowerCase();
+  var reason=document.getElementById("admWarnReason").value.trim()||"No reason";
+  if(!u){admShowResult("admWarnResult","Enter username");return}
+  getUidByUsername(u,function(uid){
+    if(!uid){admShowResult("admWarnResult","User @"+u+" not found");return}
+    db.collection("warns").doc(uid).get().then(function(d){
+      var warns=d.exists&&d.data().list?d.data().list:[];
+      warns.push({reason:reason,by:curUsername,at:new Date().toISOString()});
+      db.collection("warns").doc(uid).set({username:u,list:warns}).then(function(){
+        var count=warns.length;
+        admShowResult("admWarnResult","@"+u+" warned ("+count+"/3)");
+        admLog("del","Warned @"+u+": "+reason+" ("+count+"/3)");
+        if(count>=3){
+          db.collection("bans").doc(uid).set({username:u,bannedBy:"system",bannedAt:new Date().toISOString(),reason:"3 warnings"}).then(function(){
+            admShowResult("admWarnResult","@"+u+" AUTO-BANNED (3/3 warns)");
+            admLog("del","Auto-banned @"+u+" (3 warnings)");
+          });
+        }
+        document.getElementById("admWarnUser").value="";document.getElementById("admWarnReason").value="";
+      });
+    });
+  });
+}
+function admSetPremium(give){
+  if(!isAdmin()||!fbOk)return;
+  var u=document.getElementById("admPremUser").value.trim().toLowerCase();
+  if(!u){admShowResult("admPremResult","Enter username");return}
+  getUidByUsername(u,function(uid){
+    if(!uid){admShowResult("admPremResult","User @"+u+" not found");return}
+    db.collection("users").doc(uid).update({premium:give}).then(function(){
+      admShowResult("admPremResult",give?"@"+u+" is now Premium ⭐":"@"+u+" Premium removed");
+      admLog("info",(give?"Gave":"Removed")+" Premium for @"+u);
+      document.getElementById("admPremUser").value="";
+    }).catch(function(e){admShowResult("admPremResult","Error: "+e.message)});
+  });
+}
+function admListRooms(){
+  if(!isAdmin()||!fbOk)return;
+  var el=document.getElementById("admRoomsList");
+  el.innerHTML='<div style="font-size:.78rem;color:var(--text3)">Loading...</div>';
+  db.collection("rooms").get().then(function(snap){
+    if(snap.empty){el.innerHTML='<div style="font-size:.78rem;color:var(--text3)">No rooms</div>';return}
+    var html="";
+    snap.forEach(function(doc){
+      var d=doc.data();
+      html+='<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.02);margin-bottom:4px;font-size:.76rem">'
+        +'<span style="color:var(--text);font-weight:600;flex:1">'+esc(doc.id)+'</span>'
+        +'<span style="color:var(--text3);font-size:.66rem">'+esc(d.video||"no video")+'</span>'
+        +'<button class="adm-btn red" style="padding:4px 10px;font-size:.62rem" onclick="admDeleteRoom(\''+doc.id+'\')">Delete</button>'
+        +'</div>';
+    });
+    el.innerHTML=html;
+  });
+}
+function admDeleteRoom(id){
+  if(!isAdmin()||!fbOk)return;
+  db.collection("rooms").doc(id).delete().then(function(){
+    admShowResult("admRoomsResult","Room "+id+" deleted");admLog("del","Deleted room "+id);admListRooms();
+  });
+}
+function admClearRooms(){
+  if(!isAdmin()||!fbOk)return;
+  if(!confirm("Delete ALL rooms?"))return;
+  db.collection("rooms").get().then(function(snap){
+    var batch=db.batch();var count=0;
+    snap.forEach(function(doc){batch.delete(doc.ref);count++});
+    if(!count){admShowResult("admRoomsResult","No rooms");return}
+    batch.commit().then(function(){admShowResult("admRoomsResult",count+" rooms deleted");admLog("del","Cleared "+count+" rooms");admListRooms()});
+  });
+}
+
+var isBanned=false;
+function checkBan(){
+  if(!cUser||!fbOk)return;
+  db.collection("bans").doc(cUser.uid).get().then(function(d){isBanned=d.exists}).catch(function(){});
+}
+function checkBanBeforeAction(action){
+  if(isBanned){showToast("You are banned from "+action);return false}return true;
+}
+
+function handleSlashCmd(text){
+  if(!isAdmin()||!text.startsWith("/"))return false;
+  var parts=text.split(" ");
+  var cmd=parts[0].toLowerCase();
+  var arg=parts.slice(1).join(" ").trim();
+  if(cmd==="/ban"&&arg){document.getElementById("admBanUser").value=arg;admBanUser();return true}
+  if(cmd==="/unban"&&arg){document.getElementById("admBanUser").value=arg;admUnbanUser();return true}
+  if(cmd==="/warn"&&arg){var wp=arg.split(" ");document.getElementById("admWarnUser").value=wp[0];document.getElementById("admWarnReason").value=wp.slice(1).join(" ")||"";admWarnUser();return true}
+  if(cmd==="/premium"&&arg){document.getElementById("admPremUser").value=arg;admSetPremium(true);return true}
+  if(cmd==="/unpremium"&&arg){document.getElementById("admPremUser").value=arg;admSetPremium(false);return true}
+  return false;
 }
 
 function checkDmParam(){
