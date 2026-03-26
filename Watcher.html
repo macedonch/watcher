@@ -559,7 +559,7 @@ input[type="file"]{display:none}
 .adm-close svg{width:14px;height:14px;stroke:var(--text2);stroke-width:2;fill:none}
 .adm-content{flex:1;overflow-y:auto;padding:20px 24px}
 .adm-view{display:none}.adm-view.ac{display:block}
-.adm-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.adm-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
 .adm-stat-card{padding:18px 16px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);text-align:center;transition:all .3s}
 .adm-stat-card:hover{background:rgba(255,255,255,.05);transform:translateY(-2px)}
 .adm-stat-num{font-size:1.6rem;font-weight:700;margin-bottom:2px;letter-spacing:-.03em}
@@ -596,7 +596,7 @@ input[type="file"]{display:none}
   .adm-panel{width:100%;height:100%;max-width:100vw;max-height:100vh;border-radius:0}
   .adm-nav{width:60px;padding:10px 6px}.adm-nav-hd span,.adm-tab span,.adm-nav-foot{display:none}
   .adm-nav-hd{padding:8px 0 14px;justify-content:center}.adm-tab{justify-content:center;padding:10px}
-  .adm-stats-grid{grid-template-columns:1fr}
+  .adm-stats-grid{grid-template-columns:repeat(2,1fr)}
   .admin-btn span{display:none}
   .adm-overlay{backdrop-filter:none;-webkit-backdrop-filter:none}
 }
@@ -737,6 +737,7 @@ input[type="file"]{display:none}
       <div class="adm-view ac" id="admV-dash">
         <div class="adm-stats-grid" id="admStatsGrid">
           <div class="adm-stat-card blue"><div class="adm-stat-num" id="admSUsers">—</div><div class="adm-stat-label">Users</div></div>
+          <div class="adm-stat-card" style="--c:rgba(0,220,130,.9)"><div class="adm-stat-num" id="admSOnline" style="color:rgba(0,220,130,.9)">—</div><div class="adm-stat-label">Online Now</div></div>
           <div class="adm-stat-card green"><div class="adm-stat-num" id="admSRooms">—</div><div class="adm-stat-label">Rooms</div></div>
           <div class="adm-stat-card orange"><div class="adm-stat-num" id="admSChats">—</div><div class="adm-stat-label">DM Chats</div></div>
         </div>
@@ -2058,9 +2059,11 @@ function admBroadcast(){
 function admLoadStats(){
   if(!fbOk)return;
   document.getElementById("admSUsers").textContent="...";
+  document.getElementById("admSOnline").textContent="...";
   document.getElementById("admSRooms").textContent="...";
   document.getElementById("admSChats").textContent="...";
-  db.collection("users").get().then(function(s){document.getElementById("admSUsers").textContent=s.size;return db.collection("rooms").get()}).then(function(s){document.getElementById("admSRooms").textContent=s.size;return db.collection("chats").get()}).then(function(s){document.getElementById("admSChats").textContent=s.size}).catch(function(){});
+  var cutoff=Date.now()-120000;
+  db.collection("users").get().then(function(s){document.getElementById("admSUsers").textContent=s.size;return db.collection("presence").where("t",">",cutoff).get()}).then(function(s){document.getElementById("admSOnline").textContent=s.size;return db.collection("rooms").get()}).then(function(s){document.getElementById("admSRooms").textContent=s.size;return db.collection("chats").get()}).then(function(s){document.getElementById("admSChats").textContent=s.size}).catch(function(){});
 }
 function admLookupUser(){
   if(!isAdmin()||!fbOk)return;
@@ -2232,6 +2235,11 @@ function checkDmParam(){
     }
   }
 }
+
+var visitorId=localStorage.getItem("wvid");
+if(!visitorId){visitorId="v_"+Math.random().toString(36).substring(2,12);localStorage.setItem("wvid",visitorId)}
+function presencePing(){if(!fbOk)return;db.collection("presence").doc(visitorId).set({t:Date.now()}).catch(function(){})}
+presencePing();setInterval(presencePing,30000);
 
 renderChips();loadFeed();loadP();checkRoomParam();checkDmParam();setTimeout(checkNewVideos,3000);
 </script>
