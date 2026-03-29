@@ -34,19 +34,23 @@
 [data-glass="on"] .topbar{background:var(--lg-bg)!important;backdrop-filter:blur(40px) saturate(200%)!important;-webkit-backdrop-filter:blur(40px) saturate(200%)!important;border-color:var(--lg-border)!important}
 [data-glass="on"] .sidebar{background:var(--lg-bg)!important;backdrop-filter:blur(30px) saturate(180%)!important;-webkit-backdrop-filter:blur(30px) saturate(180%)!important;border-color:var(--lg-border)!important}
 [data-glass="on"] .str-card,[data-glass="on"] .list-card,[data-glass="on"] .s-card,[data-glass="on"] .ep,[data-glass="on"] .p-stats,[data-glass="on"] .room-panel{background:var(--lg-bg)!important;border-color:var(--lg-border)!important;backdrop-filter:blur(var(--lg-blur)) saturate(180%);-webkit-backdrop-filter:blur(var(--lg-blur)) saturate(180%)}
-.theme-drop{position:absolute;top:calc(100% + 10px);right:-20px;width:280px;background:rgba(14,14,18,.97);border:1px solid var(--card-border);border-radius:20px;padding:14px;box-shadow:0 24px 60px rgba(0,0,0,.5);z-index:2000;transform-origin:top right;transform:scale(.92) translateY(-8px);opacity:0;pointer-events:none;transition:all .35s var(--spring)}
+.theme-drop{position:absolute;top:calc(100% + 10px);right:-20px;width:280px;background:rgba(14,14,18,.97);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:16px;box-shadow:0 24px 60px rgba(0,0,0,.5);z-index:2000;transform-origin:top right;transform:scale(.92) translateY(-8px);opacity:0;pointer-events:none;transition:all .35s var(--spring)}
+@media(min-width:769px){.theme-drop{backdrop-filter:blur(40px) saturate(180%);-webkit-backdrop-filter:blur(40px) saturate(180%);background:rgba(14,14,18,.88)}}
 [data-theme="snow"] .theme-drop{background:rgba(250,250,252,.97)}
+[data-theme="snow"] .theme-drop .theme-drop-hd{color:rgba(26,26,31,.35)}
+[data-theme="snow"] .theme-drop .glass-label{color:rgba(26,26,31,.6)}
 .theme-drop.open{transform:scale(1) translateY(0);opacity:1;pointer-events:auto}
-.theme-drop h4{font-size:.58rem;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;padding:2px 6px 10px}
+.theme-drop-hd{font-family:var(--font);font-size:.6rem;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;padding:0 4px 12px}
 .theme-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
 .theme-orb{width:100%;aspect-ratio:1;border-radius:14px;cursor:pointer;transition:all .35s var(--spring);border:2px solid transparent;position:relative;overflow:hidden}
 .theme-orb:hover{transform:scale(1.08)}
 .theme-orb:active{transform:scale(.92);transition-duration:.1s}
 .theme-orb.ac{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-bg)}
-.theme-orb span{position:absolute;bottom:3px;left:0;right:0;text-align:center;font-size:.5rem;font-weight:700;color:rgba(255,255,255,.9);text-shadow:0 1px 4px rgba(0,0,0,.8)}
-.theme-sep{height:1px;background:var(--card-border);margin:4px 0 12px}
-.glass-row{display:flex;align-items:center;justify-content:space-between;padding:4px 6px}
-.glass-row span{font-size:.76rem;font-weight:600;color:var(--text2)}
+.theme-orb span{position:absolute;bottom:3px;left:0;right:0;text-align:center;font-family:var(--font);font-size:.5rem;font-weight:700;color:rgba(255,255,255,.9);text-shadow:0 1px 4px rgba(0,0,0,.8)}
+.theme-sep{height:1px;background:rgba(255,255,255,.06);margin:4px 0 12px}
+[data-theme="snow"] .theme-sep{background:rgba(0,0,0,.06)}
+.glass-row{display:flex;align-items:center;justify-content:space-between;padding:2px 4px}
+.glass-label{font-family:var(--font);font-size:.78rem;font-weight:600;color:var(--text2)}
 .wt-toggle{width:44px;height:24px;border-radius:12px;background:rgba(128,128,128,.2);border:1px solid rgba(128,128,128,.15);cursor:pointer;position:relative;transition:all .35s var(--smooth);flex-shrink:0}
 .wt-toggle.on{background:var(--accent-bg);border-color:var(--accent)}
 .wt-toggle::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:all .35s var(--spring)}
@@ -707,11 +711,11 @@ input[type="file"]{display:none}
   <a class="donate-btn" href="https://www.donationalerts.com/r/watcherdonate" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span>Support</span></a>
   <div class="notif-btn" id="themeBtn" onclick="toggleThemeDrop()" style="position:relative">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-    <div class="theme-drop" id="themeDrop">
-      <h4>Theme</h4>
+    <div class="theme-drop" id="themeDrop" onclick="event.stopPropagation()">
+      <div class="theme-drop-hd">Theme</div>
       <div class="theme-grid" id="themeGrid"></div>
       <div class="theme-sep"></div>
-      <div class="glass-row"><span>Liquid Glass</span><div class="wt-toggle" id="glassToggle" onclick="toggleGlass(event)"></div></div>
+      <div class="glass-row"><span class="glass-label">Liquid Glass</span><div class="wt-toggle" id="glassToggle" onclick="toggleGlass(event)"></div></div>
     </div>
   </div>
   <div class="notif-btn" id="notifBtn" onclick="toggleNotif()">
@@ -2298,11 +2302,14 @@ var W_THEMES=[
 function renderThemeGrid(){
   var cur=localStorage.getItem("w_theme")||"default";
   document.getElementById("themeGrid").innerHTML=W_THEMES.map(function(t){
-    return'<div class="theme-orb'+(t.id===cur?" ac":"")+'" style="background:linear-gradient(135deg,'+t.colors[0]+','+t.colors[1]+' 40%,'+t.colors[2]+')" onclick="pickTheme(\''+t.id+'\',event)" title="'+t.name+'"><span>'+t.name+'</span></div>';
+    return'<div class="theme-orb'+(t.id===cur?" ac":"")+'" data-tid="'+t.id+'" style="background:linear-gradient(135deg,'+t.colors[0]+','+t.colors[1]+' 40%,'+t.colors[2]+')" title="'+t.name+'"><span>'+t.name+'</span></div>';
   }).join("");
 }
-function pickTheme(id,e){
-  if(e)e.stopPropagation();
+document.addEventListener("click",function(e){
+  var orb=e.target.closest("[data-tid]");
+  if(orb){e.stopPropagation();pickTheme(orb.dataset.tid);return}
+});
+function pickTheme(id){
   if(id==="default")document.body.removeAttribute("data-theme");
   else document.body.setAttribute("data-theme",id);
   localStorage.setItem("w_theme",id);
