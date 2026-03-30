@@ -711,13 +711,13 @@ input[type="file"]{display:none}
   <div class="spacer"></div>
   <div class="admin-btn" id="adminBtn" onclick="toggleAdmin()"><svg viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4"/></svg><span>Admin</span></div>
   <a class="donate-btn" href="https://www.donationalerts.com/r/watcherdonate" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span>Support</span></a>
-  <div class="notif-btn" id="themeBtn" style="position:relative">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-    <div class="theme-drop" id="themeDrop">
+  <div class="notif-btn" id="themeBtn" onclick="document.getElementById('themeDrop').classList.toggle('open')" style="position:relative">
+    <svg viewBox="0 0 24 24" style="pointer-events:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    <div class="theme-drop" id="themeDrop" onclick="event.stopPropagation()">
       <div class="theme-drop-hd">Theme</div>
       <div class="theme-grid" id="themeGrid"></div>
       <div class="theme-sep"></div>
-      <div class="glass-row"><span class="glass-label">Liquid Glass</span><div class="wt-toggle" id="glassToggle"></div></div>
+      <div class="glass-row" onclick="wToggleGlass()"><span class="glass-label">Liquid Glass</span><div class="wt-toggle" id="glassToggle"></div></div>
     </div>
   </div>
   <div class="notif-btn" id="notifBtn" onclick="toggleNotif()">
@@ -2306,32 +2306,26 @@ function renderThemeGrid(){
   var html="";
   for(var i=0;i<W_THEMES.length;i++){
     var t=W_THEMES[i];
-    html+='<div class="theme-orb'+(t.id===cur?" ac":"")+'" data-tid="'+t.id+'" style="background:linear-gradient(135deg,'+t.colors[0]+','+t.colors[1]+' 40%,'+t.colors[2]+')" title="'+t.name+'"><span>'+t.name+'</span></div>';
+    html+='<div class="theme-orb'+(t.id===cur?" ac":"")+'" onclick="wPickTheme(\''+t.id+'\')" style="background:linear-gradient(135deg,'+t.colors[0]+','+t.colors[1]+' 40%,'+t.colors[2]+')"><span>'+t.name+'</span></div>';
   }
   document.getElementById("themeGrid").innerHTML=html;
 }
-function pickTheme(id){
+function wPickTheme(id){
   if(id==="default")document.body.removeAttribute("data-theme");
   else document.body.setAttribute("data-theme",id);
   localStorage.setItem("w_theme",id);
-  renderThemeGrid();
+  document.querySelectorAll(".theme-orb").forEach(function(o){o.classList.remove("ac")});
+  document.querySelectorAll(".theme-orb").forEach(function(o){if(o.textContent.trim()===(W_THEMES.find(function(t){return t.id===id})||{}).name)o.classList.add("ac")});
   var t=W_THEMES.find(function(x){return x.id===id});
   if(t)showToast(t.name+" theme");
 }
-function toggleGlass(){
+function wToggleGlass(){
   var tog=document.getElementById("glassToggle");
   var on=tog.classList.toggle("on");
   document.body.dataset.glass=on?"on":"off";
   localStorage.setItem("w_glass",on?"on":"off");
   showToast("Liquid Glass "+(on?"ON":"OFF"));
 }
-document.getElementById("themeBtn").addEventListener("click",function(e){
-  var orb=e.target.closest("[data-tid]");
-  if(orb){pickTheme(orb.dataset.tid);return}
-  if(e.target.closest(".glass-row")){toggleGlass();return}
-  if(e.target.closest(".theme-drop")){return}
-  document.getElementById("themeDrop").classList.toggle("open");
-});
 document.addEventListener("click",function(e){
   if(!e.target.closest("#themeBtn"))document.getElementById("themeDrop").classList.remove("open");
 });
