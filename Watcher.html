@@ -665,7 +665,7 @@ input[type="file"]{display:none}
 <div class="toast" id="toast"></div>
 
 <div class="auth-overlay" id="authO"><div class="auth-box">
-  <div id="authS1"><h2>Welcome to Watcher</h2><p>Sign in to save your profile and watch history.</p><button class="g-btn" onclick="gSignIn()"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="">Sign in with Google</button><div class="auth-skip" onclick="skipA()">Continue as guest</div><div style="margin-top:20px;font-size:.65rem;color:rgba(255,255,255,.2)"><a href="privacy.html" style="color:rgba(255,255,255,.3)" target="_blank">Privacy Policy</a></div></div>
+  <div id="authS1"><h2>Welcome to Watcher</h2><p>Sign in to save your profile and watch history.</p><button class="g-btn" onclick="gSignIn()"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="">Sign in with Google</button><div class="auth-skip" onclick="skipA()">Continue as guest</div><div style="margin-top:20px;font-size:.65rem;color:rgba(255,255,255,.2)"><a href="privacy.html" style="color:rgba(255,255,255,.3)" target="_blank">Privacy Policy</a><div style="margin-top:6px;color:rgba(255,255,255,.12)">© 2026 Clear Inc.</div></div></div>
   <div id="authS2" class="uname-step"><h2>Choose Username</h2><p>English only, lowercase.</p><input id="unIn" type="text" placeholder="username" maxlength="20" oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9_]/g,'')"><div class="err" id="unErr"></div><button class="g-btn" onclick="submitUn()">Confirm</button></div>
 </div></div>
 
@@ -992,7 +992,7 @@ input[type="file"]{display:none}
       <div class="ef"><label>Username</label><input id="uIn" type="text" maxlength="20" oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9_]/g,'')"><div class="hn">English, numbers, underscore. Must be unique.</div></div>
       <div class="ef"><label>Description</label><textarea id="dIn" maxlength="500" placeholder="Tell viewers about your channel..."></textarea></div>
       <div class="svr"><button class="svb" onclick="saveP()">Save</button><button class="sob" id="soBtn" onclick="signOut()" style="display:none">Sign Out</button></div>
-      <div style="margin-top:16px;font-size:.65rem"><a href="privacy.html" style="color:rgba(255,255,255,.25)" target="_blank">Privacy Policy</a></div>
+      <div style="margin-top:16px;font-size:.65rem"><a href="privacy.html" style="color:var(--text4)" target="_blank">Privacy Policy</a><div style="margin-top:10px;color:var(--text4)">© 2026 Clear Inc. All rights reserved.</div></div>
     </div></div>
     <div class="ch-sec" id="chSta" style="display:none"><div class="p-stats"><h3>Statistics</h3>
       <div class="p-row"><span class="p-row-l">Videos Watched</span><span class="p-row-v" id="wC">0</span></div>
