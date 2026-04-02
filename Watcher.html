@@ -1019,9 +1019,9 @@ function loadAdmins(cb){
 try{firebase.initializeApp(firebaseConfig);db=firebase.firestore();fbOk=firebaseConfig.apiKey!=="YOUR_API_KEY"}catch(e){fbOk=false}
 if(fbOk){firebase.auth().getRedirectResult().catch(function(){});firebase.auth().onAuthStateChanged(function(u){cUser=u;renderUA();if(u){checkBan();checkUn(u)}else if(!localStorage.getItem("wSk"))document.getElementById("authO").classList.add("open")})}else renderUA();
 function gSignIn(){if(!fbOk)return;var p=new firebase.auth.GoogleAuthProvider();firebase.auth().signInWithPopup(p).catch(function(e){if(e.code==="auth/popup-blocked"||e.code==="auth/cancelled-popup-request"){firebase.auth().signInWithRedirect(p)}else{alert("Sign-in failed: "+e.message)}})}
-function checkUn(u){document.getElementById("authO").classList.remove("open");db.collection("users").doc(u.uid).get().then(function(d){if(!d.exists||!d.data().username){document.getElementById("authS1").style.display="none";document.getElementById("authS2").classList.add("show");document.getElementById("authO").classList.add("open")}else{curUsername=d.data().username;var p=gLP();p.name=d.data().name||u.displayName||"User";sLP(p);loadAdmins(function(){checkAdmin()});loadP();renderUA()}})}
-function submitUn(){var u=document.getElementById("unIn").value.trim();if(!u||u.length<3){document.getElementById("unErr").textContent="Min 3 characters";return}if(!/^[a-z0-9_]+$/.test(u)){document.getElementById("unErr").textContent="a-z, 0-9, _ only";return}document.getElementById("unErr").textContent="Checking...";db.collection("usernames").doc(u).get().then(function(d){if(d.exists){document.getElementById("unErr").textContent="Taken!";return}var b=db.batch();b.set(db.collection("usernames").doc(u),{uid:cUser.uid});b.set(db.collection("users").doc(cUser.uid),{username:u,name:cUser.displayName||"",photo:cUser.photoURL||"",email:cUser.email||"",joined:new Date().toISOString()},{merge:true});b.commit().then(function(){document.getElementById("authO").classList.remove("open");loadP()})})}
-function skipA(){localStorage.setItem("wSk","1");document.getElementById("authO").classList.remove("open")}
+function checkUn(u){document.getElementById("authO").classList.remove("open");db.collection("users").doc(u.uid).get().then(function(d){if(!d.exists||!d.data().username){document.getElementById("authS1").style.display="none";document.getElementById("authS2").classList.add("show");document.getElementById("authO").classList.add("open")}else{curUsername=d.data().username;var p=gLP();p.name=d.data().name||u.displayName||"User";sLP(p);loadAdmins(function(){checkAdmin()});loadP();renderUA();if(window._pendingDm){startDmWith(window._pendingDm);window._pendingDm=null}}})}
+function submitUn(){var u=document.getElementById("unIn").value.trim();if(!u||u.length<3){document.getElementById("unErr").textContent="Min 3 characters";return}if(!/^[a-z0-9_]+$/.test(u)){document.getElementById("unErr").textContent="a-z, 0-9, _ only";return}document.getElementById("unErr").textContent="Checking...";db.collection("usernames").doc(u).get().then(function(d){if(d.exists){document.getElementById("unErr").textContent="Taken!";return}var b=db.batch();b.set(db.collection("usernames").doc(u),{uid:cUser.uid});b.set(db.collection("users").doc(cUser.uid),{username:u,name:cUser.displayName||"",photo:cUser.photoURL||"",email:cUser.email||"",joined:new Date().toISOString()},{merge:true});b.commit().then(function(){document.getElementById("authO").classList.remove("open");loadP();renderUA();if(window._pendingDm){setTimeout(function(){startDmWith(window._pendingDm);window._pendingDm=null},500)}})})}
+function skipA(){localStorage.setItem("wSk","1");document.getElementById("authO").classList.remove("open");if(window._pendingDm)showToast("Sign in to open chat")}
 function signOut(){if(fbOk)firebase.auth().signOut();localStorage.removeItem("wSk");cUser=null;curUsername="";checkAdmin();renderUA();nav("home")}
 function renderUA(){var el=document.getElementById("userArea");if(cUser){var p=gLP();var a=p.avatar||cUser.photoURL;var dn=p.name||cUser.displayName||"User";var ph=a?'<img src="'+a+'">':'<div class="avatar-placeholder" style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:rgba(245,245,247,.28);stroke-width:2;fill:none"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 00-16 0"/></svg></div>';el.innerHTML='<div class="user-btn" onclick="nav(\'profile\')">'+ph+'<span>'+esc(dn)+'</span></div>'}else el.innerHTML='<button class="signin-btn" onclick="'+(fbOk?'gSignIn()':'nav(\"profile\")')+'">Sign In</button>'}
 
@@ -1981,7 +1981,8 @@ function sendDm(){
 }
 
 function startDmWith(otherUid){
-  if(!cUser||!fbOk||otherUid===cUser.uid){showToast("Cannot chat with yourself");return}
+  if(!cUser||!fbOk){showToast("Sign in to open chat");return}
+  if(otherUid===cUser.uid){showToast("Cannot chat with yourself");return}
   var ids=[cUser.uid,otherUid].sort();
   var chatId=ids.join("_");
   db.collection("chats").doc(chatId).get().then(function(doc){
@@ -2233,15 +2234,10 @@ function handleSlashCmd(text){
 function checkDmParam(){
   var p=new URLSearchParams(window.location.search);
   var dm=p.get("dm");
-  if(dm){
-    if(cUser){startDmWith(dm)}
-    else{
-      var waiter=setInterval(function(){
-        if(cUser){clearInterval(waiter);startDmWith(dm)}
-      },500);
-      setTimeout(function(){clearInterval(waiter)},10000);
-    }
-  }
+  if(!dm)return;
+  window._pendingDm=dm;
+  if(cUser){startDmWith(dm);window._pendingDm=null}
+  else{showToast("Sign in to open chat")}
 }
 
 var visitorId=localStorage.getItem("wvid");
