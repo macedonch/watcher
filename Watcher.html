@@ -1927,37 +1927,27 @@ function startDmByCode(){
   var code=document.getElementById("dmCodeIn").value.trim().toLowerCase().replace("@","");
   if(!code){showToast("Enter a username");return}
   if(code===curUsername){showToast("That's you!");return}
-  showToast("Looking up @"+code+"...");
+  showToast("Searching...");
+  var timeout=setTimeout(function(){showToast("Connection slow, try again")},8000);
   db.collection("usernames").doc(code).get().then(function(d){
+    clearTimeout(timeout);
     if(!d.exists){showToast("User @"+code+" not found");return}
     var otherUid=d.data().uid;
+    if(!otherUid){showToast("Invalid user");return}
     var ids=[cUser.uid,otherUid].sort();
     var chatId=ids.join("_");
-    db.collection("chats").doc(chatId).get().then(function(chatDoc){
-      if(chatDoc.exists){
-        var cd=chatDoc.data();
-        var otherId=(cd.uids||[]).find(function(u){return u!==cUser.uid})||otherUid;
-        var name=(cd.names||{})[otherId]||code;
-        document.getElementById("dmCodeIn").value="";
-        openDmChat(chatId,name);
-        showToast("Chat opened!");
-      }else{
-        db.collection("users").doc(otherUid).get().then(function(uDoc){
-          var otherName=code;
-          if(uDoc.exists){otherName=uDoc.data().name||uDoc.data().username||code}
-          var names={};
-          names[cUser.uid]=gLP().name||cUser.displayName||"User";
-          names[otherUid]=otherName;
-          db.collection("chats").doc(chatId).set({
-            uids:ids,names:names,lastMsg:"",lastTime:firebase.firestore.FieldValue.serverTimestamp()
-          }).then(function(){
-            document.getElementById("dmCodeIn").value="";
-            setTimeout(function(){openDmChat(chatId,otherName);showToast("Chat created!")},500);
-          }).catch(function(e){showToast("Error: "+e.message)});
-        });
-      }
+    var myName=gLP().name||cUser.displayName||"User";
+    var names={};
+    names[cUser.uid]=myName;
+    names[otherUid]=code;
+    return db.collection("chats").doc(chatId).set({
+      uids:ids,names:names,lastTime:firebase.firestore.FieldValue.serverTimestamp()
+    },{merge:true}).then(function(){
+      document.getElementById("dmCodeIn").value="";
+      showToast("Chat with @"+code);
+      setTimeout(function(){openDmChat(chatId,code)},400);
     });
-  }).catch(function(e){showToast("Error: "+e.message)});
+  }).catch(function(e){clearTimeout(timeout);showToast("Error: "+e.message)});
 }
 
 function listenChats(){
