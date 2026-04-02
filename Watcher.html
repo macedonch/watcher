@@ -1927,11 +1927,37 @@ function startDmByCode(){
   var code=document.getElementById("dmCodeIn").value.trim().toLowerCase().replace("@","");
   if(!code){showToast("Enter a username");return}
   if(code===curUsername){showToast("That's you!");return}
-  document.getElementById("dmCodeIn").value="";
+  showToast("Looking up @"+code+"...");
   db.collection("usernames").doc(code).get().then(function(d){
     if(!d.exists){showToast("User @"+code+" not found");return}
-    startDmWith(d.data().uid);
-  }).catch(function(){showToast("Error looking up user")});
+    var otherUid=d.data().uid;
+    var ids=[cUser.uid,otherUid].sort();
+    var chatId=ids.join("_");
+    db.collection("chats").doc(chatId).get().then(function(chatDoc){
+      if(chatDoc.exists){
+        var cd=chatDoc.data();
+        var otherId=(cd.uids||[]).find(function(u){return u!==cUser.uid})||otherUid;
+        var name=(cd.names||{})[otherId]||code;
+        document.getElementById("dmCodeIn").value="";
+        openDmChat(chatId,name);
+        showToast("Chat opened!");
+      }else{
+        db.collection("users").doc(otherUid).get().then(function(uDoc){
+          var otherName=code;
+          if(uDoc.exists){otherName=uDoc.data().name||uDoc.data().username||code}
+          var names={};
+          names[cUser.uid]=gLP().name||cUser.displayName||"User";
+          names[otherUid]=otherName;
+          db.collection("chats").doc(chatId).set({
+            uids:ids,names:names,lastMsg:"",lastTime:firebase.firestore.FieldValue.serverTimestamp()
+          }).then(function(){
+            document.getElementById("dmCodeIn").value="";
+            setTimeout(function(){openDmChat(chatId,otherName);showToast("Chat created!")},500);
+          }).catch(function(e){showToast("Error: "+e.message)});
+        });
+      }
+    });
+  }).catch(function(e){showToast("Error: "+e.message)});
 }
 
 function listenChats(){
