@@ -1127,7 +1127,7 @@ function fbLoadComments(vid,cb){
 }
 function fbAddComment(vid,text,cb){
   if(!fbOk||!db||!cUser){cb();return}
-  var name=cUser.displayName||"User";
+  var name=gLP().name||cUser.displayName||"User";
   var cmt={u:name,t:text,ts:Date.now(),uid:cUser.uid};
   var vRef=db.collection("vdata").doc(vid);
   db.collection("vdata").doc(vid).collection("comments").add(cmt).then(function(){
@@ -1940,13 +1940,13 @@ function startDmByCode(){
     var names={};
     names[cUser.uid]=myName;
     names[otherUid]=code;
-    return db.collection("chats").doc(chatId).set({
-      uids:ids,names:names,lastTime:firebase.firestore.FieldValue.serverTimestamp()
+    db.collection("chats").doc(chatId).set({
+      uids:ids,names:names,lastMsg:"",lastTime:firebase.firestore.FieldValue.serverTimestamp()
     },{merge:true}).then(function(){
       document.getElementById("dmCodeIn").value="";
-      showToast("Chat with @"+code);
-      setTimeout(function(){openDmChat(chatId,code)},400);
-    });
+      listenChats();
+      setTimeout(function(){openDmChat(chatId,code);showToast("Chat with @"+code)},500);
+    }).catch(function(e){showToast("Error: "+e.message)});
   }).catch(function(e){clearTimeout(timeout);showToast("Error: "+e.message)});
 }
 
@@ -2012,7 +2012,7 @@ function sendDm(){
   if(handleSlashCmd(text)){input.value="";return}
   if(!checkBanBeforeAction("messaging"))return;
   input.value="";
-  var name=cUser.displayName||"User";
+  var name=gLP().name||cUser.displayName||"User";
   db.collection("chats").doc(msgCurChat).collection("messages").add({
     uid:cUser.uid,name:name,text:text,t:firebase.firestore.FieldValue.serverTimestamp()
   });
