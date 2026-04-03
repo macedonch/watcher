@@ -1953,19 +1953,26 @@ function startDmByCode(){
 function listenChats(){
   if(msgChatsUnsub)msgChatsUnsub();
   if(!cUser||!fbOk)return;
-  msgChatsUnsub=db.collection("chats").where("uids","array-contains",cUser.uid).orderBy("lastTime","desc").onSnapshot(function(snap){
+  msgChatsUnsub=db.collection("chats").where("uids","array-contains",cUser.uid).onSnapshot(function(snap){
     var items=document.getElementById("msgItems");
-    if(snap.empty){items.innerHTML='<div class="msg-empty"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>No chats yet<br><span style="font-size:.7rem">Share your invite link to start</span></div>';return}
-    var html="";
+    if(snap.empty){items.innerHTML='<div class="msg-empty"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>No chats yet<br><span style="font-size:.7rem">Enter someone\'s username above to start</span></div>';return}
+    var chats=[];
     snap.forEach(function(doc){
       var d=doc.data();
-      var other=d.names||{};
+      var ts=0;
+      if(d.lastTime){ts=d.lastTime.toMillis?d.lastTime.toMillis():d.lastTime}
+      chats.push({id:doc.id,data:d,ts:ts});
+    });
+    chats.sort(function(a,b){return b.ts-a.ts});
+    var html="";
+    chats.forEach(function(c){
+      var d=c.data;
       var otherId=(d.uids||[]).find(function(u){return u!==cUser.uid})||"";
-      var name=other[otherId]||"User";
+      var name=(d.names||{})[otherId]||"User";
       var letter=name.charAt(0).toUpperCase();
       var last=d.lastMsg||"";
-      var time=d.lastTime?timeAgoMs(d.lastTime.toMillis?d.lastTime.toMillis():d.lastTime):"";
-      html+='<div class="msg-item'+(doc.id===msgCurChat?" ac":"")+'" data-chatid="'+doc.id+'" data-name="'+esc(name)+'" onclick="openDmChat(\''+doc.id+'\',\''+esc(name)+'\')"><div class="msg-item-av">'+letter+'</div><div class="msg-item-info"><div class="msg-item-name">'+esc(name)+'</div><div class="msg-item-last">'+esc(last)+'</div></div><div class="msg-item-time">'+time+'</div></div>';
+      var time=c.ts?timeAgoMs(c.ts):"";
+      html+='<div class="msg-item'+(c.id===msgCurChat?" ac":"")+'" data-chatid="'+c.id+'" data-name="'+esc(name)+'" onclick="openDmChat(\''+c.id+'\',\''+esc(name)+'\')"><div class="msg-item-av">'+letter+'</div><div class="msg-item-info"><div class="msg-item-name">'+esc(name)+'</div><div class="msg-item-last">'+esc(last)+'</div></div><div class="msg-item-time">'+time+'</div></div>';
     });
     items.innerHTML=html;
   });
